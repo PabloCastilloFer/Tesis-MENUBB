@@ -1,4 +1,6 @@
 const Local = require('../Models/Local.js');
+const LocalValidation = require('../Validations/LocalValidation.js');
+const DAYS_OF_WEEK = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
 exports.getLocals = async (req, res) => {
     try {
@@ -26,22 +28,26 @@ exports.getLocalById = async (req, res) => {
 };
 
 exports.createLocal = async (req, res) => {
+    // Validar la entrada
+    const { error, value } = LocalValidation(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details.map(err => err.message) });
+    }
+
+    // Completar días faltantes en el horario
+    const completedSchedule = DAYS_OF_WEEK.map(day => {
+        const existingDay = value.schedule.find(s => s.day === day);
+        return existingDay || { day, isOpen: false };
+    });
+
     try {
-        const { name, address, description, image, schedule } = req.body;
-
-        const newLocal = new Local({
-            name,
-            address,
-            description,
-            image,
-            schedule
-        });
-
-        const savedLocal = await newLocal.save();
-        res.status(201).json(savedLocal);
-    } catch (error) {
-        console.error('Error al crear el local:', error);
-        res.status(500).send('Hubo un error al crear el local', error);
+        // Crear el local con el horario completado
+        const local = new Local({ ...value, schedule: completedSchedule });
+        await local.save();
+        res.status(201).json(local);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al crear el local' });
     }
 };
 

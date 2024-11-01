@@ -19,6 +19,12 @@ mongoose.connect(process.env.MONGO_URI)
 // Usa el enrutador de rutas
 app.use('/api', routes);
 
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  console.log('Conexión a MongoDB cerrada');
+  process.exit(0);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor en ejecución en el puerto ${PORT}`);

@@ -1,22 +1,36 @@
 const mongoose = require('mongoose');
 
+delete mongoose.models.Local;
+
 const ScheduleSchema = new mongoose.Schema({
     day: {
         type: String,
         required: true,
         enum: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
     },
-    open: {
-        type: String,
-        required: true
-    },
-    close: {
-        type: String,
-        required: true
-    },
     isOpen: {
         type: Boolean,
         default: true
+    },
+    open: {
+        type: String,
+        validate: {
+            validator: function (v) {
+                // Solo es requerido si isOpen es true
+                return this.isOpen ? v != null : true;
+            },
+            message: 'El campo `open` es obligatorio cuando `isOpen` es true.'
+        }
+    },
+    close: {
+        type: String,
+        validate: {
+            validator: function (v) {
+                // Solo es requerido si isOpen es true
+                return this.isOpen ? v != null : true;
+            },
+            message: 'El campo `close` es obligatorio cuando `isOpen` es true.'
+        }
     }
 });
 
