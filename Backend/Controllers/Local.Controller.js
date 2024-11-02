@@ -1,5 +1,5 @@
-const Local = require('../Models/Local.js');
-const LocalValidation = require('../Validations/LocalValidation.js');
+const Local = require('../Models/Local.Model.js');
+const LocalValidation = require('../Validations/Local.Validation.js');
 const DAYS_OF_WEEK = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
 exports.getLocals = async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const localController = require('../Controllers/LocalController.js');
+const localController = require('../Controllers/Local.Controller.js');
 
 router.get('/', localController.getLocals);
 router.get('/:id', localController.getLocalById);
