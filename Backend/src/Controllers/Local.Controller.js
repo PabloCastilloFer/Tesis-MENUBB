@@ -11,7 +11,7 @@ exports.getLocals = async (req, res) => {
         }
     } catch (error) {
         console.error('Error al obtener locales:', error);
-        res.status(500).send({ message: 'Hubo un error al obtener locales' });  // Usa res.status(500).send para errores
+        res.status(500).send({ message: 'Hubo un error al obtener locales' });
     }
 };
 
@@ -28,20 +28,17 @@ exports.getLocalById = async (req, res) => {
 };
 
 exports.createLocal = async (req, res) => {
-    // Validar la entrada
     const { error, value } = LocalValidation(req.body);
     if (error) {
         return res.status(400).json({ error: error.details.map(err => err.message) });
     }
 
-    // Completar días faltantes en el horario
     const completedSchedule = DAYS_OF_WEEK.map(day => {
         const existingDay = value.schedule.find(s => s.day === day);
         return existingDay || { day, isOpen: false };
     });
 
     try {
-        // Crear el local con el horario completado
         const local = new Local({ ...value, schedule: completedSchedule });
         await local.save();
         res.status(201).json(local);
