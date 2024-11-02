@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 // Importa las rutas de cada entidad
-const localesRoutes = require('./Local.Routes');
+const example = require('./Example.Routes.js');
 
 // Usa las rutas importadas
-router.use('/locales', localesRoutes);
+router.use('/example', example);
 
 module.exports = router;

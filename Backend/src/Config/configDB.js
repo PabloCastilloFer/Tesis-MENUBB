@@ -1,10 +1,9 @@
-
 // Importa el modulo 'mongoose' para crear la conexion a la base de datos
-import { connect } from "mongoose";
+import { connect } from 'mongoose';
 
 // Agregamos la configuracion de las variables de entorno
-import { DB_URL } from "./configEnv.js";
-import { handleError } from "../utils/errorHandler.js";
+import { DB_URL } from './configEnv.js';
+import { handleError } from '../utils/errorHandler.js';
 
 /**
  * Establece la conexión con la base de datos.
@@ -17,9 +16,9 @@ import { handleError } from "../utils/errorHandler.js";
 async function setupDB() {
   try {
     await connect(DB_URL);
-    console.log("=> Conectado a la base de datos");
+    console.log('=> Conectado a la base de datos');
   } catch (err) {
-    handleError(err, "/configDB.js -> setupDB");
+    handleError(err, '/configDB.js -> setupDB');
   }
 }
 
