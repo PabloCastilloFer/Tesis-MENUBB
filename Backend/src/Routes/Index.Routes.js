@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
+import localRoutes from './Local.Routes.js';
+
 const router = express.Router();
 
-const localesRoutes = require('./Local.Routes.js');
+router.use('/local', localRoutes);
 
-router.use('/locales', localesRoutes);
-
-module.exports = router;
+export default router;

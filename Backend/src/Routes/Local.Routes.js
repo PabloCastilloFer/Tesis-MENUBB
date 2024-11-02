@@ -1,11 +1,25 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
-const localController = require('../Controllers/Local.Controller.js');
 
-router.get('/', localController.getLocals);
-router.get('/:id', localController.getLocalById);
-router.post('/', localController.createLocal);
-router.put('/:id/schedule', localController.updateLocal);
-router.delete('/:id', localController.deleteLocal);
+router.get('/', (req, res) => {
+    res.send('Obtener todos los locales');
+});
 
-module.exports = router;
+router.get('/:id', (req, res) => {
+    res.send(`Obtener el local con ID ${req.params.id}`);
+});
+
+router.post('/', (req, res) => {
+    res.send('Crear un nuevo local');
+});
+
+router.put('/:id', (req, res) => {
+    res.send(`Actualizar el local con ID ${req.params.id}`);
+});
+
+router.delete('/:id', (req, res) => {
+    res.send(`Eliminar el local con ID ${req.params.id}`);
+});
+
+export default router;
