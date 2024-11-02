@@ -1,8 +1,8 @@
-const Local = require('../Models/Local.Model.js');
-const LocalValidation = require('../Validations/Local.Validation.js');
+import Local from '../Models/Local.Model.js';
+import LocalValidation from '../Validations/Local.Validation.js';
 const DAYS_OF_WEEK = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
-exports.getLocals = async (req, res) => {
+export const getLocals = async (req, res) => {
     try {
         const locals = await Local.find();
         res.status(200).json(locals);
@@ -15,7 +15,7 @@ exports.getLocals = async (req, res) => {
     }
 };
 
-exports.getLocalById = async (req, res) => {
+export const getLocalById = async (req, res) => {
     try {
         const local = await Local.findById(req.params.id);
         if (!local) {
@@ -27,7 +27,7 @@ exports.getLocalById = async (req, res) => {
     }
 };
 
-exports.createLocal = async (req, res) => {
+export const createLocal = async (req, res) => {
     const { error, value } = LocalValidation(req.body);
     if (error) {
         return res.status(400).json({ error: error.details.map(err => err.message) });
@@ -48,7 +48,7 @@ exports.createLocal = async (req, res) => {
     }
 };
 
-exports.updateLocal = async (req, res) => {
+export const updateLocal = async (req, res) => {
     try {
         const { id } = req.params;
         const { schedule } = req.body;
@@ -68,7 +68,7 @@ exports.updateLocal = async (req, res) => {
     }
 };
 
-exports.deleteLocal = async (req, res) => {
+export const deleteLocal = async (req, res) => {
     try {
         const deletedLocal = await Local.findByIdAndDelete(req.params.id);
         if (!deletedLocal) {

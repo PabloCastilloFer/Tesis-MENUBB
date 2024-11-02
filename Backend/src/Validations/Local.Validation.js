@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi  from 'joi';
 
 const timePattern = /^\d{2}:\d{2}$/;
 
@@ -67,4 +67,5 @@ function validateLocal(data) {
     return localValidationSchema.validate(data, { abortEarly: false });
 }
 
-module.exports = validateLocal;
+export { validateLocal };
+export default validateLocal;

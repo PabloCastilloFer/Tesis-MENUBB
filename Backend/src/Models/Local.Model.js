@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 delete mongoose.models.Local;
 
@@ -56,4 +56,5 @@ const LocalSchema = new mongoose.Schema({
     schedule: [ScheduleSchema]
 });
 
-module.exports = mongoose.model('Local', LocalSchema);
+const Local = mongoose.model('Local', LocalSchema);
+export default Local;
