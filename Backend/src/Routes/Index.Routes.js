@@ -1,11 +1,10 @@
 // Routes/index.js
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import example from './Example.Routes.js';
 
-// Importa las rutas de cada entidad
-const example = require('./Example.Routes.js');
+const router = express.Router();
 
 // Usa las rutas importadas
 router.use('/example', example);
 
-module.exports = router;
+export default router;
