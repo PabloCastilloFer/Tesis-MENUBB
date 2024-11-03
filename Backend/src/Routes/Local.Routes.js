@@ -1,5 +1,5 @@
 import express from 'express';
-import { getLocals, getLocalById, createLocal, updateLocal, deleteLocal } from '../controllers/Local.Controller.js';
+import { getLocals, getLocalById, createLocal, updateLocal, deleteLocal } from '../controllers/local.controller.js';
 
 const router = express.Router();
 

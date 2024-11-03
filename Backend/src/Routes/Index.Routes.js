@@ -1,5 +1,5 @@
 import express from 'express';
-import localRoutes from './Local.Routes.js';
+import localRoutes from './local.routes.js';
 
 const router = express.Router();
 
