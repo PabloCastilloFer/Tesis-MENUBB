@@ -1,6 +1,7 @@
 
 import comida from '../Models/comida.model.js';
 import { crearComidaSchema } from '../Validations/comida.validation.js';
+import { HOST, PORT } from '../Config/configEnv.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
@@ -14,7 +15,7 @@ export const createComida = async (req, res) => {
 
         if (req.file) {
             const imagen = req.file.filename;
-            archivoURL = archivoURL = `http://localhost:3000/api/src/Upload/` + imagen;
+            archivoURL = archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
         }
 
         const nuevaComida = {

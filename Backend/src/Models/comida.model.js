@@ -22,10 +22,6 @@ const comidaSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    name: {
-        type: String,
-        required:true,
-    }
 });
 
 export default model('comida', comidaSchema);
