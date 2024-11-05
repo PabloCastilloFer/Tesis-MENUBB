@@ -2,13 +2,7 @@
 import comida from '../Models/comida.model.js';
 import { crearComidaSchema } from '../Validations/comida.validation.js';
 import { HOST, PORT } from '../Config/configEnv.js';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import path from 'path';
-import fs from 'fs';
 
-
-//falta asociar una comida a un local
 export const createComida = async (req, res) => {
     try {
         let archivoURL = null;
@@ -23,7 +17,7 @@ export const createComida = async (req, res) => {
             precio: req.body.precio,
             descripcion: req.body.descripcion,
             imagen: archivoURL,
-            estado: false // al momento de crear una comida la ponemos en false para no mostrarla en pantalla de los usuarios
+            estado: false
         };
 
 const { error } = crearComidaSchema.validate(nuevaComida);
