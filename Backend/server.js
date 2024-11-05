@@ -4,12 +4,12 @@ import express, { urlencoded, json } from 'express';
 import morgan from 'morgan';
 // Importa el módulo 'cookie-parser' para manejar las cookies
 //import cookieParser from 'cookie-parser';
-
+/** El enrutador principal */
 import indexRoutes from './src/Routes/Index.Routes.js';
+// Importa el archivo 'configDB.js' para crear la conexión a la base de datos
 import { setupDB } from './src/Config/configDB.js';
-import { handleFatalError, handleError } from './src/utils/errorHandler.js';
-// Importa las funciones para crear los datos iniciales
-//import { createFacultades, createRoles, createUsers } from './config/initialSetup.js';
+// Importa el handler de errores
+import { handleFatalError, handleError } from './src/Utils/errorHandler.js';
 
 async function setupServer() {
   try {
