@@ -14,7 +14,7 @@ import indexRoutes from "./Routes/Index.Routes.js";
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
 import { setupDB } from "./Config/configDB.js";
 // Importa el handler de errores
-import { handleFatalError, handleError } from "./utils/errorHandler.js";
+import { handleFatalError, handleError } from "./Utils/errorHandler.js";
 //import { createFacultades, createRoles, createUsers } from "./config/initialSetup.js";
 //import marcarTareasNoRealizadas from './services/scheduler.service.js'; // Importa la función de tareas programadas
 
