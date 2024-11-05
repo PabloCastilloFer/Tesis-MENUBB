@@ -1,10 +1,10 @@
 // Routes/index.js
 import express from 'express';
-import example from './Example.Routes.js';
+import usuario from './usuario.routes.js';
 
 const router = express.Router();
 
 // Usa las rutas importadas
-router.use('/example', example);
+router.use('/usuario', usuario);
 
 export default router;
