@@ -1,0 +1,27 @@
+services:
+  mongo:
+    image: mongo:8.0
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      HOST: ${HOST}
+      PORT: ${PORT}
+      DB_URL: ${DB_URL}
+    networks:
+      - menubb
+
+  tesis-menubb:
+    build:
+      context: /Backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - /Backend/src/Config/.env
+    networks:
+      - menubb
+
+networks:
+  menubb:
+    driver: bridge
