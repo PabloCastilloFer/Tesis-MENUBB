@@ -5,17 +5,16 @@ import { validateUser } from '../Validations/user.validation.js';
 // Obtener todos los usuarios
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find().populate('roles').populate('locales').populate('favoritos');
+        const users = await User.find().populate('roles'); // Aquí podrías incluir `.populate('roles locales favoritos')` si deseas obtener más detalles
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los usuarios', error });
     }
 };
-
 // Obtener un usuario por ID
 export const getUserById = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).populate('roles').populate('locales').populate('favoritos');
+        const user = await User.findById(req.params.id).populate('roles');
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
         res.status(200).json(user);
     } catch (error) {
