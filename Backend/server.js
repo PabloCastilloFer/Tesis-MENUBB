@@ -9,12 +9,12 @@ import morgan from 'morgan';
 // Importa el módulo 'cookie-parser' para manejar las cookies
 //import cookieParser from 'cookie-parser';
 /** El enrutador principal */
-import indexRoutes from './src/Routes/Index.Routes.js';
+import indexRoutes from './src/Routes/index.Routes.js';
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
 import { setupDB } from './src/Config/configDB.js';
 // Importa el handler de errores
 import { handleFatalError, handleError } from './src/utils/errorHandler.js';
-//import { createFacultades, createRoles, createUsers } from './config/initialSetup.js';
+import { createRoles } from './src/config/initialSetup.js';
 //import marcarTareasNoRealizadas from './services/scheduler.service.js'; // Importa la función de tareas programadas
 
 /**
@@ -58,6 +58,8 @@ async function setupAPI() {
     await setupDB();
     // Inicia el servidor web
     await setupServer();
+    // Crea los roles por defecto en la base de datos
+    await createRoles();
   } catch (err) {
     handleFatalError(err, '/server.js -> setupAPI');
   }
