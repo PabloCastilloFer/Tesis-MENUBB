@@ -1,21 +1,22 @@
-import { Schema, model } from "mongoose";
-import ROLES from "../constants/roles.constants.js";
+import mongoose from "mongoose";
+import ROLES from "../Constants/roles.constants.js";
 
-// Crea el esquema de la coleccion 'roles'
-const roleSchema = new Schema(
-    {
-        name: {
-            type: String,
-            enum: ROLES,
-            required: true,
-        },
+const roleSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      enum: ROLES, // Asegura que los roles sean válidos
+      required: true,
+      unique: true, // Evita roles duplicados en la base de datos
     },
-    {
-        versionKey: false,
-    },
+  },
+  {
+    versionKey: false,
+    timestamps: true, // Agrega "createdAt" y "updatedAt"
+  }
 );
 
-// Crea el modelo de datos 'Role' a partir del esquema 'roleSchema'
-const Role = model("Role", roleSchema);
+// Verifica si el modelo ya existe antes de definirlo
+const Role = mongoose.models.Role || mongoose.model("Role", roleSchema);
 
 export default Role;

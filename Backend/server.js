@@ -14,7 +14,7 @@ import indexRoutes from './src/Routes/index.Routes.js';
 import { setupDB } from './src/Config/configDB.js';
 // Importa el handler de errores
 import { handleFatalError, handleError } from './src/utils/errorHandler.js';
-import { createRoles } from './src/config/initialSetup.js';
+import { createRoles, createUsers } from './src/config/initialSetup.js';
 //import marcarTareasNoRealizadas from './services/scheduler.service.js'; // Importa la función de tareas programadas
 
 /**
@@ -60,6 +60,8 @@ async function setupAPI() {
     await setupServer();
     // Crea los roles por defecto en la base de datos
     await createRoles();
+    // Crea los usuarios por defecto en la base de datos
+    await createUsers();
   } catch (err) {
     handleFatalError(err, '/server.js -> setupAPI');
   }

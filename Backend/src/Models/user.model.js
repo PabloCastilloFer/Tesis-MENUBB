@@ -2,59 +2,53 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
-    {
+  {
     username: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    rut: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     roles: [
-        {
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role",
-        },
+        required: true,
+      },
     ],
     locales: [
-        {
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Local",
-        },
+      },
     ],
-    favoritos: [
-        {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Local",
-        },
-    ],
-},
-    {
+  },
+  {
     versionKey: false,
-    },
+    timestamps: true,
+  }
 );
 
-userSchema.statics.encryptPassword = async (password) => {
-    const salt = await bcrypt.genSalt(10);
-    return await bcrypt.hash(password, salt);
+// Método estático para encriptar contraseñas
+userSchema.statics.encryptPassword = async function (password) {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
 };
 
-userSchema.statics.comparePassword = async (password, receivedPassword) => {
-    return await bcrypt.compare(password, receivedPassword);
+// Método estático para comparar contraseñas
+userSchema.statics.comparePassword = async function (password, hashedPassword) {
+  return await bcrypt.compare(password, hashedPassword);
 };
 
-const User = mongoose.model("User", userSchema);
+// Verifica si el modelo ya existe antes de definirlo
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;
