@@ -64,20 +64,20 @@ export const getComida = async (req, res) => {
 export const updateComida = async (req, res) => {
     try {
         const comidaActual = req.params.nombreComida;
-        const comidaModificada = await comida.findOneAndUpdate({ nombreComida: comidaActual });
+        const comidaModificada = await comida.findOne({ nombreComida: comidaActual });
         if (!comidaModificada) {
-            return res.status(200).json({ message: "Comida no encontrada" });
+            return res.status(404).json({ message: "Comida no encontrada" });
         }
 
         const imagen = req.file ? req.file.filename : comidaModificada.imagen.split('/').pop();
-        const URL = `http://localhost:3000/api/src/Upload/`
+        const URL = `http://localhost:3000/api/src/Upload/`;
 
         const updateComida = {
             nombreComida: req.body.nombreComida || comidaModificada.nombreComida,
             precio: req.body.precio || comidaModificada.precio,
             descripcion: req.body.descripcion || comidaModificada.descripcion,
-            imagen: req.file ? URL + imagen : comidaModificada.imagen || comidaModificada.imagen,
-            estado: req.body.estado
+            imagen: req.file ? URL + imagen : comidaModificada.imagen,
+            estado: req.body.estado !== undefined ? req.body.estado : comidaModificada.estado
         };
 
         const { error } = crearComidaSchema.validate(updateComida);
@@ -85,11 +85,7 @@ export const updateComida = async (req, res) => {
             return res.status(400).json({ error: error.message });
         }
 
-        comidaModificada.nombreComida = updateComida.nombreComida;
-        comidaModificada.precio = updateComida.precio;
-        comidaModificada.descripcion = updateComida.descripcion;
-        comidaModificada.imagen = updateComida.imagen;
-        comidaModificada.estado = updateComida.estado;
+        Object.assign(comidaModificada, updateComida);
 
         const comidaActualizada = await comidaModificada.save();
         res.status(200).json({
@@ -97,7 +93,7 @@ export const updateComida = async (req, res) => {
             comida: comidaActualizada
         });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 

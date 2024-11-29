@@ -8,7 +8,7 @@ router
     .get('/', getComidas)
     .get('/:nombreComida', getComida)
     .post('/', upload.single("imagen"), handleFileSizeLimit, createComida)
-    .patch('/:nombreComida', upload.single("imagen"), handleFileSizeLimit,updateComida)
+    .put('/:nombreComida', upload.single("imagen"), handleFileSizeLimit,updateComida)
     .delete('/:nombreComida', deleteComida);
 
 export default router;
