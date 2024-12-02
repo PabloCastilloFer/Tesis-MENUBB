@@ -1,5 +1,8 @@
 import { respondSuccess, respondError } from "../Utils/resHandler.js";
 import AuthService from "../Services/auth.service.js";
+import Role from "../Models/role.model.js";
+import User from "../Models/user.model.js";
+import crypto from "crypto";
 
 /**
  * Iniciar sesión
@@ -88,4 +91,51 @@ export const refresh = async (req, res) => {
   }
 };
 
-export default { login, logout, refresh };
+/**
+ * Registrar un nuevo usuario
+ */
+export const register = async (req, res) => {
+  try {
+    const { username, email } = req.body;
+
+    // Verifica si el usuario ya existe
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return respondError(req, res, 400, "El email ya está registrado.");
+    }
+
+    // Genera una contraseña aleatoria
+    const randomPassword = crypto.randomBytes(8).toString("hex"); // Genera una contraseña de 16 caracteres (8 bytes en hex)
+
+    // Busca el rol "user" por defecto
+    const userRole = await Role.findOne({ name: "user" });
+    if (!userRole) {
+      return respondError(req, res, 500, "No se encontró el rol 'user'.");
+    }
+
+    // Crea el nuevo usuario con la contraseña generada
+    const newUser = new User({
+      username,
+      email,
+      password: await User.encryptPassword(randomPassword), // Encripta la contraseña aleatoria
+      roles: [userRole._id],
+    });
+
+    await newUser.save();
+
+    respondSuccess(req, res, 201, {
+      message: "Usuario registrado exitosamente. La contraseña ha sido generada automáticamente.",
+      user: {
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+        password: randomPassword, // Incluye la contraseña generada en la respuesta
+      },
+    });
+  } catch (error) {
+    console.error("Error en register:", error);
+    respondError(req, res, 500, "Error interno del servidor.");
+  }
+};
+
+export default { login, logout, refresh, register};
