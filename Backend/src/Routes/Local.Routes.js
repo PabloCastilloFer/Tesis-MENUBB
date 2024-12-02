@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', getLocals); // Obtener todos los locales
 router.get('/:id', getLocalById); // Obtener local por ID
 router.post('/', upload.single("image"), handleFileSizeLimit, createLocal); // Crear un nuevo local
-router.put('/:id', updateLocal); // Actualizar local por ID
+router.put('/:id', upload.single("image"), handleFileSizeLimit,updateLocal); // Actualizar local por ID
 router.delete('/:id', deleteLocal); // Eliminar local por ID
 
 export default router;

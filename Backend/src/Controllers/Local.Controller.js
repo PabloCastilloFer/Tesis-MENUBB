@@ -87,20 +87,51 @@ export const createLocal = async (req, res) => {
 export const updateLocal = async (req, res) => {
     try {
         const { id } = req.params;
-        const { schedule } = req.body;
 
-        const updatedLocal = await Local.findByIdAndUpdate(
-            id,
-            { schedule },
-            { new: true }
-        );
+        // Manejo de la imagen subida
+        let archivoURL = null;
+        if (req.file) {
+            const imagen = req.file.filename;
+            archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
+        }
+
+        // Verificar y convertir `schedule` a un array si se proporciona
+        let parsedSchedule = [];
+        if (req.body.schedule) {
+            try {
+                parsedSchedule = JSON.parse(req.body.schedule); // Intentar convertir el string JSON
+                if (!Array.isArray(parsedSchedule)) {
+                    throw new Error('"schedule" debe ser un array');
+                }
+            } catch (err) {
+                return res.status(400).json({ error: '"schedule" debe ser un array válido en formato JSON' });
+            }
+        }
+
+        // Crear objeto de actualización
+        const updateData = {
+            ...req.body, // Otros campos enviados en el cuerpo de la solicitud
+            schedule: parsedSchedule.length > 0 ? parsedSchedule : undefined, // Si no hay schedule, no se incluye
+        };
+
+        if (archivoURL) {
+            updateData.image = archivoURL; // Solo actualizar la imagen si se sube un archivo
+        }
+
+        // Actualizar el local en la base de datos
+        const updatedLocal = await Local.findByIdAndUpdate(id, updateData, { new: true });
 
         if (!updatedLocal) {
-            return res.status(404).send('Local no encontrado');
+            return res.status(404).json({ error: 'Local no encontrado' });
         }
-        res.status(200).json_(this.updateLocal);
+
+        res.status(200).json({
+            message: 'Local actualizado exitosamente',
+            local: updatedLocal,
+        });
     } catch (error) {
-        res.status(400).send('Hubo un error al actualizar el local', error);
+        console.error(error);
+        res.status(400).json({ error: 'Hubo un error al actualizar el local' });
     }
 };
 
