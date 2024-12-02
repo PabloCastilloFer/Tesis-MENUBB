@@ -1,4 +1,5 @@
 import { respondSuccess, respondError } from "../Utils/resHandler.js";
+import { sendEmail } from "../Services/email.service.js";
 import AuthService from "../Services/auth.service.js";
 import Role from "../Models/role.model.js";
 import User from "../Models/user.model.js";
@@ -98,14 +99,20 @@ export const register = async (req, res) => {
   try {
     const { username, email } = req.body;
 
-    // Verifica si el usuario ya existe
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    // Verifica si el email ya existe
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
       return respondError(req, res, 400, "El email ya está registrado.");
     }
 
+    // Verifica si el username ya existe
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return respondError(req, res, 400, "El nombre de usuario ya está registrado.");
+    }
+
     // Genera una contraseña aleatoria
-    const randomPassword = crypto.randomBytes(8).toString("hex"); // Genera una contraseña de 16 caracteres (8 bytes en hex)
+    const randomPassword = crypto.randomBytes(8).toString("hex");
 
     // Busca el rol "user" por defecto
     const userRole = await Role.findOne({ name: "user" });
@@ -113,28 +120,34 @@ export const register = async (req, res) => {
       return respondError(req, res, 500, "No se encontró el rol 'user'.");
     }
 
-    // Crea el nuevo usuario con la contraseña generada
+    // Crea el nuevo usuario
     const newUser = new User({
       username,
       email,
-      password: await User.encryptPassword(randomPassword), // Encripta la contraseña aleatoria
+      password: await User.encryptPassword(randomPassword),
       roles: [userRole._id],
     });
 
     await newUser.save();
 
-    respondSuccess(req, res, 201, {
-      message: "Usuario registrado exitosamente. La contraseña ha sido generada automáticamente.",
+    // Enviar el correo con la contraseña generada
+    const subject = "Tu cuenta ha sido creada exitosamente";
+    const message = `Hola ${username}, tu cuenta ha sido creada exitosamente. Tu contraseña es: ${randomPassword}`;
+    const htmlMessage = `<p>Hola ${username},</p><p>Tu cuenta ha sido creada exitosamente.</p><p>Tu contraseña es: <strong>${randomPassword}</strong></p>`;
+
+    await sendEmail(email, subject, message, htmlMessage);
+
+    return respondSuccess(req, res, 201, {
+      message: "Usuario registrado exitosamente. La contraseña ha sido enviada al correo.",
       user: {
         id: newUser._id,
         username: newUser.username,
         email: newUser.email,
-        password: randomPassword, // Incluye la contraseña generada en la respuesta
       },
     });
   } catch (error) {
     console.error("Error en register:", error);
-    respondError(req, res, 500, "Error interno del servidor.");
+    return respondError(req, res, 500, "Error interno del servidor.", error.message);
   }
 };
 

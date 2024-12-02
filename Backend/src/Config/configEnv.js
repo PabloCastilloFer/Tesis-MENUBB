@@ -9,6 +9,12 @@ const envFilePath = path.resolve(__dirname, '.env');
 import dotenv from 'dotenv';
 dotenv.config({ path: envFilePath });
 
+/** Email configuration */
+export const emailConfig = {
+    service: "gmail",
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+};
 /** Server port */
 export const PORT = process.env.PORT;
 /** Server host */
