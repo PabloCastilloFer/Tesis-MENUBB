@@ -1,5 +1,6 @@
 import Local from '../Models/local.model.js';
 import LocalValidation from '../Validations/local.validation.js';
+import { HOST, PORT } from '../Config/configEnv.js';
 const DAYS_OF_WEEK = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
 export const getLocals = async (req, res) => {
@@ -28,25 +29,60 @@ export const getLocalById = async (req, res) => {
 };
 
 export const createLocal = async (req, res) => {
-    const { error, value } = LocalValidation(req.body);
-    if (error) {
-        return res.status(400).json({ error: error.details.map(err => err.message) });
-    }
-
-    const completedSchedule = DAYS_OF_WEEK.map(day => {
-        const existingDay = value.schedule.find(s => s.day === day);
-        return existingDay || { day, isOpen: false };
-    });
-
     try {
-        const local = new Local({ ...value, schedule: completedSchedule });
-        await local.save();
-        res.status(201).json(local);
-    } catch (err) {
-        console.error(err);
+        let archivoURL = null;
+
+        if (req.file) {
+            const imagen = req.file.filename;
+            archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
+        }
+
+        let parsedSchedule = [];
+        if (req.body.schedule) {
+            try {
+                parsedSchedule = JSON.parse(req.body.schedule);
+                if (!Array.isArray(parsedSchedule)) {
+                    throw new Error('"schedule" debe ser un array');
+                }
+            } catch (err) {
+                return res.status(400).json({ error: '"schedule" debe ser un array válido en formato JSON' });
+            }
+        }
+
+        const nuevoLocal = {
+            name: req.body.name,
+            address: req.body.address,
+            description: req.body.description,
+            image: archivoURL,
+            schedule: parsedSchedule,
+        };
+
+        const { error } = LocalValidation(nuevoLocal);
+        if (error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        const completedSchedule = DAYS_OF_WEEK.map(day => {
+            const existingDay = Array.isArray(nuevoLocal.schedule)
+                ? nuevoLocal.schedule.find(s => s.day === day)
+                : null;
+            return existingDay || { day, isOpen: false };
+        });
+        nuevoLocal.schedule = completedSchedule;
+
+        const newLocal = new Local(nuevoLocal);
+        const localGuardado = await newLocal.save();
+
+        res.status(201).json({
+            message: 'Local creado exitosamente',
+            local: localGuardado,
+        });
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Error al crear el local' });
     }
 };
+
 
 export const updateLocal = async (req, res) => {
     try {
