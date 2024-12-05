@@ -181,4 +181,60 @@ export const register = async (req, res) => {
   }
 };
 
-export default { login, logout, refresh, register};
+/**
+ * Usuario olvidó su contraseña
+ */
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Verifica si el usuario existe
+    const user = await User.findOne({ email });
+    if (!user) {
+      return respondError(req, res, 404, "No se encontró un usuario con ese correo.");
+    }
+
+    // Genera una nueva contraseña aleatoria
+    const newPassword = crypto.randomBytes(8).toString("hex");
+
+    // Cifra la nueva contraseña y actualiza el usuario
+    user.password = await User.encryptPassword(newPassword);
+    await user.save();
+
+    // Envía la nueva contraseña al correo del usuario
+    const subject = "Restablecimiento de contraseña";
+    const message = `Hola ${user.username}, tu contraseña ha sido restablecida. Tu nueva contraseña es: ${newPassword}`;
+    const htmlMessage = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Restablecimiento de contraseña</title>
+    </head>
+    <body>
+      <div style="background-color:#FAFAFA; padding:20px;">
+        <div style="background-color:#FFFFFF; max-width:600px; margin:0 auto; padding:20px; border-radius:8px; text-align:center;">
+          <h1 style="font-size:24px; color:#333333;">Restablecimiento de contraseña</h1>
+          <p style="font-size:16px; color:#333333;">Hola ${user.username},</p>
+          <p style="font-size:14px; color:#333333;">Tu contraseña ha sido restablecida exitosamente. Tu nueva contraseña es:</p>
+          <p style="font-size:18px; font-weight:bold; color:#5c68e2;">${newPassword}</p>
+          <p style="font-size:14px; color:#333333;">Por razones de seguridad, guarda esta contraseña en un lugar seguro.</p>
+          <footer style="margin-top:20px; font-size:12px; color:#999999;">
+            <p>© 2024 MENUBB. Todos los derechos reservados.</p>
+          </footer>
+        </div>
+      </div>
+    </body>
+    </html>
+    `;
+    await sendEmail(email, subject, message, htmlMessage);
+
+    return respondSuccess(req, res, 200, "La nueva contraseña ha sido enviada al correo.");
+  } catch (error) {
+    console.error("Error en resetPassword:", error);
+    return respondError(req, res, 500, "Error interno del servidor.");
+  }
+};
+
+export default { login, logout, refresh, register, forgotPassword };
