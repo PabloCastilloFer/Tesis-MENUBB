@@ -130,10 +130,40 @@ export const register = async (req, res) => {
 
     await newUser.save();
 
-    // Enviar el correo con la contraseña generada
     const subject = "Tu cuenta ha sido creada exitosamente";
-    const message = `Hola ${username}, tu cuenta ha sido creada exitosamente. Tu contraseña es: ${randomPassword}`;
-    const htmlMessage = `<p>Hola ${username},</p><p>Tu cuenta ha sido creada exitosamente.</p><p>Tu contraseña es: <strong>${randomPassword}</strong></p>`;
+    const message = `Hola ${username},
+    Tu contraseña temporal es: ${randomPassword}
+
+    Por razones de seguridad, guarda esta contraseña en un lugar seguro.
+
+    Si no has solicitado esta cuenta, por favor ignora este mensaje.
+    `;
+    const htmlMessage = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Nuevo mensaje</title>
+    </head>
+    <body>
+      <div style="background-color:#FAFAFA; padding:20px;">
+        <div style="background-color:#FFFFFF; max-width:600px; margin:0 auto; padding:20px; border-radius:8px; text-align:center;">
+          <img src="https://erztodh.stripocdn.email/content/guids/CABINET_67e080d830d87c17802bd9b4fe1c0912/images/55191618237638326.png" alt="Logo" style="width:100px; margin-bottom:20px;">
+          <h1 style="font-size:24px; color:#333333;">¡Tu cuenta ha sido creada!</h1>
+          <p style="font-size:16px; color:#333333;">Hola ${username},</p>
+          <p style="font-size:14px; color:#333333;">Tu cuenta en <strong>MENUBB</strong> ha sido creada exitosamente. Tu contraseña temporal es:</p>
+          <p style="font-size:18px; font-weight:bold; color:#5c68e2;">${randomPassword}</p>
+          <p style="font-size:14px; color:#333333;">Por razones de seguridad, guarda esta contraseña en un lugar seguro.</p>
+          <p style="font-size:14px; color:#333333;">Si no has solicitado esta cuenta, por favor ignora este mensaje.</p>
+          <footer style="margin-top:20px; font-size:12px; color:#999999;">
+            <p>© 2024 MENUBB. Todos los derechos reservados.</p>
+          </footer>
+        </div>
+      </div>
+    </body>
+    </html>
+    `;
 
     await sendEmail(email, subject, message, htmlMessage);
 
