@@ -1,5 +1,5 @@
 import Joi from "joi";
-import ROLES from "../constants/roles.constants.js";
+import ROLES from "../Constants/roles.constants.js";
 
 export const userCreateSchema = Joi.object({
   username: Joi.string().min(3).max(30).required().messages({

@@ -1,5 +1,5 @@
-import User from "../Models/user.model.js";
-import Role from "../Models/role.model.js";
+import User from "../models/user.model.js";
+import Role from "../models/role.model.js";
 
 class UserService {
   /**
@@ -136,25 +136,39 @@ class UserService {
   }
 
   /**
-   * Eliminar un usuario
-   * @param {String} id - ID del usuario
-   * @returns {Object} - Usuario eliminado
-   */
-  static async deleteUser(id) {
-    try {
-      const deletedUser = await User.findByIdAndDelete(id);
-      if (!deletedUser) {
-        throw { status: 404, message: "Usuario no encontrado." };
-      }
-      return {
-        id: deletedUser._id,
-        username: deletedUser.username,
-        email: deletedUser.email,
-      };
-    } catch (error) {
-      throw { status: error.status || 500, message: error.message || "Error al eliminar el usuario." };
+ * Eliminar un usuario
+ * @param {String} id - ID del usuario
+ * @param {String} currentUserId - ID del usuario que solicita la eliminación
+ * @returns {Object} - Mensaje de éxito
+ */
+static async deleteUser(id, currentUserId) {
+  // Buscar el usuario con roles poblados
+  const userToDelete = await User.findById(id).populate("roles", "name");
+  if (!userToDelete) {
+    throw { status: 404, message: "Usuario no encontrado." };
+  }
+
+  // Verificar si el usuario tiene rol de administrador
+  const isAdmin = userToDelete.roles.some((role) => role.name === "admin");
+
+  if (isAdmin) {
+    // Contar administradores restantes
+    const remainingAdmins = await User.countDocuments({ roles: { $elemMatch: { name: "admin" } } });
+    if (remainingAdmins <= 1) {
+      throw { status: 400, message: "No se puede eliminar el último administrador." };
+    }
+
+    // Evitar que un administrador se elimine a sí mismo si es el último
+    if (currentUserId === id) {
+      throw { status: 400, message: "No puedes eliminarte como el único administrador restante." };
     }
   }
+
+  // Eliminar usuario
+  await User.findByIdAndDelete(id);
+
+  return { message: "Usuario eliminado exitosamente." };
+}
 }
 
 export default UserService;

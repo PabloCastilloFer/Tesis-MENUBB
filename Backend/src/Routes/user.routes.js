@@ -10,7 +10,7 @@ import authorizeRole from "../Middlewares/authorization.middleware.js";
 import {
   userCreateSchema,
   userUpdateSchema,
-  userIdSchema,
+/**  userIdSchema, //no es necesario de momento  */
 } from "../Validations/user.validation.js";
 import { validateRequest } from "../Middlewares/validate.middleware.js";
 
@@ -18,8 +18,8 @@ const router = express.Router();
 
 router.post("/", validateRequest(userCreateSchema), authorizeRole(["admin"]), createUser);
 router.get("/", authorizeRole(["admin"]), getUsers);
-router.get("/:id",  validateRequest(userIdSchema), authorizeRole(["admin"]), getUserById);
-router.put("/:id", validateRequest(userIdSchema), validateRequest(userUpdateSchema), authorizeRole(["admin"]), updateUser);
-router.delete("/:id", validateRequest(userIdSchema), authorizeRole(["admin"]), deleteUser);
+router.get("/:id", authorizeRole(["admin"]), getUserById);
+router.put("/:id", validateRequest(userUpdateSchema), authorizeRole(["admin"]), updateUser);
+router.delete("/:id", authorizeRole(["admin"]), deleteUser);
 
 export default router;

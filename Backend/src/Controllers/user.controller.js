@@ -101,16 +101,14 @@ export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Verificar si el usuario autenticado tiene rol de administrador
-    if (!req.user || !req.user.roles.includes("admin")) {
-      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-    }
+      // Verificar si el usuario autenticado tiene rol de administrador
+      if (!req.user || !req.user.roles.includes("admin")) {
+        return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
+      }
 
-    // Llamar al servicio para eliminar el usuario
-    const user = await UserService.deleteUser(id);
-
-    return respondSuccess(req, res, 200, "Usuario eliminado exitosamente.", user);
+    const result = await UserService.deleteUser(id, req.user.id); // `req.user` viene del middleware de autenticación
+    return respondSuccess(req, res, 200, result.message);
   } catch (error) {
-    return respondError(req, res, error.status || 500, error.message || "Error interno del servidor.");
+    return respondError(req, res, error.status || 500, error.message || "Error al eliminar el usuario.");
   }
 };
