@@ -15,7 +15,10 @@ export const createComida = async (req, res) => {
         const nuevaComida = {
             nombreComida: req.body.nombreComida,
             precio: req.body.precio,
-            descripcion: req.body.descripcion,
+            calorias: req.body.calorias,
+            proteinas: req.body.proteinas,
+            lipidos: req.body.lipidos,
+            carbohidratos: req.body.carbohidratos,
             imagen: archivoURL,
             estado: false
         };
@@ -49,9 +52,9 @@ export const getComidas = async (req, res) => {
 };
 
 export const getComida = async (req, res) => {
-    const { nombreComida } = req.params;
+    const { id } = req.params;
     try {
-        const comidaEncontrada = await comida.findOne({ nombreComida });
+        const comidaEncontrada = await comida.findOne({ id });
         if (!comidaEncontrada) {
             return res.status(200).json({ message: "Comida no encontrada" });
         }
@@ -63,8 +66,8 @@ export const getComida = async (req, res) => {
 
 export const updateComida = async (req, res) => {
     try {
-        const comidaActual = req.params.nombreComida;
-        const comidaModificada = await comida.findOne({ nombreComida: comidaActual });
+        const comidaActual = req.params.id;
+        const comidaModificada = await comida.findOne({ id: comidaActual });
         if (!comidaModificada) {
             return res.status(404).json({ message: "Comida no encontrada" });
         }
@@ -75,7 +78,10 @@ export const updateComida = async (req, res) => {
         const updateComida = {
             nombreComida: req.body.nombreComida || comidaModificada.nombreComida,
             precio: req.body.precio || comidaModificada.precio,
-            descripcion: req.body.descripcion || comidaModificada.descripcion,
+            calorias: req.body.calorias || comidaModificada.calorias,
+            proteinas: req.body.proteinas || comidaModificada.proteinas,
+            lipidos: req.body.lipidos || comidaModificada.lipidos,
+            carbohidratos: req.body.carbohidratos || comidaModificada.carbohidratos,
             imagen: req.file ? URL + imagen : comidaModificada.imagen,
             estado: req.body.estado !== undefined ? req.body.estado : comidaModificada.estado
         };
@@ -99,8 +105,8 @@ export const updateComida = async (req, res) => {
 
 export const deleteComida = async (req, res) => {
     try {
-        const { nombreComida } = req.params;
-        const comidaEliminada = await comida.findOneAndDelete({ nombreComida: nombreComida });
+        const { id } = req.params;
+        const comidaEliminada = await comida.findOneAndDelete({ id: id });
         res.status(200).json({
             message: "Comida eliminada exitosamente",
         });

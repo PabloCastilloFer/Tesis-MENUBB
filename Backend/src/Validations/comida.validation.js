@@ -16,17 +16,53 @@ export const crearComidaSchema = Joi.object({
         "number.min": "El precio debe ser mayor a 0.",
         "any.required": "El precio es obligatorio."
     }),
-    descripcion: Joi.string().label('descripcion').required().custom((value, helpers) => {
+    calorias: Joi.string().label('calorias').required().custom((value, helpers) => {
         const wordCount = value.trim().split(/\s+/).length;
-        if (wordCount <= 500) {
+        if (wordCount <= 100) {
             return value;
         } else {
-            return helpers.message("La descripción no puede exceder las 500 palabras.");
+            return helpers.message("Las calorías no puede exceder las 100 palabras.");
         }
     }).messages({
-        "string.empty": "La descripción no puede estar vacía.",
-        "string.base": "La descripción debe ser de tipo string.",
-        "any.required": "La descripción es obligatoria.",
+        "string.empty": "Las calorías no puede estar vacía.",
+        "string.base": "Las calorías debe ser de tipo string.",
+        "any.required": "Las calorías es obligatoria.",
+    }),
+    proteinas: Joi.string().label('proteinas').required().custom((value, helpers) => {
+        const wordCount = value.trim().split(/\s+/).length;
+        if (wordCount <= 100) {
+            return value;
+        } else {
+            return helpers.message("Las proteínas no puede exceder las 100 palabras.");
+        }
+    }).messages({
+        "string.empty": "Las proteínas no puede estar vacía.",
+        "string.base": "Las proteínas debe ser de tipo string.",
+        "any.required": "Las proteínas es obligatoria.",
+    }),
+    lipidos: Joi.string().label('lípidos').required().custom((value, helpers) => {
+        const wordCount = value.trim().split(/\s+/).length;
+        if (wordCount <= 100) {
+            return value;
+        } else {
+            return helpers.message("Los lípidos no puede exceder las 100 palabras.");
+        }
+    }).messages({
+        "string.empty": "Los lípidos no puede estar vacía.",
+        "string.base": "Los lípidos debe ser de tipo string.",
+        "any.required": "Los lípidos es obligatoria.",
+    }),
+    carbohidratos: Joi.string().label('carbohidratos').required().custom((value, helpers) => {
+        const wordCount = value.trim().split(/\s+/).length;
+        if (wordCount <= 100) {
+            return value;
+        } else {
+            return helpers.message("Los carbohidratos no puede exceder las 100 palabras.");
+        }
+    }).messages({
+        "string.empty": "Los carbohidratos no puede estar vacía.",
+        "string.base": "Los carbohidratos debe ser de tipo string.",
+        "any.required": "Los carbohidratos es obligatoria.",
     }),
     imagen: Joi.string().label('archivo').optional().allow(null).messages({
         "string.base": "El archivo debe ser de tipo string."

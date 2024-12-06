@@ -10,7 +10,19 @@ const comidaSchema = new Schema({
         type: Number,
         required: true,
     },
-    descripcion:{
+    calorias: {
+        type: String,
+        required: true,
+    },
+    proteinas:{
+        type: String,
+        required: true,
+    },
+    lipidos:{
+        type: String,
+        required: true,
+    },
+    carbohidratos:{
         type: String,
         required: true,
     },
