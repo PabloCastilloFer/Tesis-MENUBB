@@ -1,30 +1,19 @@
+import AuthService from "../Services/auth.service.js";
 import { respondSuccess, respondError } from "../Utils/resHandler.js";
 import { sendEmail } from "../Services/email.service.js";
-import AuthService from "../Services/auth.service.js";
-import Role from "../Models/role.model.js";
-import User from "../Models/user.model.js";
-import crypto from "crypto";
 
-/**
- * Iniciar sesión
- */
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Llama al servicio de autenticación
     const [accessToken, refreshToken, errorMessage] = await AuthService.login({ email, password });
 
-    if (errorMessage) {
-      return respondError(req, res, 401, errorMessage);
-    }
+    if (errorMessage) return respondError(req, res, 401, errorMessage);
 
-    // Configura la cookie para el refresh token
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Solo HTTPS en producción
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     respondSuccess(req, res, 200, {
@@ -37,50 +26,15 @@ export const login = async (req, res) => {
   }
 };
 
-/**
- * Cerrar sesión
- */
-export const logout = async (req, res) => {
-  try {
-    const cookies = req.cookies;
-    if (!cookies?.jwt) {
-      return respondError(req, res, 400, "No hay sesión activa.");
-    }
-
-    // Limpia la cookie del refresh token
-    res.clearCookie("jwt", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
-
-    respondSuccess(req, res, 200, {
-      message: "Sesión cerrada correctamente.",
-    });
-  } catch (error) {
-    console.error("Error en logout:", error);
-    respondError(req, res, 500, "Error interno del servidor.");
-  }
-};
-
-/**
- * Refrescar el token de acceso
- */
 export const refresh = async (req, res) => {
   try {
     const cookies = req.cookies;
-    if (!cookies?.jwt) {
-      return respondError(req, res, 400, "No hay token de actualización.");
-    }
+    if (!cookies?.jwt) return respondError(req, res, 400, "No hay token de actualización.");
 
     const refreshToken = cookies.jwt;
-
-    // Llama al servicio para refrescar el token
     const [newAccessToken, errorMessage] = await AuthService.refresh(refreshToken);
 
-    if (errorMessage) {
-      return respondError(req, res, 401, errorMessage);
-    }
+    if (errorMessage) return respondError(req, res, 401, errorMessage);
 
     respondSuccess(req, res, 200, {
       message: "Token refrescado exitosamente.",
@@ -92,43 +46,10 @@ export const refresh = async (req, res) => {
   }
 };
 
-/**
- * Registrar un nuevo usuario
- */
 export const register = async (req, res) => {
   try {
     const { username, email } = req.body;
-
-    // Verifica si el email ya existe
-    const existingEmail = await User.findOne({ email });
-    if (existingEmail) {
-      return respondError(req, res, 400, "El email ya está registrado.");
-    }
-
-    // Verifica si el username ya existe
-    const existingUsername = await User.findOne({ username });
-    if (existingUsername) {
-      return respondError(req, res, 400, "El nombre de usuario ya está registrado.");
-    }
-
-    // Genera una contraseña aleatoria
-    const randomPassword = crypto.randomBytes(8).toString("hex");
-
-    // Busca el rol "user" por defecto
-    const userRole = await Role.findOne({ name: "user" });
-    if (!userRole) {
-      return respondError(req, res, 500, "No se encontró el rol 'user'.");
-    }
-
-    // Crea el nuevo usuario
-    const newUser = new User({
-      username,
-      email,
-      password: await User.encryptPassword(randomPassword),
-      roles: [userRole._id],
-    });
-
-    await newUser.save();
+    const { newUser, randomPassword } = await AuthService.register({ username, email });
 
     const subject = "Tu cuenta ha sido creada exitosamente";
     const message = `Hola ${username},
@@ -165,10 +86,11 @@ export const register = async (req, res) => {
     </html>
     `;
 
+
     await sendEmail(email, subject, message, htmlMessage);
 
-    return respondSuccess(req, res, 201, {
-      message: "Usuario registrado exitosamente. La contraseña ha sido enviada al correo.",
+    respondSuccess(req, res, 201, {
+      message: "Usuario registrado exitosamente. Contraseña enviada al correo.",
       user: {
         id: newUser._id,
         username: newUser.username,
@@ -177,33 +99,17 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.error("Error en register:", error);
-    return respondError(req, res, 500, "Error interno del servidor.", error.message);
+    respondError(req, res, error.status || 500, error.message || "Error interno del servidor.");
   }
 };
 
-/**
- * Usuario olvidó su contraseña
- */
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
+    const { username, newPassword } = await AuthService.forgotPassword(email);
 
-    // Verifica si el usuario existe
-    const user = await User.findOne({ email });
-    if (!user) {
-      return respondError(req, res, 404, "No se encontró un usuario con ese correo.");
-    }
-
-    // Genera una nueva contraseña aleatoria
-    const newPassword = crypto.randomBytes(8).toString("hex");
-
-    // Cifra la nueva contraseña y actualiza el usuario
-    user.password = await User.encryptPassword(newPassword);
-    await user.save();
-
-    // Envía la nueva contraseña al correo del usuario
     const subject = "Restablecimiento de contraseña";
-    const message = `Hola ${user.username}, tu contraseña ha sido restablecida. Tu nueva contraseña es: ${newPassword}`;
+    const message = `Hola ${username}, tu contraseña ha sido restablecida. Tu nueva contraseña es: ${newPassword}`;
     const htmlMessage = `
     <!DOCTYPE html>
     <html lang="es">
@@ -216,7 +122,7 @@ export const forgotPassword = async (req, res) => {
       <div style="background-color:#FAFAFA; padding:20px;">
         <div style="background-color:#FFFFFF; max-width:600px; margin:0 auto; padding:20px; border-radius:8px; text-align:center;">
           <h1 style="font-size:24px; color:#333333;">Restablecimiento de contraseña</h1>
-          <p style="font-size:16px; color:#333333;">Hola ${user.username},</p>
+          <p style="font-size:16px; color:#333333;">Hola ${username},</p>
           <p style="font-size:14px; color:#333333;">Tu contraseña ha sido restablecida exitosamente. Tu nueva contraseña es:</p>
           <p style="font-size:18px; font-weight:bold; color:#5c68e2;">${newPassword}</p>
           <p style="font-size:14px; color:#333333;">Por razones de seguridad, guarda esta contraseña en un lugar seguro.</p>
@@ -228,13 +134,30 @@ export const forgotPassword = async (req, res) => {
     </body>
     </html>
     `;
+
+
     await sendEmail(email, subject, message, htmlMessage);
 
-    return respondSuccess(req, res, 200, "La nueva contraseña ha sido enviada al correo.");
+    respondSuccess(req, res, 200, {
+      message: "Nueva contraseña enviada al correo.",
+    });
   } catch (error) {
-    console.error("Error en resetPassword:", error);
-    return respondError(req, res, 500, "Error interno del servidor.");
+    console.error("Error en forgotPassword:", error);
+    respondError(req, res, error.status || 500, error.message || "Error interno del servidor.");
   }
 };
 
-export default { login, logout, refresh, register, forgotPassword };
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    respondSuccess(req, res, 200, { message: "Sesión cerrada correctamente." });
+  } catch (error) {
+    console.error("Error en logout:", error);
+    respondError(req, res, 500, "Error interno del servidor.");
+  }
+};

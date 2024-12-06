@@ -1,20 +1,25 @@
-import { Router } from "express";
+import express from "express";
 import {
+  createUser,
   getUsers,
   getUserById,
-  createUser,
   updateUser,
   deleteUser,
-  crearUserAdmin,
 } from "../Controllers/user.controller.js";
-import authorizeRole from "../middlewares/authorization.middleware.js";
+import authorizeRole from "../Middlewares/authorization.middleware.js";
+import {
+  userCreateSchema,
+  userUpdateSchema,
+  userIdSchema,
+} from "../Validations/user.validation.js";
+import { validateRequest } from "../Middlewares/validate.middleware.js";
 
-const router = Router();
+const router = express.Router();
 
-router.post("/", authorizeRole(["admin"]), crearUserAdmin);
-router.get("/", authorizeRole(["admin"]), getUsers); // Solo admin o encargado pueden ver todos los usuarios
-router.get("/:id", authorizeRole(["admin"]), getUserById); // Ver detalles de un usuario
-router.put("/:id", authorizeRole(["admin"]), updateUser); // Actualizar usuario
-router.delete("/:id", authorizeRole(["admin"]), deleteUser); // Eliminar usuario
+router.post("/", validateRequest(userCreateSchema), authorizeRole(["admin"]), createUser);
+router.get("/", authorizeRole(["admin"]), getUsers);
+router.get("/:id",  validateRequest(userIdSchema), authorizeRole(["admin"]), getUserById);
+router.put("/:id", validateRequest(userIdSchema), validateRequest(userUpdateSchema), authorizeRole(["admin"]), updateUser);
+router.delete("/:id", validateRequest(userIdSchema), authorizeRole(["admin"]), deleteUser);
 
 export default router;

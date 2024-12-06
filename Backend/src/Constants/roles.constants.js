@@ -1,7 +1,3 @@
-const ROLES = {
-    ENCARGADO: "encargado",
-    USER: "user",
-    ADMIN: "admin",
-};
+const ROLES = ["admin", "encargado", "user"];
 
 export default ROLES;
