@@ -1,151 +1,174 @@
-// Importa el modelo de datos 'User'
 import User from "../models/user.model.js";
 import Role from "../models/role.model.js";
-import Facultade from "../models/facultade.model.js";
-import { handleError } from "../utils/errorHandler.js";
 
-/**
- * Obtiene todos los usuarios de la base de datos
- * @returns {Promise} Promesa con el objeto de los usuarios
- */
-async function getUsers() {
-  try {
-    const users = await User.find()
-      .select("-password")
-      .populate("roles")
-      .exec();
-    if (!users) return [null, "No hay usuarios"];
-
-    return [users, null];
-  } catch (error) {
-    handleError(error, "user.service -> getUsers");
-  }
-}
-
-/**
- * Crea un nuevo usuario en la base de datos
- * @param {Object} user Objeto de usuario
- * @returns {Promise} Promesa con el objeto de usuario creado
- */
-async function createUser(user) {
-  try {
-    const { username, rut, email, password, roles, facultades } = user;
-
-    const userFound = await User.findOne({ email: user.email });
-    if (userFound) return [null, "El usuario ya existe"];
-
-    const rolesFound = await Role.find({ name: { $in: roles } });
-    if (rolesFound.length === 0) return [null, "El rol no existe"];
-    const myRole = rolesFound.map((role) => role._id);
-
-    const facultadesFound = await Facultade.find({ name: { $in: facultades } });
-    if (facultadesFound.length === 0) return [null, "La facultad no existe"];
-    const myFacultade = facultadesFound.map((facultade) => facultade._id);
-
-    const newUser = new User({
-      username,
-      rut,
-      email,
-      password: await User.encryptPassword(password),
-      roles: myRole,
-      facultades: myFacultade,
-    });
-    await newUser.save();
-
-    return [newUser, null];
-  } catch (error) {
-    handleError(error, "user.service -> createUser");
-  }
-}
-
-/**
- * Obtiene un usuario por su id de la base de datos
- * @param {string} Id del usuario
- * @returns {Promise} Promesa con el objeto de usuario
- */
-async function getUserById(id) {
-  try {
-    const user = await User.findById({ _id: id })
-      .select("-password")
-      .populate("roles")
-      .exec();
-
-    if (!user) return [null, "El usuario no existe"];
-
-    return [user, null];
-  } catch (error) {
-    handleError(error, "user.service -> getUserById");
-  }
-}
-
-/**
- * Actualiza un usuario por su id en la base de datos
- * @param {string} id Id del usuario
- * @param {Object} user Objeto de usuario
- * @returns {Promise} Promesa con el objeto de usuario actualizado
- */
-async function updateUser(id, user) {
-  try {
-    const userFound = await User.findById(id);
-    if (!userFound) return [null, "El usuario no existe"];
-
-    const { username, email, rut, password, newPassword, roles } = user;
-
-    const matchPassword = await User.comparePassword(
-      password,
-      userFound.password,
-    );
-
-    if (!matchPassword) {
-      return [null, "La contraseña no coincide"];
+class UserService {
+  /**
+   * Crear un usuario con roles personalizados
+   * @param {Object} data - Datos del usuario
+   * @returns {Object} - Usuario creado
+   */
+  static async createUser({ username, email, password, roles }) {
+    // Verificar si el email ya está registrado
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw { status: 400, message: "El correo ya está registrado." };
     }
 
-    const rolesFound = await Role.find({ name: { $in: roles } });
-    if (rolesFound.length === 0) return [null, "El rol no existe"];
+    // Verificar roles proporcionados
+    let validRoles = [];
+    if (roles && roles.length > 0) {
+      validRoles = await Role.find({ name: { $in: roles } });
+      if (validRoles.length !== roles.length) {
+        throw { status: 400, message: "Uno o más roles no son válidos." };
+      }
+    } else {
+      // Asignar rol predeterminado ("user") si no se proporcionan roles
+      const defaultRole = await Role.findOne({ name: "user" });
+      if (!defaultRole) {
+        throw { status: 500, message: "Rol predeterminado 'user' no encontrado." };
+      }
+      validRoles = [defaultRole];
+    }
 
-    const myRole = rolesFound.map((role) => role._id);
+    // Crear el usuario
+    const newUser = new User({
+      username,
+      email,
+      password, // La contraseña se cifra automáticamente en el modelo
+      roles: validRoles.map((role) => role._id),
+    });
 
-    const facultadesFound = await Facultade.find({ name: { $in: facultades } });
-    if (facultadesFound.length === 0) return [null, "La facultad no existe"];
-    
-    const myFacultade = facultadesFound.map((facultade) => facultade._id);
+    // Guardar en la base de datos
+    const savedUser = await newUser.save();
 
-    const userUpdated = await User.findByIdAndUpdate(
-      id,
-      {
-        username,
-        email,
-        rut,
-        password: await User.encryptPassword(newPassword || password),
-        roles: myRole,
-        facultades: myFacultade,
-      },
-      { new: true },
-    );
-
-    return [userUpdated, null];
-  } catch (error) {
-    handleError(error, "user.service -> updateUser");
+    return {
+      id: savedUser._id,
+      username: savedUser.username,
+      email: savedUser.email,
+      roles: validRoles.map((role) => role.name),
+    };
   }
-}
 
-/**
- * Elimina un usuario por su id de la base de datos
- * @param {string} Id del usuario
- * @returns {Promise} Promesa con el objeto de usuario eliminado
+  /**
+   * Obtener todos los usuarios
+   * @returns {Array} - Lista de usuarios
+   */
+  static async getUsers() {
+    try {
+      const users = await User.find().populate("roles", "name"); // Asegúrate de que "roles" sea correcto
+      return users.map((user) => ({
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        roles: user.roles.map((role) => role.name), // Extrae los nombres de los roles
+      }));
+    } catch (error) {
+      throw new Error("Error al obtener usuarios.");
+    }
+  }
+
+  /**
+   * Obtener un usuario por ID
+   * @param {String} id - ID del usuario
+   * @returns {Object} - Usuario encontrado
+   */
+  static async getUserById(id) {
+    try {
+      const user = await User.findById(id).populate("roles", "name");
+      if (!user) {
+        throw { status: 404, message: "Usuario no encontrado." };
+      }
+      return {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        roles: user.roles.map((role) => role.name),
+      };
+    } catch (error) {
+      throw { status: error.status || 500, message: error.message || "Error al obtener el usuario." };
+    }
+  }
+
+  /**
+   * Actualizar un usuario
+   * @param {String} id - ID del usuario
+   * @param {Object} data - Datos a actualizar
+   * @returns {Object} - Usuario actualizado
+   */
+  static async updateUser(id, data) {
+    try {
+      const { username, email, password, roles } = data;
+
+      // Verificar roles proporcionados
+      let validRoles = [];
+      if (roles && roles.length > 0) {
+        validRoles = await Role.find({ name: { $in: roles } });
+        if (validRoles.length !== roles.length) {
+          throw { status: 400, message: "Uno o más roles no son válidos." };
+        }
+      }
+
+      // Actualizar usuario
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        {
+          username,
+          email,
+          ...(password && { password }), // Solo actualizar contraseña si se proporciona
+          ...(validRoles.length > 0 && { roles: validRoles.map((role) => role._id) }),
+        },
+        { new: true }
+      ).populate("roles", "name");
+
+      if (!updatedUser) {
+        throw { status: 404, message: "Usuario no encontrado." };
+      }
+
+      return {
+        id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        roles: updatedUser.roles.map((role) => role.name),
+      };
+    } catch (error) {
+      throw { status: error.status || 500, message: error.message || "Error al actualizar el usuario." };
+    }
+  }
+
+  /**
+ * Eliminar un usuario
+ * @param {String} id - ID del usuario
+ * @param {String} currentUserId - ID del usuario que solicita la eliminación
+ * @returns {Object} - Mensaje de éxito
  */
-async function deleteUser(id) {
-  try {
-    return await User.findByIdAndDelete(id);
-  } catch (error) {
-    handleError(error, "user.service -> deleteUser");
+static async deleteUser(id, currentUserId) {
+  // Buscar el usuario con roles poblados
+  const userToDelete = await User.findById(id).populate("roles", "name");
+  if (!userToDelete) {
+    throw { status: 404, message: "Usuario no encontrado." };
   }
+
+  // Verificar si el usuario tiene rol de administrador
+  const isAdmin = userToDelete.roles.some((role) => role.name === "admin");
+
+  if (isAdmin) {
+    // Contar administradores restantes
+    const remainingAdmins = await User.countDocuments({ roles: { $elemMatch: { name: "admin" } } });
+    if (remainingAdmins <= 1) {
+      throw { status: 400, message: "No se puede eliminar el último administrador." };
+    }
+
+    // Evitar que un administrador se elimine a sí mismo si es el último
+    if (currentUserId === id) {
+      throw { status: 400, message: "No puedes eliminarte como el único administrador restante." };
+    }
+  }
+
+  // Eliminar usuario
+  await User.findByIdAndDelete(id);
+
+  return { message: "Usuario eliminado exitosamente." };
+}
 }
 
-export default {
-  getUsers,
-  createUser,
-  getUserById,
-  updateUser,
-  deleteUser,
-};
+export default UserService;

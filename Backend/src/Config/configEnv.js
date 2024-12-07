@@ -9,6 +9,12 @@ const envFilePath = path.resolve(__dirname, '.env');
 import dotenv from 'dotenv';
 dotenv.config({ path: envFilePath });
 
+/** Email configuration */
+export const emailConfig = {
+    service: "gmail",
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+};
 /** Server port */
 export const PORT = process.env.PORT;
 /** Server host */
@@ -16,8 +22,8 @@ export const HOST = process.env.HOST;
 /** Database URL */
 export const DB_URL = process.env.DB_URL;
 /** Access token secret */
-export const ACCESS_JWT_SECRET = process.env.ACCESS_JWT_SECRET;
+export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 /** Refresh token secret */
-export const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET;
+export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 /** Api key Sengrid */
 export const API_KEY = process.env.API_KEY;

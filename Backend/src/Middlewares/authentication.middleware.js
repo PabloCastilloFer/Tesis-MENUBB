@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ACCESS_JWT_SECRET } from "../Config/configEnv.js";
+import { ACCESS_TOKEN_SECRET } from "../Config/configEnv.js";
 import { respondError } from "../Utils/resHandler.js";
 
 const authenticationMiddleware = (req, res, next) => {
@@ -12,7 +12,7 @@ const authenticationMiddleware = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     // Verifica y decodifica el token
-    jwt.verify(token, ACCESS_JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
       if (err) {
         return respondError(req, res, 403, "Token inválido o expirado.");
       }
@@ -24,11 +24,9 @@ const authenticationMiddleware = (req, res, next) => {
         roles: decoded.roles, // Asegúrate de que el token contiene los roles
       };
 
-      console.log("Usuario autenticado:", req.user); // Log para depuración
       next();
     });
   } catch (error) {
-    console.error("Error en authenticationMiddleware:", error);
     respondError(req, res, 500, "Error interno del servidor.");
   }
 };
