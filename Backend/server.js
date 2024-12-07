@@ -13,7 +13,7 @@ import indexRoutes from './src/Routes/index.Routes.js';
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
 import { setupDB } from './src/Config/configDB.js';
 // Importa el handler de errores
-import { handleFatalError, handleError } from './src/utils/errorHandler.js';
+import { handleFatalError, handleError } from './src/Utils/errorHandler.js';
 import { createRoles, createUsers } from './src/config/initialSetup.js';
 
 /**
