@@ -10,6 +10,9 @@ import authRoutes from "./auth.routes.js";
 /** Enrutador de comida */
 import comidaRoutes from "./comida.routes.js";
 
+/** Enrutador de etiquetas */
+import etiquetaRoutes from "./etiqueta.routes.js";
+
 /** Middleware de autenticación */
 import authenticationMiddleware from "../middlewares/authentication.middleware.js";
 
@@ -17,7 +20,10 @@ import authenticationMiddleware from "../middlewares/authentication.middleware.j
 const router = Router();
 
 // Usa las rutas importadas
-router.use('/example', example);
+router.use("/users", userRoutes);
+router.use("/auth", authRoutes);
+router.use("/comida", comidaRoutes);
+router.use("/etiqueta", etiquetaRoutes);
 
 // Exporta el enrutador
 export default router;

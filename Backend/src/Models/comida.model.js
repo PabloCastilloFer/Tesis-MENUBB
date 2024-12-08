@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import mongoose from 'mongoose';
 
 const comidaSchema = new Schema({
     nombreComida: {
@@ -14,15 +13,15 @@ const comidaSchema = new Schema({
         type: String,
         required: true,
     },
-    proteinas:{
+    proteinas: {
         type: String,
         required: true,
     },
-    lipidos:{
+    lipidos: {
         type: String,
         required: true,
     },
-    carbohidratos:{
+    carbohidratos: {
         type: String,
         required: true,
     },
@@ -34,6 +33,12 @@ const comidaSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    etiquetas: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'etiqueta' // Referencia al modelo de etiqueta
+        }
+    ],
 });
 
 export default model('comida', comidaSchema);

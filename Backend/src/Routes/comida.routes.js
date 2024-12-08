@@ -6,9 +6,9 @@ const router = Router();
 
 router
     .get('/', getComidas)
-    .get('/:nombreComida', getComida)
+    .get('/:id', getComida)
     .post('/', upload.single("imagen"), handleFileSizeLimit, createComida)
-    .put('/:nombreComida', upload.single("imagen"), handleFileSizeLimit,updateComida)
-    .delete('/:nombreComida', deleteComida);
+    .put('/:id', upload.single("imagen"), handleFileSizeLimit,updateComida)
+    .delete('/:id', deleteComida);
 
 export default router;

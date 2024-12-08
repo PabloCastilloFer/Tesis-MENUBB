@@ -70,6 +70,14 @@ export const crearComidaSchema = Joi.object({
     estado: Joi.boolean().label('estado').optional().allow(null).messages({
         "boolean.base": "El estado debe ser de tipo boolean."
     }),
+    etiquetas: Joi.array()
+        .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/).message("Cada etiqueta debe ser un ID válido de MongoDB."))
+        .optional()
+        .label('etiquetas')
+        .messages({
+            "array.base": "Las etiquetas deben ser un arreglo.",
+            "array.includes": "Cada etiqueta debe ser un ID válido de MongoDB."
+        }),
 });
 
 export const fileParamsSchema = Joi.object({

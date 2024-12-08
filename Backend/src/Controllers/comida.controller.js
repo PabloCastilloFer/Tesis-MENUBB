@@ -5,11 +5,13 @@ import { HOST, PORT } from '../Config/configEnv.js';
 
 export const createComida = async (req, res) => {
     try {
+
+        const { nombreComida } = req.body;
         let archivoURL = null;
 
         if (req.file) {
             const imagen = req.file.filename;
-            archivoURL = archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
+            archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
         }
 
         const nuevaComida = {
@@ -20,13 +22,21 @@ export const createComida = async (req, res) => {
             lipidos: req.body.lipidos,
             carbohidratos: req.body.carbohidratos,
             imagen: archivoURL,
-            estado: false
+            estado: false,
+            etiquetas: []
         };
 
-const { error } = crearComidaSchema.validate(nuevaComida);
+        // Comprobación de duplicados
+        const comidaExistente = await comida.findOne({ nombreComida });
+        if (comidaExistente) {
+            return res.status(400).json({ message: "La comida ya existe." });
+        };
+
+        const { error } = crearComidaSchema.validate(nuevaComida);
         if (error) {
             return res.status(400).json({ error: error.message });
         }
+
         const newComida = new comida(nuevaComida);
         const comidaGuardada = await newComida.save();
 
@@ -41,7 +51,7 @@ const { error } = crearComidaSchema.validate(nuevaComida);
 
 export const getComidas = async (req, res) => {
     try {
-        const comidas = await comida.find();
+        const comidas = await comida.find().populate('etiquetas', 'nombre -_id');
         if (comidas.length === 0) {
             return res.status(200).json({ message: "No hay comidas registradas" });
         }
@@ -54,7 +64,7 @@ export const getComidas = async (req, res) => {
 export const getComida = async (req, res) => {
     const { id } = req.params;
     try {
-        const comidaEncontrada = await comida.findOne({ id });
+        const comidaEncontrada = await comida.findById(id).populate('etiquetas', 'nombre -_id');
         if (!comidaEncontrada) {
             return res.status(200).json({ message: "Comida no encontrada" });
         }
@@ -65,9 +75,9 @@ export const getComida = async (req, res) => {
 };
 
 export const updateComida = async (req, res) => {
+    const { id } = req.params;
     try {
-        const comidaActual = req.params.id;
-        const comidaModificada = await comida.findOne({ id: comidaActual });
+        const comidaModificada = await comida.findOne({ _id: id });
         if (!comidaModificada) {
             return res.status(404).json({ message: "Comida no encontrada" });
         }
@@ -106,11 +116,12 @@ export const updateComida = async (req, res) => {
 export const deleteComida = async (req, res) => {
     try {
         const { id } = req.params;
-        const comidaEliminada = await comida.findOneAndDelete({ id: id });
-        res.status(200).json({
-            message: "Comida eliminada exitosamente",
-        });
+        const comidaEliminada = await comida.findOneAndDelete({ _id: id });
+        if (!comidaEliminada) {
+            return res.status(404).json({ message: "Comida no encontrada" });
+        }
+        return res.status(200).json({ message: "Comida eliminada exitosamente" });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
