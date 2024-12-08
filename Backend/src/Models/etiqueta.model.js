@@ -6,7 +6,7 @@ const etiquetaSchema = new Schema({
         type: String,
         required: true,
         enum: ['vegano', 'vegetariano', 'celiaco', 'diabetico', 'hipertenso', 'hipotiroideo',
-             'hipoglucemico', 'hipercolesterolemico', 'hipertrigliceridemico', 'otro'],
+             'hipoglucemico', 'hipercolesterolemico', 'hipertrigliceridemico', 'sin gluten', 'otro'],
     },
     estado: {
         type: Boolean,

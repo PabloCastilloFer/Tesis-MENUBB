@@ -89,28 +89,39 @@ export const asignarEtiqueta = async (req, res) => {
         if (!mongoose.isValidObjectId(idComida)) {
             return res.status(400).json({ message: "El ID de la comida no es válido." });
         }
-
         const comidaExistente = await comida.findById(idComida);
-
         if (!comidaExistente) {
             return res.status(404).json({ message: "La comida no existe." });
         }
         const { etiquetas } = req.body;
-        if (!etiquetas || !Array.isArray(etiquetas)) {
-            return res.status(400).json({ message: "El campo etiquetas debe ser un array de IDs." });
+        if (!etiquetas || !Array.isArray(etiquetas) || etiquetas.length === 0) {
+            return res.status(400).json({ message: "El campo etiquetas debe ser un array de nombres." });
         }
-        const etiquetasDuplicadas = etiquetas.filter(
-            etiquetaId => comidaExistente.etiquetas.includes(etiquetaId)
+        const etiquetasExistentes = await etiqueta.find({ nombre: { $in: etiquetas } });
+        const nombresEtiquetasExistentes = etiquetasExistentes.map(etiqueta => etiqueta.nombre);
+
+        const etiquetasNoExistentes = etiquetas.filter(
+            nombre => !nombresEtiquetasExistentes.includes(nombre)
+        );
+
+        if (etiquetasNoExistentes.length > 0) {
+            return res.status(400).json({
+                message: `Las siguientes etiquetas no existen: ${etiquetasNoExistentes.join(", ")}`
+            });
+        }
+
+        const etiquetasDuplicadas = nombresEtiquetasExistentes.filter(nombre =>
+            comidaExistente.etiquetas.includes(nombre)
         );
 
         if (etiquetasDuplicadas.length > 0) {
             return res.status(400).json({
-                message: `Esa etiqueta ya está asignada a esta comida.`
+                message: `Las siguientes etiquetas ya están asignadas: ${etiquetasDuplicadas.join(", ")}`
             });
         }
-        comidaExistente.etiquetas = [...comidaExistente.etiquetas, ...etiquetas];
-        await comidaExistente.save();
 
+        comidaExistente.etiquetas = [...comidaExistente.etiquetas, ...nombresEtiquetasExistentes];
+        await comidaExistente.save();
         res.status(200).json({
             message: "Etiquetas asignadas exitosamente.",
             comida: comidaExistente
@@ -121,6 +132,7 @@ export const asignarEtiqueta = async (req, res) => {
     }
 };
 
+
 export const desasignarEtiqueta = async (req, res) => {
     try {
         const { idComida } = req.params;
@@ -129,29 +141,27 @@ export const desasignarEtiqueta = async (req, res) => {
         if (!etiquetas || !Array.isArray(etiquetas) || etiquetas.length === 0) {
             return res.status(400).json({ message: "Se debe proporcionar al menos una etiqueta." });
         }
-        const idEtiqueta = etiquetas[0];
-        if (!mongoose.Types.ObjectId.isValid(idEtiqueta)) {
-            return res.status(400).json({ message: "El ID de la etiqueta no es válido." });
-        }
 
         const comidaExistente = await comida.findById(idComida);
         if (!comidaExistente) {
             return res.status(404).json({ message: "La comida no existe." });
         }
+        const etiquetasNoAsignadas = etiquetas.filter(
+            (etiqueta) => !comidaExistente.etiquetas.includes(etiqueta)
+        );
 
-        const etiquetaId = new mongoose.Types.ObjectId(idEtiqueta);
-        if (!comidaExistente.etiquetas.some(etiqueta => etiqueta.equals(etiquetaId))) {
-            return res.status(400).json({ message: "La etiqueta no está asignada a esta comida." });
+        if (etiquetasNoAsignadas.length === etiquetas.length) {
+            return res.status(400).json({ message: "Ninguna de las etiquetas está asignada a esta comida." });
         }
 
         comidaExistente.etiquetas = comidaExistente.etiquetas.filter(
-            (etiqueta) => !etiqueta.equals(etiquetaId)
+            (etiqueta) => !etiquetas.includes(etiqueta)
         );
 
         await comidaExistente.save();
         res.status(200).json({
-            message: "Etiqueta desasignada exitosamente.",
-            comida: comidaExistente
+            message: "Etiquetas desasignadas exitosamente.",
+            comida: comidaExistente,
         });
     } catch (error) {
         console.error(error);

@@ -35,8 +35,8 @@ const comidaSchema = new Schema({
     },
     etiquetas: [
         {
-            type: Schema.Types.ObjectId,
-            ref: 'etiqueta' // Referencia al modelo de etiqueta
+            type: String,
+            required: false
         }
     ],
 });
