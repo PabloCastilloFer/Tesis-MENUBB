@@ -10,7 +10,7 @@ export const userCreateSchema = Joi.object({
   }),
   email: Joi.string()
     .email()
-    .pattern(/^[a-zA-Z0-9._%+-]+@ubiobio\.cl$/) // Correo de la UBB, es neceserio para usuarios encargados
+    .pattern(/^[a-zA-Z0-9._%+-]+@(alumnos\.)?ubiobio\.cl$/)
     .required()
     .messages({
       "string.email": "El correo debe ser válido.",

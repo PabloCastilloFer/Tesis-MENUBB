@@ -1,5 +1,6 @@
-import User from "../models/user.model.js";
-import Role from "../models/role.model.js";
+import bcrypt from "bcryptjs";
+import User from "../Models/user.model.js";
+import Role from "../Models/role.model.js";
 
 class UserService {
   /**
@@ -30,11 +31,13 @@ class UserService {
       validRoles = [defaultRole];
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Crear el usuario
     const newUser = new User({
       username,
       email,
-      password, // La contraseña se cifra automáticamente en el modelo
+      password: hashedPassword,
       roles: validRoles.map((role) => role._id),
     });
 
