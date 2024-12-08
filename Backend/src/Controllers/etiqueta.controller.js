@@ -105,9 +105,7 @@ export const asignarEtiqueta = async (req, res) => {
         );
 
         if (etiquetasNoExistentes.length > 0) {
-            return res.status(400).json({
-                message: `Las siguientes etiquetas no existen: ${etiquetasNoExistentes.join(", ")}`
-            });
+            return res.status(400).json({ message: `Esa etiqueta no existe`});
         }
 
         const etiquetasDuplicadas = nombresEtiquetasExistentes.filter(nombre =>
@@ -115,9 +113,7 @@ export const asignarEtiqueta = async (req, res) => {
         );
 
         if (etiquetasDuplicadas.length > 0) {
-            return res.status(400).json({
-                message: `Las siguientes etiquetas ya están asignadas: ${etiquetasDuplicadas.join(", ")}`
-            });
+            return res.status(400).json({message: `Esa etiqueta ya esta asignada a la comida.`,});
         }
 
         comidaExistente.etiquetas = [...comidaExistente.etiquetas, ...nombresEtiquetasExistentes];
