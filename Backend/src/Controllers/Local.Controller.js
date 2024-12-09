@@ -1,148 +1,111 @@
-import Local from '../Models/local.model.js';
-import LocalValidation from '../Validations/local.validation.js';
-import { HOST, PORT } from '../Config/configEnv.js';
-const DAYS_OF_WEEK = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+import LocalService from '../Services/local.service.js';
+import { respondSuccess, respondError } from '../Utils/resHandler.js';
 
+/**
+ * Obtener todos los locales
+ */
 export const getLocals = async (req, res) => {
-    try {
-        const locals = await Local.find();
-        res.status(200).json(locals);
-        if (!locals) {
-            return res.status(404).send('No hay locales registrados');
-        }
-    } catch (error) {
-        console.error('Error al obtener locales:', error);
-        res.status(500).send({ message: 'Hubo un error al obtener locales' });
-    }
+  try {
+    const locals = await LocalService.getAllLocals();
+    return respondSuccess(req, res, 200, 'Locales obtenidos exitosamente.', locals);
+  } catch (error) {
+    return respondError(req, res, 500, error.message || 'Error al obtener locales.');
+  }
 };
 
+/**
+ * Obtener un local por ID
+ */
 export const getLocalById = async (req, res) => {
-    try {
-        const local = await Local.findById(req.params.id);
-        if (!local) {
-            return res.status(404).send('Local no encontrado');
-        }
-        res.status(200).json(local);
-    } catch (error) {
-        res.status(500).send('Hubo un error al obtener el local', error);
+  try {
+    const local = await LocalService.getLocalById(req.params.id);
+    if (!local) {
+      return respondError(req, res, 404, 'Local no encontrado.');
     }
+    return respondSuccess(req, res, 200, 'Local obtenido exitosamente.', local);
+  } catch (error) {
+    return respondError(req, res, 500, error.message || 'Error al obtener el local.');
+  }
 };
+
+/**
+ * Crear un nuevo local
+ */
+const DEFAULT_SCHEDULE = [
+  { day: 'Lunes', isOpen: false },
+  { day: 'Martes', isOpen: false },
+  { day: 'Miércoles', isOpen: false },
+  { day: 'Jueves', isOpen: false },
+  { day: 'Viernes', isOpen: false },
+  { day: 'Sábado', isOpen: false },
+  { day: 'Domingo', isOpen: false },
+];
 
 export const createLocal = async (req, res) => {
-    try {
-        let archivoURL = null;
-
-        if (req.file) {
-            const imagen = req.file.filename;
-            archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
-        }
-
-        let parsedSchedule = [];
-        if (req.body.schedule) {
-            try {
-                parsedSchedule = JSON.parse(req.body.schedule);
-                if (!Array.isArray(parsedSchedule)) {
-                    throw new Error('"schedule" debe ser un array');
-                }
-            } catch (err) {
-                return res.status(400).json({ error: '"schedule" debe ser un array válido en formato JSON' });
-            }
-        }
-
-        const nuevoLocal = {
-            name: req.body.name,
-            address: req.body.address,
-            description: req.body.description,
-            image: archivoURL,
-            schedule: parsedSchedule,
-        };
-
-        const { error } = LocalValidation(nuevoLocal);
-        if (error) {
-            return res.status(400).json({ error: error.message });
-        }
-
-        const completedSchedule = DAYS_OF_WEEK.map(day => {
-            const existingDay = Array.isArray(nuevoLocal.schedule)
-                ? nuevoLocal.schedule.find(s => s.day === day)
-                : null;
-            return existingDay || { day, isOpen: false };
-        });
-        nuevoLocal.schedule = completedSchedule;
-
-        const newLocal = new Local(nuevoLocal);
-        const localGuardado = await newLocal.save();
-
-        res.status(201).json({
-            message: 'Local creado exitosamente',
-            local: localGuardado,
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error al crear el local' });
+  try {
+    if (!req.file) {
+      return respondError(req, res, 400, 'La imagen es obligatoria.');
     }
+
+    let { schedule } = req.body;
+
+    // Convertir el schedule de string a objeto si existe
+    if (schedule) {
+      try {
+        schedule = JSON.parse(schedule);
+      } catch (error) {
+        return respondError(req, res, 400, 'El horario debe ser una lista de objetos válida.');
+      }
+    } else {
+      schedule = [];
+    }
+
+    // Completar los días faltantes en el schedule con isOpen: false
+    const completedSchedule = DEFAULT_SCHEDULE.map((defaultDay) => {
+      const existingDay = schedule.find((item) => item.day === defaultDay.day);
+      return existingDay || defaultDay;
+    });
+
+    const localData = { ...req.body, image: req.file.path, schedule: completedSchedule };
+
+    const newLocal = await LocalService.createLocal(localData);
+    return respondSuccess(req, res, 201, 'Local creado exitosamente.', newLocal);
+  } catch (error) {
+    return respondError(req, res, 500, error.message || 'Error al crear el local.');
+  }
 };
 
-
+/**
+ * Actualizar un local por ID
+ */
 export const updateLocal = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        // Manejo de la imagen subida
-        let archivoURL = null;
-        if (req.file) {
-            const imagen = req.file.filename;
-            archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
-        }
-
-        // Verificar y convertir `schedule` a un array si se proporciona
-        let parsedSchedule = [];
-        if (req.body.schedule) {
-            try {
-                parsedSchedule = JSON.parse(req.body.schedule); // Intentar convertir el string JSON
-                if (!Array.isArray(parsedSchedule)) {
-                    throw new Error('"schedule" debe ser un array');
-                }
-            } catch (err) {
-                return res.status(400).json({ error: '"schedule" debe ser un array válido en formato JSON' });
-            }
-        }
-
-        // Crear objeto de actualización
-        const updateData = {
-            ...req.body, // Otros campos enviados en el cuerpo de la solicitud
-            schedule: parsedSchedule.length > 0 ? parsedSchedule : undefined, // Si no hay schedule, no se incluye
-        };
-
-        if (archivoURL) {
-            updateData.image = archivoURL; // Solo actualizar la imagen si se sube un archivo
-        }
-
-        // Actualizar el local en la base de datos
-        const updatedLocal = await Local.findByIdAndUpdate(id, updateData, { new: true });
-
-        if (!updatedLocal) {
-            return res.status(404).json({ error: 'Local no encontrado' });
-        }
-
-        res.status(200).json({
-            message: 'Local actualizado exitosamente',
-            local: updatedLocal,
-        });
+      const updateData = { ...req.body };
+      if (req.file) {
+        updateData.image = req.file.path;
+      }
+  
+      const updatedLocal = await LocalService.updateLocal(req.params.id, updateData);
+      if (!updatedLocal) {
+        return respondError(req, res, 404, 'Local no encontrado.');
+      }
+      return respondSuccess(req, res, 200, 'Local actualizado exitosamente.', updatedLocal);
     } catch (error) {
-        console.error(error);
-        res.status(400).json({ error: 'Hubo un error al actualizar el local' });
+      return respondError(req, res, 500, error.message || 'Error al actualizar el local.');
     }
-};
+  };
 
+/**
+ * Eliminar un local por ID
+ */
 export const deleteLocal = async (req, res) => {
-    try {
-        const deletedLocal = await Local.findByIdAndDelete(req.params.id);
-        if (!deletedLocal) {
-            return res.status(404).json({ message: 'Local no encontrado' });
-        }
-        res.status(200).json({ message: 'Local eliminado correctamente' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar el local', error });
+  try {
+    const deletedLocal = await LocalService.deleteLocal(req.params.id);
+    if (!deletedLocal) {
+      return respondError(req, res, 404, 'Local no encontrado.');
     }
+    return respondSuccess(req, res, 200, 'Local eliminado exitosamente.');
+  } catch (error) {
+    return respondError(req, res, 500, error.message || 'Error al eliminar el local.');
+  }
 };

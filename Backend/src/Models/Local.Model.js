@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-delete mongoose.models.Local;
-
 const ScheduleSchema = new mongoose.Schema({
     day: {
         type: String,
@@ -14,23 +12,21 @@ const ScheduleSchema = new mongoose.Schema({
     },
     open: {
         type: String,
-        validate: {
-            validator: function (v) {
-                // Solo es requerido si isOpen es true
-                return this.isOpen ? v != null : true;
-            },
-            message: 'El campo `open` es obligatorio cuando `isOpen` es true.'
-        }
     },
     close: {
         type: String,
-        validate: {
-            validator: function (v) {
-                // Solo es requerido si isOpen es true
-                return this.isOpen ? v != null : true;
-            },
-            message: 'El campo `close` es obligatorio cuando `isOpen` es true.'
-        }
+    }
+});
+
+const AccessibilitySchema = new mongoose.Schema({
+    isAccessible: {
+        type: Boolean,
+        default: false
+    },
+    details: {
+        type: String,
+        trim: true,
+        default: ''
     }
 });
 
@@ -44,17 +40,20 @@ const LocalSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
-        type: String,
-        trim: true
-    },
+    accessibility: AccessibilitySchema,
     image: {
         type: String,
         required: true,
         default: 'default.jpg'
     },
-    schedule: [ScheduleSchema]
-});
+    schedule: [ScheduleSchema],
+    },
+    {
+        versionKey: false,
+        timestamps: true,
+    }
+);
 
-const Local = mongoose.model('Local', LocalSchema);
+const Local = mongoose.model.Local || mongoose.model('Local', LocalSchema);
+
 export default Local;

@@ -7,12 +7,13 @@
  * @param {Object} data - Objeto que contiene los datos a enviar
  * @returns {JSON} - Objeto de respuesta JSON con el estado "Success" y los datos proporcionados
  */
-function respondSuccess(req, res, statusCode = 200, data = {}) {
-    return res.status(statusCode).json({
-      state: "Success",
-      data,
-    });
-  }
+function respondSuccess(req, res, statusCode = 200, message = "Operation successful", data = {}) {
+  return res.status(statusCode).json({
+    state: "Success",
+    message,
+    data,
+  });
+}
   
   /**
    * Envía una respuesta de error estandarizada.
