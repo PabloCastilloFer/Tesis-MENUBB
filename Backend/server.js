@@ -11,7 +11,6 @@ import { setupDB } from './src/Config/configDB.js';
 // Importa el handler de errores
 <<<<<<< HEAD
 import { handleFatalError, handleError } from './src/Utils/errorHandler.js';
-//import { createFacultades, createRoles, createUsers } from './config/initialSetup.js';
 =======
 import { handleFatalError, handleError } from './src/utils/errorHandler.js';
 import { createRoles, createUsers } from './src/config/initialSetup.js';
