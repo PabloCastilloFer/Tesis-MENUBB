@@ -9,12 +9,17 @@ import morgan from 'morgan';
 // Importa el módulo 'cookie-parser' para manejar las cookies
 //import cookieParser from 'cookie-parser';
 /** El enrutador principal */
-import indexRoutes from './src/Routes/Index.Routes.js';
+import indexRoutes from './src/Routes/index.Routes.js';
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
 import { setupDB } from './src/Config/configDB.js';
 // Importa el handler de errores
+<<<<<<< HEAD
 import { handleFatalError, handleError } from './src/Utils/errorHandler.js';
 //import { createFacultades, createRoles, createUsers } from './config/initialSetup.js';
+=======
+import { handleFatalError, handleError } from './src/utils/errorHandler.js';
+import { createRoles, createUsers } from './src/config/initialSetup.js';
+>>>>>>> nodemailer
 //import marcarTareasNoRealizadas from './services/scheduler.service.js'; // Importa la función de tareas programadas
 
 /**
@@ -58,6 +63,10 @@ async function setupAPI() {
     await setupDB();
     // Inicia el servidor web
     await setupServer();
+    // Crea los roles por defecto en la base de datos
+    await createRoles();
+    // Crea los usuarios por defecto en la base de datos
+    await createUsers();
   } catch (err) {
     handleFatalError(err, '/server.js -> setupAPI');
   }
