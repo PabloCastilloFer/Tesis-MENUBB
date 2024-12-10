@@ -49,15 +49,21 @@ export const createLocal = async (req, res) => {
 
     let { schedule } = req.body;
 
-    // Convertir el schedule de string a objeto si existe
-    if (schedule) {
+    // Función auxiliar para convertir el schedule a un array de objetos
+    const parseSchedule = (scheduleString) => {
       try {
-        schedule = JSON.parse(schedule);
+        return JSON.parse(scheduleString);
       } catch (error) {
-        return respondError(req, res, 400, 'El horario debe ser una lista de objetos válida.');
+        throw new Error('El horario debe ser una lista de objetos válida.');
       }
-    } else {
-      schedule = [];
+    };
+
+    // Convertir el schedule si existe, de lo contrario asignar un array vacío
+    schedule = schedule ? parseSchedule(schedule) : [];
+
+    // Validar que el schedule es un array
+    if (!Array.isArray(schedule)) {
+      return respondError(req, res, 400, 'El horario debe ser un array de objetos.');
     }
 
     // Completar los días faltantes en el schedule con isOpen: false
@@ -66,8 +72,14 @@ export const createLocal = async (req, res) => {
       return existingDay || defaultDay;
     });
 
-    const localData = { ...req.body, image: req.file.path, schedule: completedSchedule };
+    // Construir el objeto localData
+    const localData = {
+      ...req.body,
+      image: req.file.path,
+      schedule: completedSchedule,
+    };
 
+    // Crear el nuevo local
     const newLocal = await LocalService.createLocal(localData);
     return respondSuccess(req, res, 201, 'Local creado exitosamente.', newLocal);
   } catch (error) {

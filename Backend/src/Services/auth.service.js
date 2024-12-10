@@ -94,7 +94,7 @@ class AuthService {
     return jwt.sign(
       { id: user._id, roles: user.roles.map((role) => role.name) },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "24h" }
     );
   }
 

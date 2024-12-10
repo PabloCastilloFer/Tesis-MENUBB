@@ -7,7 +7,7 @@ import { respondSuccess, respondError } from "../Utils/resHandler.js";
  */
 export const createUser = async (req, res) => {
   try {
-    const { username, email, password, roles } = req.body;
+    const { username, email, password, roles, local } = req.body;
 
     // Verificar si el usuario autenticado tiene rol de administrador
     if (!req.user || !req.user.roles.includes("admin")) {
@@ -15,7 +15,7 @@ export const createUser = async (req, res) => {
     }
 
     // Llamar al servicio para crear el usuario
-    const user = await UserService.createUser({ username, email, password, roles });
+    const user = await UserService.createUser({ username, email, password, roles, local });
 
     return respondSuccess(req, res, 201, "Usuario creado exitosamente.", user);
   } catch (error) {

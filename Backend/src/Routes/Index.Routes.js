@@ -22,7 +22,7 @@ router.use("/users", authenticationMiddleware, userRoutes);
 // Define las rutas para la autenticación /api/auth
 router.use("/auth", authRoutes);
 
-router.use('/local', localRoutes);
+router.use('/local', authenticationMiddleware, localRoutes);
 
 // Exporta el enrutador
 export default router;

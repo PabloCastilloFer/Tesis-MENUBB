@@ -69,7 +69,24 @@ export const localCreateSchema = Joi.object({
     'string.base': 'La imagen debe ser una cadena de texto.',
   }),
 
-  schedule: Joi.array().items(scheduleSchema),
+  schedule: Joi.alternatives()
+  .try(
+    Joi.array().items(scheduleSchema),
+    Joi.string().custom((value, helpers) => {
+      try {
+        const parsed = JSON.parse(value);
+        if (!Array.isArray(parsed)) {
+          throw new Error();
+        }
+        return parsed;
+      } catch (err) {
+        return helpers.error('any.invalid', { message: 'El horario debe ser una lista de objetos válida.' });
+      }
+    })
+  )
+  .messages({
+    'any.invalid': 'El horario debe ser una lista de objetos válida.',
+  }),
 
 });
 
