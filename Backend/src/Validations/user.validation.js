@@ -1,7 +1,7 @@
 import Joi from "joi";
 import ROLES from "../Constants/roles.constants.js";
 
-export const userCreateSchema = Joi.object({
+  export const userCreateSchema = Joi.object({
   username: Joi.string().min(3).max(30).required().messages({
     "string.min": "El nombre de usuario debe tener al menos 3 caracteres.",
     "string.max": "El nombre de usuario no puede tener más de 30 caracteres.",
@@ -44,8 +44,7 @@ export const userCreateSchema = Joi.object({
     }),
 });
 
-// Validación para actualizar un usuario
-export const userUpdateSchema = Joi.object({
+  export const userUpdateSchema = Joi.object({
     username: Joi.string().min(3).max(30).optional().messages({
       "string.min": "El nombre de usuario debe tener al menos 3 caracteres.",
       "string.max": "El nombre de usuario no puede tener más de 30 caracteres.",
@@ -68,7 +67,7 @@ export const userUpdateSchema = Joi.object({
         "array.base": "Los roles deben ser un array de strings.",
       }),
     local: Joi.string()
-      .regex(/^[0-9a-fA-F]{24}$/) // Validar que sea un ID de MongoDB válido
+      .regex(/^[0-9a-fA-F]{24}$/)
       .when("roles", {
         is: Joi.array().has("encargado"),
         then: Joi.required().messages({
@@ -83,7 +82,6 @@ export const userUpdateSchema = Joi.object({
       }),
   });
 
-  // Validación para el ID de usuario en las rutas
   export const userIdSchema = Joi.object({
     id: Joi.string()
       .regex(/^[0-9a-fA-F]{24}$/)
