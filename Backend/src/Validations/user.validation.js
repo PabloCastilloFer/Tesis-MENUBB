@@ -10,7 +10,7 @@ export const userCreateSchema = Joi.object({
   }),
   email: Joi.string()
     .email()
-    .pattern(/^[a-zA-Z0-9._%+-]+@ubiobio\.cl$/) // Correo de la UBB, es neceserio para usuarios encargados
+    .pattern(/^[a-zA-Z0-9._%+-]+@(alumnos\.)?ubiobio\.cl$/)
     .required()
     .messages({
       "string.email": "El correo debe ser válido.",
@@ -31,25 +31,17 @@ export const userCreateSchema = Joi.object({
       "string.base": "El rol debe ser de tipo string.",
       "any.only": "El rol proporcionado no es válido.",
     }),
-/**  locales: Joi.array()
-    .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)) // IDs de MongoDB válidos
+  local: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
     .when("roles", {
       is: Joi.array().has("encargado"),
-      then: Joi.array().min(1).required().messages({
-        "array.min": "Debe asignar al menos un local si el usuario es encargado.",
-        "any.required": "El campo locales es obligatorio para un usuario con rol de encargado.",
+      then: Joi.required().messages({
+        "any.required": "Debe asignar un Local si el usuario es encargado.",
       }),
-    })
-    .when("roles", {
-      is: Joi.array().has("admin"),
-      then: Joi.forbidden().messages({
-        "any.unknown": "Los administradores no deben tener locales asignados.",
-      }), 
-    })
-    .optional()
-    .messages({
-      "array.includesRequiredUnknowns": "Cada local debe ser un ID válido de MongoDB.",
-    }), */
+      otherwise: Joi.forbidden().messages({
+        "any.unknown": "Solo los usuarios con rol de encargado pueden tener un local asignado.",
+      }),
+    }),
 });
 
 // Validación para actualizar un usuario
@@ -74,6 +66,20 @@ export const userUpdateSchema = Joi.object({
       .optional()
       .messages({
         "array.base": "Los roles deben ser un array de strings.",
+      }),
+    local: Joi.string()
+      .regex(/^[0-9a-fA-F]{24}$/) // Validar que sea un ID de MongoDB válido
+      .when("roles", {
+        is: Joi.array().has("encargado"),
+        then: Joi.required().messages({
+          "any.required": "Debe asignar un local si el usuario es encargado.",
+        }),
+        otherwise: Joi.forbidden().messages({
+          "any.unknown": "Solo los usuarios con rol de encargado pueden tener un local asignado.",
+        }),
+      })
+      .messages({
+        "string.pattern.base": "El local debe ser un ID válido de MongoDB.",
       }),
   });
 

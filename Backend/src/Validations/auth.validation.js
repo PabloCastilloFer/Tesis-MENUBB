@@ -25,17 +25,12 @@ export const authRegisterBodySchema = Joi.object({
   }),
   email: Joi.string()
     .email()
-    .pattern(/^[a-zA-Z0-9._%+-]+@ubiobio\.cl$/)
+    .pattern(/^[a-zA-Z0-9._%+-]+@(alumnos\.)?ubiobio\.cl$/)
     .required()
     .messages({
       "string.email": "El email debe ser válido.",
       "any.required": "El email es obligatorio.",
       "string.empty": "El email no puede estar vacío.",
-  }),
-  password: Joi.string().min(8).required().messages({
-    "string.min": "La contraseña debe tener al menos 8 caracteres.",
-    "any.required": "La contraseña es obligatoria.",
-    "string.empty": "La contraseña no puede estar vacía.",
   }),
 }).messages({
   "object.unknown": "No se permiten propiedades adicionales.",

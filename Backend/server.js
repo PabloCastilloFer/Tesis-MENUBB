@@ -1,10 +1,6 @@
-// Importa el archivo 'configEnv.js' para cargar las variables de entorno
 import { PORT, HOST } from './src/Config/configEnv.js';
-// Importa el módulo 'cors' para agregar los cors
 import cors from 'cors';
-// Importa el módulo 'express' para crear la aplicacion web
 import express, { urlencoded, json } from 'express';
-// Importamos morgan para ver las peticiones que se hacen al servidor
 import morgan from 'morgan';
 // Importa el módulo 'cookie-parser' para manejar las cookies
 //import cookieParser from 'cookie-parser';
@@ -16,12 +12,8 @@ import { setupDB } from './src/Config/configDB.js';
 import { handleFatalError, handleError } from './src/Utils/errorHandler.js';
 import { createRoles, createUsers } from './src/config/initialSetup.js';
 
-/**
- * Inicia el servidor web
- */
 async function setupServer() {
   try {
-    /** Instancia de la aplicacion */
     const server = express();
     server.disable('x-powered-by');
     // Agregamos los cors
@@ -36,10 +28,8 @@ async function setupServer() {
     server.use(morgan('dev'));
     // Agrega ruta para servir archivos estáticos
     server.use('/api/src/Upload', express.static('src/Upload'));
-    // Agrega el enrutador principal al servidor
     server.use('/api', indexRoutes);
 
-    // Inicia el servidor en el puerto especificado
     server.listen(PORT, () => {
       console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
     });
@@ -48,14 +38,9 @@ async function setupServer() {
   }
 }
 
-/**
- * Inicia la API
- */
 async function setupAPI() {
   try {
-    // Inicia la conexión a la base de datos
     await setupDB();
-    // Inicia el servidor web
     await setupServer();
     // Crea los roles por defecto en la base de datos
     await createRoles();
@@ -66,7 +51,6 @@ async function setupAPI() {
   }
 }
 
-// Inicia la API
 setupAPI()
   .then(() => console.log('=> API Iniciada exitosamente'))
   .catch((err) => handleFatalError(err, '/server.js -> setupAPI'));

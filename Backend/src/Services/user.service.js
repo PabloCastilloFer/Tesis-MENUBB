@@ -1,5 +1,7 @@
-import User from "../models/user.model.js";
-import Role from "../models/role.model.js";
+import bcrypt from "bcryptjs";
+import User from "../Models/user.model.js";
+import Role from "../Models/role.model.js";
+import Local from "../Models/local.model.js";
 
 class UserService {
   /**
@@ -7,7 +9,7 @@ class UserService {
    * @param {Object} data - Datos del usuario
    * @returns {Object} - Usuario creado
    */
-  static async createUser({ username, email, password, roles }) {
+  static async createUser({ username, email, password, roles, local }) {
     // Verificar si el email ya está registrado
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -22,7 +24,6 @@ class UserService {
         throw { status: 400, message: "Uno o más roles no son válidos." };
       }
     } else {
-      // Asignar rol predeterminado ("user") si no se proporcionan roles
       const defaultRole = await Role.findOne({ name: "user" });
       if (!defaultRole) {
         throw { status: 500, message: "Rol predeterminado 'user' no encontrado." };
@@ -30,12 +31,24 @@ class UserService {
       validRoles = [defaultRole];
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Verificar si el local proporcionado es válido (solo si el rol es encargado)
+    let validLocal = null;
+    if (roles.includes("encargado")) {
+      validLocal = await Local.findById(local);
+      if (!validLocal) {
+        throw { status: 400, message: "El local proporcionado no es válido." };
+      }
+    }
+
     // Crear el usuario
     const newUser = new User({
       username,
       email,
-      password, // La contraseña se cifra automáticamente en el modelo
+      password: hashedPassword,
       roles: validRoles.map((role) => role._id),
+      ...(validLocal && { local: validLocal._id }),
     });
 
     // Guardar en la base de datos
@@ -46,6 +59,7 @@ class UserService {
       username: savedUser.username,
       email: savedUser.email,
       roles: validRoles.map((role) => role.name),
+      local: validLocal ? validLocal.name : null,
     };
   }
 

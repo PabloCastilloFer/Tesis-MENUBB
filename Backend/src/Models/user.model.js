@@ -24,12 +24,12 @@ const userSchema = new mongoose.Schema(
         required: true,
       },
     ],
-/** locales: [
+    locales: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Local",
       },
-    ], */
+    ],
   },
   {
     versionKey: false,
