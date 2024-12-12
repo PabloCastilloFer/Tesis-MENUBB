@@ -1,16 +1,16 @@
-import { PORT, HOST } from './src/Config/configEnv.js';
+import { PORT, HOST } from './Config/configEnv.js';
 import cors from 'cors';
 import express, { urlencoded, json } from 'express';
 import morgan from 'morgan';
 // Importa el módulo 'cookie-parser' para manejar las cookies
 //import cookieParser from 'cookie-parser';
 /** El enrutador principal */
-import indexRoutes from './src/Routes/index.Routes.js';
+import indexRoutes from './Routes/index.Routes.js';
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
-import { setupDB } from './src/Config/configDB.js';
+import { setupDB } from './Config/configDB.js';
 // Importa el handler de errores
-import { handleFatalError, handleError } from './src/Utils/errorHandler.js';
-import { createRoles, createUsers } from './src/config/initialSetup.js';
+import { handleFatalError, handleError } from './Utils/errorHandler.js';
+import { createRoles, createUsers } from './config/initialSetup.js';
 
 async function setupServer() {
   try {
