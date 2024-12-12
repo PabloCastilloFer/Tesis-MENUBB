@@ -5,7 +5,7 @@ import morgan from 'morgan';
 // Importa el módulo 'cookie-parser' para manejar las cookies
 //import cookieParser from 'cookie-parser';
 /** El enrutador principal */
-import indexRoutes from './Routes/index.Routes.js';
+import indexRoutes from './Routes/index.routes.js';
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
 import { setupDB } from './Config/configDB.js';
 // Importa el handler de errores
