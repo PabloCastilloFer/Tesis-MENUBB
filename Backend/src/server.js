@@ -10,7 +10,7 @@ import indexRoutes from './Routes/index.routes.js';
 import { setupDB } from './Config/configDB.js';
 // Importa el handler de errores
 import { handleFatalError, handleError } from './Utils/errorHandler.js';
-import { createRoles, createUsers } from './config/initialSetup.js';
+import { createRoles, createUsers } from './Config/initialSetup.js';
 
 async function setupServer() {
   try {

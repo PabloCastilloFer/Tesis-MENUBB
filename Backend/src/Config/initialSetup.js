@@ -1,7 +1,7 @@
 "use strict";
 // Importa el modelo de datos 'Role'
-import Role from "../models/role.model.js";
-import User from "../models/user.model.js";
+import Role from "../Models/role.model.js";
+import User from "../Models/user.model.js";
 
 /**
  * Crea los roles por defecto en la base de datos.
