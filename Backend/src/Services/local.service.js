@@ -1,4 +1,4 @@
-import Local from "../Models/Local.model.js";
+import Local from "../Models/local.model.js";
 
 class LocalService {
   /**
