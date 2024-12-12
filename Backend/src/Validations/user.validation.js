@@ -22,8 +22,8 @@ import ROLES from "../Constants/roles.constants.js";
     "any.required": "La contraseña es obligatoria.",
     "string.empty": "La contraseña no puede estar vacía.",
   }),
-  roles: Joi.array()
-    .items(Joi.string().valid(...ROLES))
+  roles: Joi.string()
+    .valid(...ROLES)
     .required()
     .messages({
       "array.base": "El rol debe ser de tipo array.",
@@ -34,7 +34,7 @@ import ROLES from "../Constants/roles.constants.js";
   local: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
     .when("roles", {
-      is: Joi.array().has("encargado"),
+      is: "encargado",
       then: Joi.required().messages({
         "any.required": "Debe asignar un Local si el usuario es encargado.",
       }),
@@ -60,8 +60,8 @@ import ROLES from "../Constants/roles.constants.js";
     password: Joi.string().min(8).optional().messages({
       "string.min": "La contraseña debe tener al menos 8 caracteres.",
     }),
-    roles: Joi.array()
-      .items(Joi.string())
+    roles: Joi.string()
+      .valid(...ROLES)
       .optional()
       .messages({
         "array.base": "Los roles deben ser un array de strings.",
@@ -69,7 +69,7 @@ import ROLES from "../Constants/roles.constants.js";
     local: Joi.string()
       .regex(/^[0-9a-fA-F]{24}$/)
       .when("roles", {
-        is: Joi.array().has("encargado"),
+        is: "encargado",
         then: Joi.required().messages({
           "any.required": "Debe asignar un local si el usuario es encargado.",
         }),

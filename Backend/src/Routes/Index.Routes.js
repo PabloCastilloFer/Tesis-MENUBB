@@ -17,8 +17,8 @@ const router = Router();
 
 router.use("/users", authenticationMiddleware, userRoutes);
 router.use("/auth", authRoutes);
-router.use("/comida", comidaRoutes);
-router.use("/etiqueta", etiquetaRoutes);
+router.use("/comida", authenticationMiddleware, comidaRoutes);
+router.use("/etiqueta", authenticationMiddleware, etiquetaRoutes);
 
 router.use('/local', authenticationMiddleware, localRoutes);
 

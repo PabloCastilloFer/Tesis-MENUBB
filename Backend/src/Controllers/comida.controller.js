@@ -14,6 +14,9 @@ export const createComida = async (req, res) => {
             archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
         }
 
+        console.log(req.user);
+        console.log(req.user.local);
+
         const nuevaComida = {
             nombreComida: req.body.nombreComida,
             precio: req.body.precio,
@@ -23,7 +26,8 @@ export const createComida = async (req, res) => {
             carbohidratos: req.body.carbohidratos,
             imagen: archivoURL,
             estado: false,
-            etiquetas: []
+            etiquetas: [],
+            local: req.user.local
         };
 
         // Comprobación de duplicados
@@ -31,6 +35,10 @@ export const createComida = async (req, res) => {
         if (comidaExistente) {
             return res.status(400).json({ message: "La comida ya existe." });
         };
+
+        if (!req.user.local) {
+            return res.status(403).json({ message: "No tienes un local asociado para crear una comida." });
+        }
 
         const { error } = crearComidaSchema.validate(nuevaComida);
         if (error) {
