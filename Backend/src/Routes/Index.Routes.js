@@ -11,7 +11,7 @@ import etiquetaRoutes from "./etiqueta.routes.js";
 
 import localRoutes from './local.routes.js';
 
-import authenticationMiddleware from "../middlewares/authentication.middleware.js";
+import authenticationMiddleware from "../Middlewares/authentication.middleware.js";
 
 const router = Router();
 
