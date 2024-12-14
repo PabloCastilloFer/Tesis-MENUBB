@@ -1,0 +1,310 @@
+/* frontend/src/styles/PDF.css */
+.pdf-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+  }
+  
+  .pdf-section h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .add-comment button {
+    padding: 10px 20px;
+    background-color: #387ADF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-comment button:hover {
+    background-color: #50C4ED;
+  }
+  
+  .add-comment button:active {
+    background-color: #387ADF;
+  }
+  
+  .user-details-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: #FBA834;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-details-container p {
+    margin: 0;
+    margin-top: 5px;
+  }
+  
+  .user-details-container button {
+    background-color: #fff;
+    color: #FBA834;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .user-details-container button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .user-info p {
+    margin: 0;
+    text-align: center;
+  }
+  
+  .form-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 40px auto;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-container h2,
+  .form-container h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-danger {
+    background-color: #d64444;
+    border-color: rgb(163, 50, 35);
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #a7321e;
+    border-color: #a7321e;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 20px;
+  }
+  
+  .facultades-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .facultad-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .facultad-item span {
+    font-size: 18px;
+  }
+  
+  .facultad-item button {
+    margin-left: 20px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .buttonfs.is-eliminar {
+    background-color: #d64444;
+    border-color: rgb(163, 50, 35);
+    color: white;
+  }
+  
+  .buttonfs.is-eliminar:hover {
+    background-color: #a7321e;
+    border-color: #a7321e;
+  }
+  
+  .buttonfs.is-actualizar {
+    background-color: #387adf;
+    border-color: #2c63b4;
+    color: white;
+  }
+  
+  .buttonfs.is-actualizar:hover {
+    background-color: #1e57ac;
+    border-color: #1e57ac;
+  }
+  
+  .button-containerfs {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .button-containerfs .button {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+  }
+  
+  .comments-section {
+    width: 100%;
+  }
+  
+  .comments-header,
+  .comment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .comment-column {
+    flex: 1;
+    max-width: 500px;
+    resize: vertical; /* Permitir cambiar el tamaño verticalmente */
+  }
+  
+  .actions-column {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .buttonfs {
+    padding: 10px 15px; /* Reduce padding for smaller buttons */
+    border-radius: 4px; /* Bordes redondeados */
+  }
+  
+  .modify-comment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .form-group {
+    width: 100%;
+    max-width: 600px; /* Ancho máximo del grupo de formulario */
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: flex;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .comment-textarea {
+    width: 100%; /* Ancho completo del contenedor padre */
+    height: 150px; /* Altura del cuadro de texto */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical; /* Permitir cambiar el tamaño verticalmente */
+  }
