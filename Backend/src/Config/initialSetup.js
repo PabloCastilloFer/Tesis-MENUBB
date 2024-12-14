@@ -1,7 +1,7 @@
 "use strict";
 // Importa el modelo de datos 'Role'
-import Role from "../models/role.model.js";
-import User from "../models/user.model.js";
+import Role from "../Models/role.model.js";
+import User from "../Models/user.model.js";
 
 /**
  * Crea los roles por defecto en la base de datos.
@@ -45,19 +45,19 @@ async function createUsers() {
         username: "user",
         email: "user@email.com",
         password: await User.encryptPassword("user"),
-        roles: [user._id],
+        roles: user._id,
       }).save(),
       new User({
         username: "admin",
         email: "admin@email.com",
         password: await User.encryptPassword("admin"),
-        roles: [admin._id],
+        roles: admin._id,
       }).save(),
       new User({
         username: "encargado",
         email: "encargado@email.com",
         password: await User.encryptPassword("encargado"),
-        roles: [encargado._id],
+        roles: encargado._id,
       }).save(),
     ]);
     console.log("* => Usuarios creados exitosamente");

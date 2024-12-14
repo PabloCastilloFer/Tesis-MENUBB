@@ -1,7 +1,7 @@
 import Joi from "joi";
 import ROLES from "../Constants/roles.constants.js";
 
-export const userCreateSchema = Joi.object({
+  export const userCreateSchema = Joi.object({
   username: Joi.string().min(3).max(30).required().messages({
     "string.min": "El nombre de usuario debe tener al menos 3 caracteres.",
     "string.max": "El nombre de usuario no puede tener más de 30 caracteres.",
@@ -10,7 +10,7 @@ export const userCreateSchema = Joi.object({
   }),
   email: Joi.string()
     .email()
-    .pattern(/^[a-zA-Z0-9._%+-]+@ubiobio\.cl$/) // Correo de la UBB, es neceserio para usuarios encargados
+    .pattern(/^[a-zA-Z0-9._%+-]+@(alumnos\.)?ubiobio\.cl$/)
     .required()
     .messages({
       "string.email": "El correo debe ser válido.",
@@ -22,8 +22,8 @@ export const userCreateSchema = Joi.object({
     "any.required": "La contraseña es obligatoria.",
     "string.empty": "La contraseña no puede estar vacía.",
   }),
-  roles: Joi.array()
-    .items(Joi.string().valid(...ROLES))
+  roles: Joi.string()
+    .valid(...ROLES)
     .required()
     .messages({
       "array.base": "El rol debe ser de tipo array.",
@@ -31,29 +31,20 @@ export const userCreateSchema = Joi.object({
       "string.base": "El rol debe ser de tipo string.",
       "any.only": "El rol proporcionado no es válido.",
     }),
-/**  locales: Joi.array()
-    .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)) // IDs de MongoDB válidos
+  local: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
     .when("roles", {
-      is: Joi.array().has("encargado"),
-      then: Joi.array().min(1).required().messages({
-        "array.min": "Debe asignar al menos un local si el usuario es encargado.",
-        "any.required": "El campo locales es obligatorio para un usuario con rol de encargado.",
+      is: "encargado",
+      then: Joi.required().messages({
+        "any.required": "Debe asignar un Local si el usuario es encargado.",
       }),
-    })
-    .when("roles", {
-      is: Joi.array().has("admin"),
-      then: Joi.forbidden().messages({
-        "any.unknown": "Los administradores no deben tener locales asignados.",
-      }), 
-    })
-    .optional()
-    .messages({
-      "array.includesRequiredUnknowns": "Cada local debe ser un ID válido de MongoDB.",
-    }), */
+      otherwise: Joi.forbidden().messages({
+        "any.unknown": "Solo los usuarios con rol de encargado pueden tener un local asignado.",
+      }),
+    }),
 });
 
-// Validación para actualizar un usuario
-export const userUpdateSchema = Joi.object({
+  export const userUpdateSchema = Joi.object({
     username: Joi.string().min(3).max(30).optional().messages({
       "string.min": "El nombre de usuario debe tener al menos 3 caracteres.",
       "string.max": "El nombre de usuario no puede tener más de 30 caracteres.",
@@ -69,15 +60,28 @@ export const userUpdateSchema = Joi.object({
     password: Joi.string().min(8).optional().messages({
       "string.min": "La contraseña debe tener al menos 8 caracteres.",
     }),
-    roles: Joi.array()
-      .items(Joi.string())
+    roles: Joi.string()
+      .valid(...ROLES)
       .optional()
       .messages({
         "array.base": "Los roles deben ser un array de strings.",
       }),
+    local: Joi.string()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .when("roles", {
+        is: "encargado",
+        then: Joi.required().messages({
+          "any.required": "Debe asignar un local si el usuario es encargado.",
+        }),
+        otherwise: Joi.forbidden().messages({
+          "any.unknown": "Solo los usuarios con rol de encargado pueden tener un local asignado.",
+        }),
+      })
+      .messages({
+        "string.pattern.base": "El local debe ser un ID válido de MongoDB.",
+      }),
   });
 
-  // Validación para el ID de usuario en las rutas
   export const userIdSchema = Joi.object({
     id: Joi.string()
       .regex(/^[0-9a-fA-F]{24}$/)

@@ -1,5 +1,7 @@
-import User from "../models/user.model.js";
-import Role from "../models/role.model.js";
+import bcrypt from "bcryptjs";
+import User from "../Models/user.model.js";
+import Role from "../Models/role.model.js";
+import Local from "../Models/local.model.js";
 
 class UserService {
   /**
@@ -7,46 +9,60 @@ class UserService {
    * @param {Object} data - Datos del usuario
    * @returns {Object} - Usuario creado
    */
-  static async createUser({ username, email, password, roles }) {
-    // Verificar si el email ya está registrado
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      throw { status: 400, message: "El correo ya está registrado." };
-    }
-
-    // Verificar roles proporcionados
-    let validRoles = [];
-    if (roles && roles.length > 0) {
-      validRoles = await Role.find({ name: { $in: roles } });
-      if (validRoles.length !== roles.length) {
-        throw { status: 400, message: "Uno o más roles no son válidos." };
+  static async createUser({ username, email, password, roles, local }) {
+    try {  
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        throw { status: 400, message: "El correo ya está registrado." };
       }
-    } else {
-      // Asignar rol predeterminado ("user") si no se proporcionan roles
-      const defaultRole = await Role.findOne({ name: "user" });
-      if (!defaultRole) {
-        throw { status: 500, message: "Rol predeterminado 'user' no encontrado." };
+
+      let validRole = null;
+      if (roles) {
+        validRole = await Role.findOne({ name: roles });
+        if (!validRole) {
+          throw { status: 400, message: "El rol proporcionado no es válido." };
+        }
+      } else {
+        const defaultRole = await Role.findOne({ name: "user" });
+        if (!defaultRole) {
+          throw { status: 500, message: "Rol predeterminado 'user' no encontrado." };
+        }
+        validRole = defaultRole;
       }
-      validRoles = [defaultRole];
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      let validLocal = null;
+      if (roles === "encargado") {
+        if (!local) {
+          throw { status: 400, message: "Debe proporcionar un local para el rol de encargado." };
+        }
+        validLocal = await Local.findById(local);
+        if (!validLocal) {
+          throw { status: 400, message: "El local proporcionado no es válido." };
+        }
+      }
+  
+      const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+        roles: validRole._id,
+        ...(validLocal && { local: validLocal._id }),
+      });
+  
+      const savedUser = await newUser.save();
+  
+      return {
+        id: savedUser._id,
+        username: savedUser.username,
+        email: savedUser.email,
+        roles: validRole.name,
+        local: validLocal ? validLocal.name : null,
+      };
+    } catch (error) {
+      throw { status: error.status || 500, message: error.message || "Error interno del servidor." };
     }
-
-    // Crear el usuario
-    const newUser = new User({
-      username,
-      email,
-      password, // La contraseña se cifra automáticamente en el modelo
-      roles: validRoles.map((role) => role._id),
-    });
-
-    // Guardar en la base de datos
-    const savedUser = await newUser.save();
-
-    return {
-      id: savedUser._id,
-      username: savedUser.username,
-      email: savedUser.email,
-      roles: validRoles.map((role) => role.name),
-    };
   }
 
   /**
@@ -55,12 +71,13 @@ class UserService {
    */
   static async getUsers() {
     try {
-      const users = await User.find().populate("roles", "name"); // Asegúrate de que "roles" sea correcto
+      const users = await User.find().populate("roles", "name").populate("local", "name");
       return users.map((user) => ({
         id: user._id,
         username: user.username,
         email: user.email,
-        roles: user.roles.map((role) => role.name), // Extrae los nombres de los roles
+        roles: user.roles.name,
+        local: user.local ? user.local.name : null,
       }));
     } catch (error) {
       throw new Error("Error al obtener usuarios.");
@@ -74,7 +91,7 @@ class UserService {
    */
   static async getUserById(id) {
     try {
-      const user = await User.findById(id).populate("roles", "name");
+      const user = await User.findById(id).populate("roles", "name").populate("local", "name");
       if (!user) {
         throw { status: 404, message: "Usuario no encontrado." };
       }
@@ -82,7 +99,8 @@ class UserService {
         id: user._id,
         username: user.username,
         email: user.email,
-        roles: user.roles.map((role) => role.name),
+        roles: user.roles.name,
+        local: user.local ? user.local.name : null,
       };
     } catch (error) {
       throw { status: error.status || 500, message: error.message || "Error al obtener el usuario." };
@@ -97,9 +115,8 @@ class UserService {
    */
   static async updateUser(id, data) {
     try {
-      const { username, email, password, roles } = data;
+      const { username, email, password, roles, local } = data;
 
-      // Verificar roles proporcionados
       let validRoles = [];
       if (roles && roles.length > 0) {
         validRoles = await Role.find({ name: { $in: roles } });
@@ -108,17 +125,17 @@ class UserService {
         }
       }
 
-      // Actualizar usuario
       const updatedUser = await User.findByIdAndUpdate(
         id,
         {
           username,
           email,
-          ...(password && { password }), // Solo actualizar contraseña si se proporciona
-          ...(validRoles.length > 0 && { roles: validRoles.map((role) => role._id) }),
+          ...(password && { password }),
+          ...(validRole && { roles: validRole._id }),
+          ...(validLocal && { local: validLocal._id }),
         },
         { new: true }
-      ).populate("roles", "name");
+      ).populate("roles", "name").populate("local", "name");
 
       if (!updatedUser) {
         throw { status: 404, message: "Usuario no encontrado." };
@@ -128,7 +145,8 @@ class UserService {
         id: updatedUser._id,
         username: updatedUser.username,
         email: updatedUser.email,
-        roles: updatedUser.roles.map((role) => role.name),
+        roles: updatedUser.roles.name,
+        local: updatedUser.local || null,
       };
     } catch (error) {
       throw { status: error.status || 500, message: error.message || "Error al actualizar el usuario." };
@@ -142,29 +160,24 @@ class UserService {
  * @returns {Object} - Mensaje de éxito
  */
 static async deleteUser(id, currentUserId) {
-  // Buscar el usuario con roles poblados
   const userToDelete = await User.findById(id).populate("roles", "name");
   if (!userToDelete) {
     throw { status: 404, message: "Usuario no encontrado." };
   }
 
-  // Verificar si el usuario tiene rol de administrador
   const isAdmin = userToDelete.roles.some((role) => role.name === "admin");
 
   if (isAdmin) {
-    // Contar administradores restantes
     const remainingAdmins = await User.countDocuments({ roles: { $elemMatch: { name: "admin" } } });
     if (remainingAdmins <= 1) {
       throw { status: 400, message: "No se puede eliminar el último administrador." };
     }
 
-    // Evitar que un administrador se elimine a sí mismo si es el último
     if (currentUserId === id) {
       throw { status: 400, message: "No puedes eliminarte como el único administrador restante." };
     }
   }
 
-  // Eliminar usuario
   await User.findByIdAndDelete(id);
 
   return { message: "Usuario eliminado exitosamente." };

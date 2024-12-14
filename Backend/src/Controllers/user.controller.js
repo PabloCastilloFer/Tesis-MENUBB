@@ -7,18 +7,19 @@ import { respondSuccess, respondError } from "../Utils/resHandler.js";
  */
 export const createUser = async (req, res) => {
   try {
-    const { username, email, password, roles } = req.body;
+    const { username, email, password, roles, local } = req.body;
 
-    // Verificar si el usuario autenticado tiene rol de administrador
-    if (!req.user || !req.user.roles.includes("admin")) {
+    console.log("Datos recibidos:", { username, email, password, roles, local });
+
+    if (!req.user || req.user.roles.name !== "admin") {
       return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
     }
 
-    // Llamar al servicio para crear el usuario
-    const user = await UserService.createUser({ username, email, password, roles });
+    const user = await UserService.createUser({ username, email, password, roles, local });
 
     return respondSuccess(req, res, 201, "Usuario creado exitosamente.", user);
   } catch (error) {
+    console.log(error);
     return respondError(req, res, error.status || 500, error.message || "Error interno del servidor.");
   }
 };
@@ -29,18 +30,17 @@ export const createUser = async (req, res) => {
 export const getUsers = async (req, res) => {
   try {
 
-    // Verificar si el usuario autenticado tiene rol de administrador
-    if (!req.user || !req.user.roles.includes("admin")) {
+    if (!req.user || req.user.roles.name !== "admin") {
       return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
     }
 
-    const users = await UserService.getUsers(); // Llama al servicio para obtener los usuarios
+    const users = await UserService.getUsers();
 
     if (!users || users.length === 0) {
       return respondSuccess(req, res, 200, "No se encontraron usuarios.");
     }
 
-    return respondSuccess(req, res, 200, "Usuarios obtenidos exitosamente.", users); // Incluye los usuarios en 'data'
+    return respondSuccess(req, res, 200, "Usuarios obtenidos exitosamente.", users);
   } catch (error) {
     return respondError(req, res, 500, "Error interno del servidor.");
   }
@@ -51,8 +51,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
 
-    // Verificar si el usuario autenticado tiene rol de administrador
-    if (!req.user || !req.user.roles.includes("admin")) {
+    if (!req.user || req.user.roles.name !== "admin") {
       return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
     }
 
@@ -71,21 +70,14 @@ export const getUserById = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
 
-    // Verificar si el usuario autenticado tiene rol de administrador
-    if (!req.user || !req.user.roles.includes("admin")) {
+    if (!req.user || req.user.roles.name !== "admin") {
       return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
     }
 
     const { id } = req.params;
-    const { username, email, password, roles } = req.body;
+    const { username, email, password, roles, local } = req.body;
 
-    // Verificar si el usuario autenticado tiene rol de administrador
-    if (!req.user || !req.user.roles.includes("admin")) {
-      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-    }
-
-    // Llamar al servicio para actualizar el usuario
-    const user = await UserService.updateUser(id, { username, email, password, roles });
+    const user = await UserService.updateUser(id, { username, email, password, roles, local });
 
     return respondSuccess(req, res, 200, "Usuario actualizado exitosamente.", user);
   } catch (error) {
@@ -101,12 +93,11 @@ export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-      // Verificar si el usuario autenticado tiene rol de administrador
-      if (!req.user || !req.user.roles.includes("admin")) {
-        return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-      }
+    if (!req.user || req.user.roles.name !== "admin") {
+      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
+    }
 
-    const result = await UserService.deleteUser(id, req.user.id); // `req.user` viene del middleware de autenticación
+    const result = await UserService.deleteUser(id, req.user.id);
     return respondSuccess(req, res, 200, result.message);
   } catch (error) {
     return respondError(req, res, error.status || 500, error.message || "Error al eliminar el usuario.");

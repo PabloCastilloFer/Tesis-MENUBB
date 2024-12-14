@@ -10,10 +10,10 @@ import {
 
 const router = Router();
 
-router.post("/login", validateRequest(authLoginBodySchema), login); // Inicio de sesión
-router.post("/logout", logout); // Cierre de sesión
-router.post("/refresh", validateRequest(authRefreshTokenBodySchema), refresh); // Refrescar token
-router.post("/register", validateRequest(authRegisterBodySchema), register); // Registro de usuario
-router.post("/forgot-password", validateRequest(authForgotPasswordBodySchema), forgotPassword); // Olvido de contraseña
+router.post("/login", validateRequest(authLoginBodySchema), login);
+router.post("/logout", logout);
+router.post("/refresh", validateRequest(authRefreshTokenBodySchema), refresh);
+router.post("/register", validateRequest(authRegisterBodySchema), register);
+router.post("/forgot-password", validateRequest(authForgotPasswordBodySchema), forgotPassword);
 
 export default router;

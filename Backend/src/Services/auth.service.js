@@ -13,7 +13,7 @@ class AuthService {
    * @returns {Array} - [accessToken, refreshToken, errorMessage]
    */
   static async login({ email, password }) {
-    const user = await User.findOne({ email }).populate("roles", "name");
+    const user = await User.findOne({ email }).populate("roles", "name").populate("local");
     if (!user) return [null, null, "Usuario no encontrado."];
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -40,7 +40,6 @@ class AuthService {
       const newAccessToken = this.generateAccessToken(user);
       return [newAccessToken, null];
     } catch (error) {
-      console.error("Error al refrescar el token:", error);
       return [null, "Token de actualización inválido o expirado."];
     }
   }
@@ -87,16 +86,24 @@ class AuthService {
     return { username: user.username, newPassword };
   }
 
-  /**
-   * Generar token de acceso
-   */
-  static generateAccessToken(user) {
-    return jwt.sign(
-      { id: user._id, roles: user.roles.map((role) => role.name) },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
-    );
+/**
+ * Generar token de acceso
+ */
+static generateAccessToken(user) {
+  const isEncargado = user.roles.name === "encargado";
+
+  const payload = {
+    id: user._id,
+    email: user.email,
+    roles: user.roles.name,
+  };
+
+  if (isEncargado && user.local) {
+    payload.local = user.local._id;
   }
+
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "24h" });
+}
 
   /**
    * Generar token de actualización

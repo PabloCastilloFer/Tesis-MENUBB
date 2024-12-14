@@ -17,20 +17,16 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    roles: [
-      {
+    roles: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role",
         required: true,
       },
-    ],
-/** locales: [
-      {
+    local: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Local",
       },
-    ], */
-  },
+    },
   {
     versionKey: false,
     timestamps: true,

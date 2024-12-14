@@ -1,17 +1,17 @@
-/**
- * Middleware de autorización basado en roles
- * @param {Array<String>} allowedRoles - Lista de roles permitidos
- */
 const authorizeRole = (allowedRoles) => (req, res, next) => {
   try {
-    const userRoles = req.user?.roles; // Obtén los roles del token decodificado
+    const userRole = req.user?.roles?.name;
 
-    if (!userRoles || !userRoles.some((role) => allowedRoles.includes(role))) {
-      return res.status(403).json({ message: "No tienes permisos para realizar esta acción." });
+    console.log("Rol del usuario:", userRole);
+    console.log("Roles permitidos:", allowedRoles);
+
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      return res.status(403).json({ message: "No tienes permisos para realizar esta acción. AAAAAA" });
     }
 
-    next(); // Permitir acceso si tiene el rol adecuado
+    next();
   } catch (error) {
+    console.error("Error en el middleware de autorización:", error);
     res.status(500).json({ message: "Error interno del servidor." });
   }
 };

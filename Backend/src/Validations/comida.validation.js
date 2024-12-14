@@ -78,17 +78,23 @@ export const crearComidaSchema = Joi.object({
             "array.base": "Las etiquetas deben ser un arreglo.",
             "array.includes": "Cada etiqueta debe ser un ID válido de MongoDB."
         }),
+    local: Joi.string().label('local').required().regex(/^[0-9a-fA-F]{24}$/).messages({
+        "string.empty": "El local no puede estar vacío.",
+        "any.required": "El local es obligatorio.",
+        "string.base": "El local debe ser de tipo string.",
+        "string.pattern.base": "El local debe ser un ID válido de MongoDB."
+    }),
 });
 
 export const fileParamsSchema = Joi.object({
     filename: Joi.string()
-      .label('filename')
-      .required()
-      .pattern(/^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]+$/)
-      .messages({
+    .label('filename')
+    .required()
+    .pattern(/^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]+$/)
+    .messages({
         "string.empty": "El nombre de archivo no puede estar vacío.",
         "any.required": "El nombre de archivo es obligatorio.",
         "string.base": "El nombre de archivo debe ser de tipo string.",
         "string.pattern.base": "El nombre de archivo debe seguir un formato específico, por ejemplo: archivo.pdf o archivo.png",
-      }),
-  });
+    }),
+});

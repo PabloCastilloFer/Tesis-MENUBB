@@ -10,7 +10,6 @@ import authorizeRole from "../Middlewares/authorization.middleware.js";
 import {
   userCreateSchema,
   userUpdateSchema,
-/**  userIdSchema, //no es necesario de momento  */
 } from "../Validations/user.validation.js";
 import { validateRequest } from "../Middlewares/validate.middleware.js";
 
