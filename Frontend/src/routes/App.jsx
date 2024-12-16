@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="page-container">
       <img
-        src="/UB.jpg"
+        src="/assets/iabaca.png"
         alt="Descripción de la imagen" // Añade un alt para accesibilidad
       />
       <h1 className="Abajo">¡Solo un commit más y terminamos el trabajo!</h1>

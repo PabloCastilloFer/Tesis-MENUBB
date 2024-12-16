@@ -6,6 +6,8 @@ import Root from './routes/Root.jsx';
 import ErrorPage from './routes/ErrorPage.jsx';
 import Login from './routes/Login.jsx';
 import Comida from './routes/Comida.jsx';
+import Comidas from './routes/ViewComidaRoutes.jsx';
+import UpdateComida from './routes/UpdateComidaRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
   {
     path: '/comida',
     element: <Comida/>,
+  },
+  {
+    path: '/verComidas',
+    element: <Comidas/>,
+  },
+  {
+    path: '/comida/modificar',
+    element: <UpdateComida/>,
   },
   
 

@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
+import TopBar from '../components/TopBar.jsx';
+import Navbar from '../components/navbar.jsx';
 import '../styles/Generico.css'; 
 import '../styles/App.css';
 
