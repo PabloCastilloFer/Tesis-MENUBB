@@ -73,8 +73,8 @@ const Navbar = () => {
               <li data-icon="📤" onClick={() => handleNavigation('/comida')}>
                 <span>Crear comida</span>
               </li>
-              <li data-icon="📄" onClick={() => handleNavigation('/vercomidas')}>
-                <span>Ver Comidas</span>
+              <li data-icon="🍽️" onClick={() => handleNavigation('/vercomidas')}>
+                <span>Ver comidas</span>
               </li>
               {isInformeEmpleadosMenuOpen && (
                 <ul className="submenu">

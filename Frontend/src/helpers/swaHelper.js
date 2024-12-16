@@ -40,10 +40,10 @@ export const showError = async (message) => {
     });
 };
 
-export const showDeleteTarea = async () => {
+export const showDeleteComida = async () => {
     await Toast.fire({
         icon: "success",
-        title: "Tarea eliminada exitosamente!"
+        title: "Comida eliminada exitosamente!"
     });
 };
 
@@ -126,7 +126,7 @@ export const showFoundTarea = async () => {
 
 export const DeleteQuestion = async () => {
     const result = await Swal.fire({
-        title: "¿Estás seguro de eliminar la tarea?",
+        title: "¿Estás seguro de eliminar la Comida?",
         text: "Estos cambios son irreversibles.",
         icon: "warning",
         showCancelButton: true,
@@ -143,13 +143,13 @@ export const DeleteQuestion = async () => {
     if (result.isConfirmed) {
         await Swal.fire({
             title: "Eliminado Correctamente!",
-            text: "La tarea ha sido eliminada",
+            text: "La comida ha sido eliminada",
             icon: "success"
         });
     } else if (result.dismiss === Swal.DismissReason.cancel) {
         await Swal.fire({
             title: "Cancelado",
-            text: "Tu tarea está a salvo",
+            text: "Tu comida está a salvo",
             icon: "success"
         });
     }

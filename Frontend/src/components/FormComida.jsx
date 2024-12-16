@@ -194,7 +194,6 @@ return (
                                             placeholder="100"
                                             className={`input ${errors.proteinas ? 'is-danger' : ''}`}
                                             {...register('proteinas', { 
-                                                required: "Este campo es obligatorio",
                                                 min: {
                                                     value: 0,
                                                     message: "El valor mínimo es 0"
@@ -214,7 +213,6 @@ return (
                                             placeholder="100"
                                             className={`input ${errors.lipidos ? 'is-danger' : ''}`}
                                             {...register('lipidos', { 
-                                                required: "Este campo es obligatorio",
                                                 min: {
                                                     value: 0,
                                                     message: "El valor mínimo es 0"
@@ -234,7 +232,6 @@ return (
                                             placeholder="100"
                                             className={`input ${errors.carbohidratos ? 'is-danger' : ''}`}
                                             {...register('carbohidratos', { 
-                                                required: "Este campo es obligatorio",
                                                 min: {
                                                     value: 0,
                                                     message: "El valor mínimo es 0"
