@@ -1,23 +1,29 @@
-# Usa una imagen base de Node.js
-FROM node:22
+# Imagen base oficial para node 20.15.1
+FROM node:20.15.1
 
-# Establece el directorio de trabajo en el contenedor
-WORKDIR /Backend
+# Establece el directorio de trabajo para el frontend
+WORKDIR /app/frontend
 
-# Copia los archivos de configuración de NPM
-COPY Backend/package*.json /app/Backend/
+# Copia los archivos package del frontend e instala las dependencias
+COPY frontend/package*.json ./
+RUN npm install
 
-# Instala las dependencias
-RUN npm install --prefix /app/Backend
+# Copia el código fuente del frontend
+COPY frontend ./
 
-# Copia el resto de los archivos de la aplicación al contenedor
-COPY . .
+# Establece el directorio de trabajo para el backend
+WORKDIR /app/backend
 
-# Expone el puerto en el que tu aplicación se ejecuta
-EXPOSE 5000
+# Copia los archivos package del backend e instala las dependencias
+COPY backend/package*.json ./
+RUN npm install
 
-# Variable de entorno para producción
-ENV NODE_ENV=production
+# Copia el código fuente del backend
+COPY backend ./
 
-# Comando para ejecutar la aplicación
-CMD ["npm", "start"]
+# Expone el puerto 3000 para el backend y el 5173 para el frontend
+EXPOSE 3000
+EXPOSE 5173
+
+# Comando para ejecutar el backend y el frontend
+CMD ["sh", "-c", "cd /app/frontend && npm run dev -- --host 0.0.0.0 & cd /app/backend && npm run dev"]
