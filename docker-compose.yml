@@ -1,27 +1,28 @@
-services:
-  mongo:
-    image: mongo:8.0
-    restart: always
-    ports:
-      - "27017:27017"
-    environment:
-      HOST: ${HOST}
-      PORT: ${PORT}
-      DB_URL: ${DB_URL}
-    networks:
-      - menubb
+version: '3.8'
 
-  tesis-menubb:
+services:
+  backend:
     build:
-      context: /Backend
+      context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./Backend:/app/Backend
+      - /app/Backend/node_modules
     ports:
       - "3000:3000"
-    env_file:
-      - /Backend/src/Config/.env
-    networks:
-      - menubb
+    command: "npx nodemon /app/Backend/server.js"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - database
 
-networks:
-  menubb:
-    driver: bridge
+  database:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

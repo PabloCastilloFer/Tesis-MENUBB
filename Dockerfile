@@ -4,11 +4,11 @@ FROM node:22
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /Backend
 
-# Copia el archivo package.json y package-lock.json al contenedor
-COPY package*.json ./
+# Copia los archivos de configuración de NPM
+COPY Backend/package*.json /app/Backend/
 
-# Instala las dependencias de la aplicación
-RUN npm install
+# Instala las dependencias
+RUN npm install --prefix /app/Backend
 
 # Copia el resto de los archivos de la aplicación al contenedor
 COPY . .
@@ -20,4 +20,4 @@ EXPOSE 5000
 ENV NODE_ENV=production
 
 # Comando para ejecutar la aplicación
-CMD ["npm", "start"]
+CMD ["npm", "start"]

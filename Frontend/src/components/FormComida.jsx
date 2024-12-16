@@ -136,7 +136,7 @@ return (
                                             {...register('nombreComida', { 
                                                 required: "Este campo es obligatorio",
                                                 pattern: {
-                                                    value: /^[A-Za-z0-9\s]+$/i,
+                                                    value: /^[A-Za-zÁ-Úá-ú0-9\s]+$/u,
                                                     message: "Solo se permiten letras, números y espacios"
                                                 }
                                             })}
@@ -174,12 +174,16 @@ return (
                                             type="number"
                                             placeholder="100"
                                             className={`input ${errors.calorias ? 'is-danger' : ''}`}
-                                            
+                                            {...register('calorias', { 
+                                                min: {
+                                                    value: 0,
+                                                    message: "El valor mínimo es 0"
+                                                }
+                                            })}
                                         />
                                     </div>
                                     {errors.calorias && <p className="help is-danger">{errors.calorias.message}</p>}
                                 </div>
-
 
                                 <div className="field">
                                     <label className="label" htmlFor="proteinas">Proteínas:</label>
@@ -189,7 +193,13 @@ return (
                                             type="number"
                                             placeholder="100"
                                             className={`input ${errors.proteinas ? 'is-danger' : ''}`}
-                                            
+                                            {...register('proteinas', { 
+                                                required: "Este campo es obligatorio",
+                                                min: {
+                                                    value: 0,
+                                                    message: "El valor mínimo es 0"
+                                                }
+                                            })}
                                         />
                                     </div>
                                     {errors.proteinas && <p className="help is-danger">{errors.proteinas.message}</p>}
@@ -203,12 +213,17 @@ return (
                                             type="number"
                                             placeholder="100"
                                             className={`input ${errors.lipidos ? 'is-danger' : ''}`}
-                                            
+                                            {...register('lipidos', { 
+                                                required: "Este campo es obligatorio",
+                                                min: {
+                                                    value: 0,
+                                                    message: "El valor mínimo es 0"
+                                                }
+                                            })}
                                         />
                                     </div>
                                     {errors.lipidos && <p className="help is-danger">{errors.lipidos.message}</p>}
                                 </div>
-
 
                                 <div className="field">
                                     <label className="label" htmlFor="carbohidratos">Carbohidratos:</label>
@@ -218,7 +233,13 @@ return (
                                             type="number"
                                             placeholder="100"
                                             className={`input ${errors.carbohidratos ? 'is-danger' : ''}`}
-                                            
+                                            {...register('carbohidratos', { 
+                                                required: "Este campo es obligatorio",
+                                                min: {
+                                                    value: 0,
+                                                    message: "El valor mínimo es 0"
+                                                }
+                                            })}
                                         />
                                     </div>
                                     {errors.carbohidratos && <p className="help is-danger">{errors.carbohidratos.message}</p>}

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../services/root.service.js';
 import { deleteComida } from '../services/comida.service.js';
 import { addEtiqueta } from '../services/etiqueta.service.js';
-import { showDeleteTarea, DeleteQuestion , showNoAsignada , showNoEntregada, showNoRevisada , showNoEnRevision, showNoEntregadaEliminada , showRevisadaEliminada, showAsignadaEliminada, showRevisionEliminada} from '../helpers/swaHelper.js';
+import { showDeleteTarea, DeleteQuestion } from '../helpers/swaHelper.js';
 
 export default function VerComidas() {
 
@@ -23,15 +23,19 @@ export default function VerComidas() {
     }, []);
 
 
-const fetchData = () => {
-    axios.get('/comida')
-        .then((response) => {
-            setComidas(response.data);
-        })
-        .catch((error) => {
-            console.log('Error al obtener las comidas', error); 
-        });
-}
+    const fetchData = () => {
+        axios.get('/comida')
+            .then((response) => {
+                if (Array.isArray(response.data)) {
+                    setComidas(response.data);
+                } else {
+                    setComidas([]); // Asegura que comidas sea un array
+                }
+            })
+            .catch((error) => {
+                setComidas([]); // Fallback a un array vacío
+            });
+    };
 
 useEffect(() => {
     // Llamada al backend para obtener las etiquetas disponibles
@@ -63,13 +67,18 @@ const handleEditClick = (comida) => {
 const handleDeleted = async (comida) => {
     const isConfirmed = await DeleteQuestion();
     if (isConfirmed) {
-        const response = await deleteComida(comida._id);
-        if (response.status === 200) {
-            await showDeleteTarea();
+        try {
+            const response = await deleteComida(comida._id);
+            if (response.status === 200) {
+                await showDeleteTarea();
+                setComidas((prevComidas) => prevComidas.filter((c) => c._id !== comida._id));
+            }
+        } catch (error) {
+            console.error('Error al eliminar la comida', error);
         }
-        window.location.reload();
     }
 };
+
 
 const handleAddEtiqueta = (comida) => {
     setSelectedComida(comida); // Guarda la comida seleccionada
@@ -285,7 +294,7 @@ return (
                                             <img
                                                 src={comida.imagen}
                                                 alt="Imagen de comida"
-                                                style={{ width: '150px', height: '150px', objectFit: 'cover', marginRight: '1rem' }}
+                                                style={{ width: '150px', height: '150px', marginRight: '1rem' }}
                                             />
                                         </div>
                                     ) : (

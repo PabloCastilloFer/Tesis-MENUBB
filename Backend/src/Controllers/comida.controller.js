@@ -5,7 +5,6 @@ import { HOST, PORT } from '../Config/configEnv.js';
 
 export const createComida = async (req, res) => {
     try {
-
         const { nombreComida } = req.body;
         let archivoURL = null;
 
@@ -14,37 +13,38 @@ export const createComida = async (req, res) => {
             archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
         }
 
-       // console.log(req.user);
-        //console.log(req.user.local);
-
         const nuevaComida = {
             nombreComida: req.body.nombreComida,
             precio: req.body.precio,
-            calorias: req.body.calorias,
-            proteinas: req.body.proteinas,
-            lipidos: req.body.lipidos,
-            carbohidratos: req.body.carbohidratos,
+            calorias: req.body.calorias || null,
+            proteinas: req.body.proteinas || null,
+            lipidos: req.body.lipidos || null,
+            carbohidratos: req.body.carbohidratos || null,
             imagen: archivoURL,
             estado: false,
-            etiquetas: [],
-           // local: req.user.local
+            etiquetas: req.body.etiquetas || [],
         };
+
+        // Reemplazar valores nulos por "Información no proporcionada"
+        Object.keys(nuevaComida).forEach((key) => {
+            if (nuevaComida[key] === null || nuevaComida[key] === undefined) {
+                nuevaComida[key] = "Información no proporcionada";
+            }
+        });
 
         // Comprobación de duplicados
         const comidaExistente = await comida.findOne({ nombreComida });
         if (comidaExistente) {
             return res.status(400).json({ message: "La comida ya existe." });
-        };
+        }
 
-       // if (!req.user.local) {
-        //    return res.status(403).json({ message: "No tienes un local asociado para crear una comida." });
-       // }
-
+        // Validación con Joi
         const { error } = crearComidaSchema.validate(nuevaComida);
         if (error) {
             return res.status(400).json({ error: error.message });
         }
 
+        // Guardar en la base de datos
         const newComida = new comida(nuevaComida);
         const comidaGuardada = await newComida.save();
 
@@ -54,8 +54,10 @@ export const createComida = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
+        res.status(500).json({ message: "Error al crear la comida." });
     }
 };
+
 
 export const getComidas = async (req, res) => {
     try {
@@ -91,7 +93,7 @@ export const updateComida = async (req, res) => {
         }
 
         const imagen = req.file ? req.file.filename : comidaModificada.imagen.split('/').pop();
-        const URL = `http://localhost:3000/api/src/Upload/`;
+        const URL = `http://${HOST}:${PORT}/api/src/Upload/`;
 
         const updateComida = {
             nombreComida: req.body.nombreComida || comidaModificada.nombreComida,

@@ -69,22 +69,12 @@ const Navbar = () => {
           {isCollapsed ? '🡸' : '🡺'}
         </button>
         <ul>
-          {userRole === 'supervisor' && (
             <>
-              <li data-icon="📁" onClick={() => handleNavigation('/tarea')}>
-                <span>Crear tarea</span>
+              <li data-icon="📤" onClick={() => handleNavigation('/comida')}>
+                <span>Crear comida</span>
               </li>
-              <li data-icon="📄" onClick={() => handleNavigation('/tareas')}>
-                <span>Ver tareas</span>
-              </li>
-              <li data-icon="📋" onClick={() => handleNavigation('/mis-tareas')}>
-                <span>Mis tareas creadas</span>
-              </li>
-              <li data-icon="📤" onClick={() => handleNavigation('/verticket')}>
-                <span>Tareas asignadas</span>
-              </li>
-              <li data-icon="📇" onClick={handleInformeEmpleadosMenuToggle}>
-                <span>Informe Empleados {isInformeEmpleadosMenuOpen ? '▲' : '▼'}</span>
+              <li data-icon="📄" onClick={() => handleNavigation('/vercomidas')}>
+                <span>Ver Comidas</span>
               </li>
               {isInformeEmpleadosMenuOpen && (
                 <ul className="submenu">
@@ -110,7 +100,7 @@ const Navbar = () => {
                 </ul>
               )}
             </>
-          )}
+          
           {userRole === 'admin' && (
             <>
               <li data-icon="🏢" onClick={() => handleNavigation('/facultades')}>
