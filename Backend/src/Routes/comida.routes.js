@@ -7,10 +7,10 @@ import authorizeRole from "../Middlewares/authorization.middleware.js";
 const router = Router();
 
 router
-    .get('/', authorizeRole(["admin", "encargado", "user"]), getComidas)
-    .get('/:id', authorizeRole(["admin", "encargado", "user"]), getComida)
-    .post('/', authorizeRole(["admin", "encargado"]), upload.single("imagen"), handleFileSizeLimit, createComida)
-    .put('/:id', authorizeRole(["admin", "encargado"]), upload.single("imagen"), handleFileSizeLimit,updateComida)
-    .delete('/:id', authorizeRole(["admin", "encargado"]), deleteComida);
+    .get('/', getComidas)
+    .get('/:id', getComida)
+    .post('/', upload.single("imagen"), handleFileSizeLimit, createComida)
+    .put('/:id', upload.single("imagen"), handleFileSizeLimit,updateComida)
+    .delete('/:id', deleteComida);
 
 export default router;

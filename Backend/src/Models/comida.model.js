@@ -39,11 +39,6 @@ const comidaSchema = new Schema({
             required: false
         }
     ],
-    local: {
-        type: Schema.Types.ObjectId,
-        ref: 'local',
-        required: true,
-    },
 });
 
 export default model('comida', comidaSchema);
