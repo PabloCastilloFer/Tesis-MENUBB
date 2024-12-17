@@ -18,3 +18,21 @@ services:
     ports:
       - "3000:3000"
     command: sh -c "npm install && npm run dev"
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_URI: "mongodb://mongodb:27017/miBaseDeDatos"
+
+  mongodb:
+    image: mongo:8.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo_backup:/mongo_backup
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    restart: always
+
+volumes:
+  mongodb_data:
