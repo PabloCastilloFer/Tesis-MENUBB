@@ -42,7 +42,7 @@ Aplicación móvil android y a su vez pagina web que muestra locales de comida d
 
 ## Entornos de Prueba
 
-Pc 1: windows 10 ...
+Pc: windows 11 home - Procesador Intel® Core™ i3-10100F - 16 GB RAM - Tarjeta grafica nvidia 1060 TI - Placa madre Gigabyte H410M H (rev. 1.x).
 
 ## Comenzando
 
