@@ -32,7 +32,7 @@ Pc 1: windows 10 ...
 
 ## Comenzando
 
-Instrucciones para obtener una copia del proyecto en funcionamiento en una máquina local.
+Instrucciones para obtener una copia del proyecto en funcionamiento en una máquina local. **Instrucciones solo para usuarios con Windows 10/11"**
 
 ### Requisitos Previos
 
@@ -169,12 +169,14 @@ Sigue estos pasos para instalar y ejecutar el proyecto en un entorno local utili
    ```env
    HOST=localhost (Proyecto en local) o IP servidor (Proyecto en producción)
    PORT=(3000) (Proyecto en local) o Puerto 80 (Proyecto en producción)
-   DB_URL=url de la base de datos de MongoDB
-   ACCESS_TOKEN_SECRET=
-   REFRESH_TOKEN_SECRET=
+   DB_URL=mongodb://mongodb:27017/miBaseDeDatos
+   ACCESS_TOKEN_SECRET= ej:eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.bQTnz6AuMJvmXXQsVPrxeQNvzDkimo7VNXxHeSBfClLufmCVZRUuyTwJF311JHuh
+   REFRESH_TOKEN_SECRET= ej: eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.bQTnz6AuMJvmXXQsVPrxeQNvzDkimo7VNXxHeSBfClLufmCVZRUuyTwJF311JHuh
    EMAIL_USER=email@dominio.com
    EMAIL_PASS=clave
    ```
+   En este caso mantendremos la DB_URL tal cual esta en el .env anterior.
+   Para crear los tokens "ACCESS_TOKEN_SECRET" y "REFRESH_TOKEN_SECRET" utilizar la siguiente page https://jwt.io/
 
 3. **Construir y ejecutar los contenedores**
    Abrir Docker, descargaremos la imagen de ubuntu en su version 22.04
@@ -202,32 +204,64 @@ Sigue estos pasos para instalar y ejecutar el proyecto en un entorno local utili
 
 
 
-
-hasta aqui todo bien solo modificar el indice
-
-
-
-
-
-
-
 ## Tecnologías Utilizadas
 
-- **Base de Datos:** MongoDB Atlas
-- **Backend:** Node.js, Express
+- **Base de Datos:** MongoDB 8.0 (en la nube)
+- **Backend:** Node.js , Express
 - **Frontend:** -------------
 
 ## Versiones
 
 A continuación se indican las versiones de las principales tecnologías utilizadas en este proyecto:
 
+**Backend**
+
+Dependencies:
+
+- **bcryptjs:** ^2.4.3
 - **cors:** ^2.8.5
 - **dotenv:** ^16.4.5
 - **express:** ^4.21.1
 - **joi:** ^17.13.3
+- **jsonwebtoken:** ^9.0.2
 - **mongoose:** ^8.7.3
 - **morgan:** ^1.10.0
+- **nodemailer:** ^6.9.16
+- **multer:** ^1.4.5-lts.1
+
+devDependencies:
+
 - **nodemon:** ^3.1.7
+
+**Frontend**
+
+Dependencies:
+
+- **@formkit/tempo:** ^0.1.2
+- **axios:** ^1.7.5
+- **js-cookie:** ^3.0.5
+- **jwt-decode:** ^4.0.0
+- **lodash:** ^4.17.21
+- **react:** ^18.3.1
+- **react-dom:** ^18.3.1
+- **react-hook-form:** ^7.53.0
+- **react-router-dom:** ^6.26.1
+- **react-tabulator:** ^0.21.0
+- **rut.js:** ^2.1.0
+- **sweetalert2:** ^11.6.13
+
+devDependencies:
+
+- **@eslint/js:** ^9.9.0
+- **@types/react:** ^18.3.3
+- **@types/react-dom:** ^18.3.0
+- **@vitejs/plugin-react:** ^4.3.1
+- **eslint:** ^9.9.0
+- **eslint-plugin-react:** ^7.35.0
+- **eslint-plugin-react-hooks:** ^5.1.0-rc.0
+- **eslint-plugin-react-refresh:** ^0.4.9
+- **globals:** ^15.9.0
+- **vite:** ^5.4.1"
 
 > ⚠️ **Nota**: Es recomendable usar estas versiones para evitar problemas de compatibilidad.
 

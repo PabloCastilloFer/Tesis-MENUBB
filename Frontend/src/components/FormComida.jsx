@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { createComida } from '../services/comida.service';
-import { showError, showConfirmFormTarea, CreateQuestion, VolverQuestion } from '../helpers/swaHelper.js';
+import { showError, showConfirmFormComida, CreateQuestion, VolverQuestion } from '../helpers/swaHelper.js';
 import '../styles/FormComida.css';
 
 export default function FormComida() {
@@ -28,7 +28,7 @@ export default function FormComida() {
 
             const response = await createComida(formData);
             if (response.status === 201) {
-                await showConfirmFormTarea();
+                await showConfirmFormComida();
                 setArchivo(null);
                 reset();
             } else {

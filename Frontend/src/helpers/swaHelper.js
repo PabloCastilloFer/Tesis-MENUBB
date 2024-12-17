@@ -12,10 +12,10 @@ const Toast = Swal.mixin({
     }
 });
 
-export const showConfirmFormTarea = async () => {
+export const showConfirmFormComida = async () => {
     await Toast.fire({
         icon: "success",
-        title: "Tarea creada exitosamente!"
+        title: "Comida creada exitosamente!"
     });
 };
 
@@ -159,7 +159,7 @@ export const DeleteQuestion = async () => {
 
 export const UpdateQuestion = async () => {
     const result = await Swal.fire({
-        title: "¿Estás seguro de modificar la tarea?",
+        title: "¿Estás seguro de modificar la comida?",
         text: "Estos cambios son irreversibles.",
         icon: "warning",
         showCancelButton: true,
@@ -175,14 +175,14 @@ export const UpdateQuestion = async () => {
 
     if (result.isConfirmed) {
         await Swal.fire({
-            title: "Tarea modificada correctamente!",
-            text: "La tarea ha sido modificada",
+            title: "Comida modificada correctamente!",
+            text: "La comida ha sido modificada",
             icon: "success"
         });
     } else if (result.dismiss === Swal.DismissReason.cancel) {
         await Swal.fire({
             title: "Cancelado",
-            text: "Tu tarea no ha sido modificada",
+            text: "Tu comida no ha sido modificada",
             icon: "success"
         });
     }
