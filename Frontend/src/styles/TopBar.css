@@ -1,0 +1,39 @@
+/* TopBar.css */
+.top-bar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #FBA834;
+  }
+  
+  .user-section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .logout-button {
+    background-color: #47538a; /* Rojo para el botón */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Hace el botón cuadrado */
+    padding: 10px 15px; /* Tamaño del botón */
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-left: 15px; /* Espacio entre el texto y el botón */
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333; /* Rojo oscuro cuando pasa el ratón */
+  }
+  
+  .logout-button:active {
+    transform: scale(0.95); /* Efecto de presionar el botón */
+  }
