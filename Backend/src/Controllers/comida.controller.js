@@ -1,6 +1,6 @@
 
 import comida from '../Models/comida.model.js';
-import { crearComidaSchema } from '../Validations/comida.validation.js';
+import { crearComidaSchema, updateComidaSchema } from '../Validations/comida.validation.js';
 import { HOST, PORT } from '../Config/configEnv.js';
 
 export const createComida = async (req, res) => {
@@ -106,13 +106,13 @@ export const updateComida = async (req, res) => {
             estado: req.body.estado !== undefined ? req.body.estado : comidaModificada.estado
         };
 
-        const { error } = crearComidaSchema.validate(updateComida);
+        const { error } = updateComidaSchema.validate(updateComida);
         if (error) {
             return res.status(400).json({ error: error.message });
         }
 
         Object.assign(comidaModificada, updateComida);
-        console.log(updateComida);
+        console.log(comidaModificada);
         const comidaActualizada = await comidaModificada.save();
         res.status(200).json({
             message: "Comida actualizada exitosamente!",

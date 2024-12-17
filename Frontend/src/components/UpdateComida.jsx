@@ -13,11 +13,9 @@ const EditarComida = ({ initialData }) => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [archivo, setArchivo] = useState(null);
-
     const handleArchivoChange = (e) => {
         setArchivo(e.target.files[0]);
     };
-
     const onSubmit = async (data) => {
         const isConfirmed = await UpdateQuestion();
         
@@ -36,7 +34,7 @@ const EditarComida = ({ initialData }) => {
         formData.append('imagen', archivo);
 
         try {
-            const response = await updateComida(formData, comida._id);
+            const response = await updateComida(comida._id, formData);
             if (response.status === 200) {
                 navigate('/vercomidas');
             } else {
@@ -165,7 +163,7 @@ const EditarComida = ({ initialData }) => {
                                             <input
                                                 id="calorias"
                                                 type="number"
-                                                placeholder="100"
+                                                placeholder={comida.calorias}
                                                 className={`input ${errors.calorias ? 'is-danger' : ''}`}
                                                 {...register('calorias', {
                                                     valueAsNumber: true,
@@ -183,7 +181,7 @@ const EditarComida = ({ initialData }) => {
                                             <input
                                                 id="proteinas"
                                                 type="number"
-                                                placeholder="100"
+                                                placeholder={comida.proteinas}
                                                 className={`input ${errors.proteinas ? 'is-danger' : ''}`}
                                                 {...register('proteinas', {
                                                     valueAsNumber: true,
@@ -200,7 +198,7 @@ const EditarComida = ({ initialData }) => {
                                             <input
                                                 id="lipidos"
                                                 type="number"
-                                                placeholder="100"
+                                                placeholder={comida.lipidos}
                                                 className={`input ${errors.lipidos ? 'is-danger' : ''}`}
                                                 {...register('lipidos', {
                                                     valueAsNumber: true,
@@ -218,7 +216,7 @@ const EditarComida = ({ initialData }) => {
                                             <input
                                                 id="carbohidratos"
                                                 type="number"
-                                                placeholder="100"
+                                                placeholder={comida.carbohidratos}
                                                 className={`input ${errors.carbohidratos ? 'is-danger' : ''}`}
                                                 {...register('carbohidratos', {
                                                     valueAsNumber: true,

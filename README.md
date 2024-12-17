@@ -14,6 +14,18 @@ Aplicación móvil android y a su vez pagina web que muestra locales de comida d
 
 ---
 
+## Índice
+
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Versiones](#versiones)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Esquema de la Base de Datos](#esquema-de-la-base-de-datos)
+- [Contacto](#contacto)
+
+---
+
 ## Entornos de Prueba
 
 Pc 1: windows 10 ...
@@ -38,11 +50,6 @@ Si Git está instalado, verás un número de versión como resultado (por ejempl
 
 **Paso 2: Instalar Git (si no está instalado)**
 - **Windows/Mac**: Descárgalo desde [git-scm.com](https://git-scm.com/) y sigue las instrucciones del instalador.
-- **Linux**:
-  ```bash
-  sudo apt update
-  sudo apt install git
-  ```
 
 **Paso 3: Configurar Git**  
 Después de instalar Git, configura tu nombre de usuario y correo electrónico:
@@ -63,15 +70,7 @@ docker --version
 Si Docker está instalado, verás un número de versión como resultado (por ejemplo, `Docker version 20.10.24`).
 
 **Paso 2: Instalar Docker (si no está instalado)**  
-- **Windows/Mac**: Descarga Docker Desktop desde [docker.com](https://www.docker.com/products/docker-desktop) y sigue las instrucciones del instalador.
-- **Linux**:
-  ```bash
-  sudo apt update
-  sudo apt install docker.io
-  sudo systemctl enable docker
-  sudo systemctl start docker
-  ```
----
+- **Windows**: Descarga Docker Desktop desde [docker.com](https://www.docker.com/products/docker-desktop) y sigue las instrucciones del instalador.
 
 ### 3. Docker Compose: Para gestionar los contenedores
 
@@ -83,13 +82,8 @@ docker-compose --version
 Si Docker Compose está instalado, verás un número de versión (por ejemplo, `docker-compose version 1.29.2`).
 
 **Paso 2: Instalar Docker Compose (si no está instalado)**  
-- **Windows/Mac**: Docker Compose ya viene incluido con Docker Desktop.
-- **Linux**:
-  ```bash
-  sudo apt update
-  sudo apt install docker-compose
-  ```
---- 
+- **Windows**: Docker Compose ya viene incluido con Docker Desktop.
+
 
 ### 3. Node: Para crear sitios web
 
@@ -103,10 +97,28 @@ Si Node está instalado, verás un número de versión (por ejemplo, `v22.9.0`).
 **Paso 2: Instalar Node (si no está instalado)**
 - **Windows**: Puedes descargar Node en su ultima version mediante la siguiente url: https://nodejs.org/en/ 
 
-**AQUI VA LO DE NODEMAILER LUIS**
+### Configuración de NodeMailer
 
+Nodemailer es un módulo de Node JS que te permite enviar correos electrónicos desde tu servidor fácilmente.
 
+### Pasos a seguir
 
+1. **Validación de contraseña**
+
+Para utilizar NodeMailer, primero que nada se debe tener la validación de contraseña en dos pasos, una vez hecho esto, se debe entrar al siguiente link:
+
+```bash
+   https://myaccount.google.com/u/2/apppasswords?rapt=AEjHL4PrHjMbWG6HAorcKDCZ2cxBoATm-7Fn1UK3PUlVeHRTJ9zJMR-FCgY3f-PBASehDaq7hmlV1eoMx7P0jdLfuKlXSg3x9EjTFhPUhz5z3R_eBbvdqaM
+   ```
+2. **Creación de NodeMailer**
+Ingresar a la cuenta con la que desea ocupar para enviar mensajes por correo. Una vez hecho eso, se debe ingresar el nombre de la aplicación y luego crearlo.
+
+Esto genera una contraseña que es la que se debe agregar en el punto .env junto con el correo como se muestra a continuacion:
+
+```bash
+   EMAIL_USER=ej: email@dominio.com
+   EMAIL_PASS=ej: cont rase ña12 3456
+```
 
 ## Entorno de Desarrollo y Pruebas
 
@@ -138,7 +150,6 @@ Primero se debe abrir una terminal cmd con permisos de administrador para ejecut
 wsl --install
 ```
 Luego se debe crear un usuario indicando un nombre de usuario y una contraseña.
-
 
 ## Instalación
 
@@ -188,36 +199,17 @@ Sigue estos pasos para instalar y ejecutar el proyecto en un entorno local utili
    docker-compose up --build
    ```
 
-### Configuración de NodeMailer
-
-Nodemailer es un módulo de Node JS que te permite enviar correos electrónicos desde tu servidor fácilmente.
-
-Para utilizar NodeMailer, primero que nada se debe tener la validacion de contraseña en dos pasos, una vez hecho esto, se debe entrar al siguiente link
-https://myaccount.google.com/u/2/apppasswords?rapt=AEjHL4PrHjMbWG6HAorcKDCZ2cxBoATm-7Fn1UK3PUlVeHRTJ9zJMR-FCgY3f-PBASehDaq7hmlV1eoMx7P0jdLfuKlXSg3x9EjTFhPUhz5z3R_eBbvdqaM
-
-Ingresar a la cuenta con la que desea ocupar para enviar mensajes por correo. Una vez hecho eso, se debe ingresar el nombre de la aplicación y luego crearlo.
-
-Esto genera una contraseña que es la que se debe agregar en el punto .env junto con el correo como se muestra a continuacion:
-
-```bash
-   EMAIL_USER=ej: email@dominio.com
-   EMAIL_PASS=ej: contraseña123
-```
 
 
 
 
-## Índice
+hasta aqui todo bien solo modificar el indice
 
-- [Tecnologías Utilizadas](#tecnologías-utilizadas)
-- [Versiones](#versiones)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Esquema de la Base de Datos](#esquema-de-la-base-de-datos)
-- [Contacto](#contacto)
 
----
+
+
+
+
 
 ## Tecnologías Utilizadas
 
@@ -238,31 +230,6 @@ A continuación se indican las versiones de las principales tecnologías utiliza
 - **nodemon:** ^3.1.7
 
 > ⚠️ **Nota**: Es recomendable usar estas versiones para evitar problemas de compatibilidad.
-
----
-## Estructura del Proyecto
-
-```plaintext
-TESIS-MENUBB/
-├── Backend/
-│   ├── src/
-│   │   ├── Config/
-│   │   ├── Controllers/
-│   │   ├── Middlewares/
-│   │   ├── Models/
-│   │   ├── Utils/
-│   │   ├── Validations/
-│   ├── package-lock.json
-│   ├── package.json
-│   └── server.js
-└── Frontend/
-    ├── 
-    │   ├── 
-    │   ├── 
-    │   ├── 
-    │   └── 
-    └── 
-```
 
 ---
 
@@ -308,37 +275,14 @@ Para ejecutar el proyecto en modo de desarrollo:
 
 ```bash
 # Iniciar el backend
+``` bash
 cd Backend
 npm run dev
-
+```
 # Iniciar el frontend
 cd ../Frontend
 --------------
+``` bash
+npm run dev
 ```
-
 ---
-
-## Esquema de la Base de Datos
-
-Esquema de la base de datos, para la cual se esta utilizando en MongoDB:
-
-```
-
-insertar imagen
-
-```
-
----
-
-## Contacto
-
-Para más información, puedes contactar a:
-
-- **Luis Giuliano Acuña Neira**  
-- **Correo:** [Luis.acuna2101@alumnos.ubiobio.cl](mailto:Luis.acuna2101@alumnos.ubiobio.cl)
-- **Pablo Andrés Castillo Fernández**  
-- **Correo:** [Pablo.castillo2101@alumnos.ubiobio.cl](mailto:Pablo.castillo2101@alumnos.ubiobio.cl)
-
----
-
-Para la 

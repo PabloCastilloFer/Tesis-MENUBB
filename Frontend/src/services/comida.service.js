@@ -17,19 +17,21 @@ export const createComida = async (formData) => {
     }
 };
 
-export const updateComida = async (formdata, id) => {
+export const updateComida = async (id, formData) => {
     try {
         const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+            headers: { 'Content-Type': 'multipart/form-data' },
         };
-        const response = await axios.put(`/comida/${id}`, formdata, config);
+        const response = await axios.put(`/comida/${id}`, formData, config);
         return response;
-    } catch (error){
-        return { status: 500, data: [error], error: error.message };
+    } catch (error) {
+        return {
+            status: error.response?.status || 500,
+            data: error.response?.data || null,
+            message: error.response?.data?.message || "Ocurrió un error inesperado",
+        };
     }
-};
+}
 
 export const getComida = async (id) => {
     try {
