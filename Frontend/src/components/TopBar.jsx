@@ -1,28 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { logout } from '../services/auth.service';
-import iuser from '../assets/user.png'; // Icono de usuario
-
 
 const TopBar = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/auth');
-  };
+  const { logout, user } = useAuth();
 
   return (
     <div className="top-bar">
-      <div className="user-section">
-        <img src={iuser} alt="User Icon" className="user-icon" />
-        <span>Bienvenid@ {user?.email}</span>
-        <button className="logout-button" onClick={handleLogout}>
+      <h1>MENUBB</h1>
+      {user && (
+        <button onClick={logout} className="button is-danger">
           Cerrar Sesión
         </button>
-      </div>
+      )}
     </div>
   );
 };

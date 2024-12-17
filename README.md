@@ -256,12 +256,22 @@ TESIS-MENUBB/
 │   ├── package.json
 │   └── server.js
 └── Frontend/
-    ├── 
-    │   ├── 
-    │   ├── 
-    │   ├── 
-    │   └── 
-    └── 
+    ├── src
+    │   ├── Assets/
+    │   ├── Components/
+    │   ├── Context/
+    │   └── Helpers/
+    │   └── Routes/
+    │   └── Services/
+    │   └── Styles/
+    │   └── index.css
+    │   └── main.jsx
+    ├── App.js
+    ├── app.json
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    └── vite.config.js
 ```
 
 ---

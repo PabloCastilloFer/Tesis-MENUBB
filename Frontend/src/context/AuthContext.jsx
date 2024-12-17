@@ -1,35 +1,35 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import cookies from 'js-cookie';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
 
-export function AuthProvider({ children }) {
-  const navigate = useNavigate();
-  const [jwt, setJwt] = useState('');
+  const login = (token) => {
+    localStorage.setItem('accessToken', token);
+    setUser(token);
+  };
 
-  const user = JSON.parse(localStorage.getItem('user')) || '';
-  const isAuthenticated = user ? true : false;
+  const logout = () => {
+    localStorage.removeItem('accessToken');
+    setUser(null);
+  };
 
   useEffect(() => {
-    // Obtener el token JWT de las cookies
-    const token = cookies.get('jwt-auth');
+    const token = localStorage.getItem('accessToken');
     if (token) {
-      setJwt(token);
-    } else {
-      navigate('/auth');
+      setUser(token);
     }
-
-    if(!isAuthenticated) {
-      navigate('/auth');
-    }
-  }, [isAuthenticated, navigate]);
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
+
+// Custom hook para usar el contexto de autenticación
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
