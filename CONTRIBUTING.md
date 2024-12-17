@@ -222,4 +222,4 @@ TESIS-MENUBB/
 
 ## Diagrama Entidad-Relacion
 
-![MER del Proyecto](LA CARPETA DONDE SE GUARDA EL ARCHIVO)
+![MER del Proyecto](/Frontend/src/assets/BD.png)

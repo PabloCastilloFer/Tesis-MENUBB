@@ -14,15 +14,29 @@ Aplicación móvil android y a su vez pagina web que muestra locales de comida d
 
 ---
 
+
 ## Índice
 
-- [Tecnologías Utilizadas](#tecnologías-utilizadas)
-- [Versiones](#versiones)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Esquema de la Base de Datos](#esquema-de-la-base-de-datos)
-- [Contacto](#contacto)
+1. [Características Principales](#características-principales)
+2. [Entornos de Prueba](#entornos-de-prueba)
+3. [Comenzando](#comenzando)  
+   - [Requisitos Previos](#requisitos-previos)  
+     - [Git](#1-git-para-clonar-el-repositorio)  
+     - [Docker](#2-docker-para-construir-y-ejecutar-los-contenedores)  
+     - [Docker Compose](#3-docker-compose-para-gestionar-los-contenedores)  
+     - [Node.js](#3-node-para-crear-sitios-web)  
+   - [Configuración de NodeMailer](#configuración-de-nodemailer)  
+4. [Entorno de Desarrollo y Pruebas](#entorno-de-desarrollo-y-pruebas)  
+   - [Herramientas y Versiones Utilizadas](#herramientas-y-versiones-utilizadas)  
+   - [Configuración del Entorno](#configuración-del-entorno)  
+5. [Instalación](#instalación)  
+   - [Prerrequisitos](#prerrequisitos)  
+   - [Pasos de Instalación](#pasos-de-instalación)  
+6. [Uso](#uso)  
+7. [Tecnologías Utilizadas](#tecnologías-utilizadas)  
+8. [Versiones](#versiones)  
+9. [Esquema de la Base de Datos](#esquema-de-la-base-de-datos)  
+10. [Contacto](#contacto)
 
 ---
 
