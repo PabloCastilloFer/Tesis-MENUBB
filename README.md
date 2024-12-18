@@ -14,7 +14,6 @@ Aplicación móvil android y a su vez pagina web que muestra locales de comida d
 
 ---
 
-
 ## Índice
 
 1. [Características Principales](#características-principales)
@@ -81,6 +80,7 @@ Abre una terminal y ejecuta:
 ```bash
 docker --version
 ```
+
 Si Docker está instalado, verás un número de versión como resultado (por ejemplo, `Docker version 20.10.24`).
 
 **Paso 2: Instalar Docker (si no está instalado)**
@@ -93,11 +93,11 @@ Ejecuta:
 ```bash
 docker-compose --version
 ```
+
 Si Docker Compose está instalado, verás un número de versión (por ejemplo, `docker-compose version 1.29.2`).
 
 **Paso 2: Instalar Docker Compose (si no está instalado)**
 - **Windows**: Docker Compose ya viene incluido con Docker Desktop.
-
 
 ### 3. Node: Para crear sitios web
 
@@ -106,6 +106,7 @@ Ejecuta:
 ```bash
 node --version
 ```
+
 Si Node está instalado, verás un número de versión (por ejemplo, `v22.9.0`).
 
 **Paso 2: Instalar Node (si no está instalado)**
@@ -180,6 +181,7 @@ Sigue estos pasos para instalar y ejecutar el proyecto en un entorno local utili
 2. **Configurar variables de entorno**
    Renombra el archivo .env.example por .env y en el define las siguientes variables de entorno:
 
+  **Backend**
    ```env
    HOST=localhost (Proyecto en local) o IP servidor (Proyecto en producción)
    PORT=(3000) (Proyecto en local) o Puerto 80 (Proyecto en producción)
@@ -189,8 +191,14 @@ Sigue estos pasos para instalar y ejecutar el proyecto en un entorno local utili
    EMAIL_USER=email@dominio.com
    EMAIL_PASS=clave
    ```
+
    En este caso mantendremos la DB_URL tal cual esta en el .env anterior.
    Para crear los tokens "ACCESS_TOKEN_SECRET" y "REFRESH_TOKEN_SECRET" utilizar la siguiente page https://jwt.io/
+
+  **Frontend**
+   ```env
+   VITE_BASE_URL=http://123.45.678.90:1234/api (ejemplo)
+   ```
 
 3. **Construir y ejecutar los contenedores**
    Abrir Docker, descargaremos la imagen de ubuntu en su version 22.04
@@ -214,7 +222,6 @@ Sigue estos pasos para instalar y ejecutar el proyecto en un entorno local utili
    ```bash
    docker-compose up --build
    ```
-
 
 
 
@@ -242,10 +249,6 @@ Dependencies:
 - **morgan:** ^1.10.0
 - **nodemailer:** ^6.9.16
 - **multer:** ^1.4.5-lts.1
-
-devDependencies:
-
-- **nodemon:** ^3.1.7
 
 **Frontend**
 
