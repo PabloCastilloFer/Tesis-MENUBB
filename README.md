@@ -16,25 +16,24 @@ Aplicación móvil android y a su vez pagina web que muestra locales de comida d
 
 ## Índice
 
-1. [Características Principales](#características-principales)
-2. [Entornos de Prueba](#entornos-de-prueba)
-3. [Comenzando](#comenzando)
+1. [Entornos de Prueba](#entornos-de-prueba)
+2. [Comenzando](#comenzando)
    - [Requisitos Previos](#requisitos-previos)
      - [Git](#1-git-para-clonar-el-repositorio)
      - [Docker](#2-docker-para-construir-y-ejecutar-los-contenedores)
      - [Docker Compose](#3-docker-compose-para-gestionar-los-contenedores)
      - [Node.js](#3-node-para-crear-sitios-web)
    - [Configuración de NodeMailer](#configuración-de-nodemailer)
-4. [Entorno de Desarrollo y Pruebas](#entorno-de-desarrollo-y-pruebas)
+3. [Entorno de Desarrollo y Pruebas](#entorno-de-desarrollo-y-pruebas)
    - [Herramientas y Versiones Utilizadas](#herramientas-y-versiones-utilizadas)
    - [Configuración del Entorno](#configuración-del-entorno)
-5. [Instalación](#instalación)
+4. [Instalación en Docker](#instalación-en-docker)
    - [Prerrequisitos](#prerrequisitos)
    - [Pasos de Instalación](#pasos-de-instalación)
-6. [Uso](#uso)
-7. [Tecnologías Utilizadas](#tecnologías-utilizadas)
-8. [Versiones](#versiones)
-9. [Instalación](#instalación)
+5. [Uso](#uso)
+6. [Tecnologías Utilizadas](#tecnologías-utilizadas)
+7. [Versiones](#versiones)
+8. [Instalación en Local](#instalación-en-local)
 
 ---
 
@@ -122,8 +121,9 @@ Nodemailer es un módulo de Node JS que te permite enviar correos electrónicos 
 Para utilizar NodeMailer, primero que nada se debe tener la validación de contraseña en dos pasos, una vez hecho esto, se debe entrar al siguiente link:
 
 ```bash
-   https://myaccount.google.com/u/2/apppasswords?rapt=AEjHL4PrHjMbWG6HAorcKDCZ2cxBoATm-7Fn1UK3PUlVeHRTJ9zJMR-FCgY3f-PBASehDaq7hmlV1eoMx7P0jdLfuKlXSg3x9EjTFhPUhz5z3R_eBbvdqaM
-   ```
+https://myaccount.google.com/u/2/apppasswords?rapt=AEjHL4PrHjMbWG6HAorcKDCZ2cxBoATm-7Fn1UK3PUlVeHRTJ9zJMR-FCgY3f-PBASehDaq7hmlV1eoMx7P0jdLfuKlXSg3x9EjTFhPUhz5z3R_eBbvdqaM
+```
+
 2. **Creación de NodeMailer**
 Ingresar a la cuenta con la que desea ocupar para enviar mensajes por correo. Una vez hecho eso, se debe ingresar el nombre de la aplicación y luego crearlo.
 
@@ -165,7 +165,7 @@ wsl --install
 ```
 Luego se debe crear un usuario indicando un nombre de usuario y una contraseña.
 
-## Instalación
+## Instalación en Docker
 
 Sigue estos pasos para instalar y ejecutar el proyecto en un entorno local utilizando Docker. Este proceso garantiza una configuración rápida y consistente.
 
@@ -249,6 +249,11 @@ Dependencies:
 - **nodemailer:** ^6.9.16
 - **multer:** ^1.4.5-lts.1
 
+devDependencies:
+
+- **nodemon:** ^3.1.7
+
+
 **Frontend**
 
 Dependencies:
@@ -283,7 +288,7 @@ devDependencies:
 
 ---
 
-## Instalación
+## Instalación en Local
 
 ### Prerrequisitos
 
@@ -322,8 +327,22 @@ devDependencies:
 
 ## Uso
 
-Para ejecutar el proyecto en modo de desarrollo:
+**Para ejecutar el proyecto en modo de desarrollo:**
 
+# Iniciar el backend
+
+``` bash
+cd Backend
+npm run dev
+```
+# Iniciar el frontend
+
+``` bash
+cd Frontend
+npm run dev
+```
+
+**Para ejecutar el proyecto en modo de produccion:**
 
 # Iniciar el backend
 
@@ -334,7 +353,7 @@ npm start
 # Iniciar el frontend
 
 ``` bash
-cd ../Frontend
+cd Frontend
 npm start
 ```
 
