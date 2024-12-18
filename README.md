@@ -34,8 +34,7 @@ Aplicación móvil android y a su vez pagina web que muestra locales de comida d
 6. [Uso](#uso)
 7. [Tecnologías Utilizadas](#tecnologías-utilizadas)
 8. [Versiones](#versiones)
-9. [Esquema de la Base de Datos](#esquema-de-la-base-de-datos)
-10. [Contacto](#contacto)
+9. [Instalación](#instalación)
 
 ---
 
