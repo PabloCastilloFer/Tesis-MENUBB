@@ -282,7 +282,7 @@ devDependencies:
 - **eslint-plugin-react-hooks:** ^5.1.0-rc.0
 - **eslint-plugin-react-refresh:** ^0.4.9
 - **globals:** ^15.9.0
-- **vite:** ^5.4.1"
+- **vite:** ^5.4.1
 
 > ⚠️ **Nota**: Es recomendable usar estas versiones para evitar problemas de compatibilidad.
 
@@ -329,13 +329,13 @@ devDependencies:
 
 **Para ejecutar el proyecto en modo de desarrollo:**
 
-# Iniciar el backend
+### Iniciar el backend
 
 ``` bash
 cd Backend
 npm run dev
 ```
-# Iniciar el frontend
+### Iniciar el frontend
 
 ``` bash
 cd Frontend
@@ -344,13 +344,14 @@ npm run dev
 
 **Para ejecutar el proyecto en modo de produccion:**
 
-# Iniciar el backend
+### Iniciar el backend
 
 ``` bash
 cd Backend
 npm start
 ```
-# Iniciar el frontend
+
+### Iniciar el frontend
 
 ``` bash
 cd Frontend
