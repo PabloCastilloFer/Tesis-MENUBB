@@ -20,7 +20,7 @@ const authenticationMiddleware = (req, res, next) => {
         id: decoded.id,
         email: decoded.email,
         roles: { name : decoded.roles },
-        local: decoded.local,
+        local: decoded.local || null,
       };
 
       next();

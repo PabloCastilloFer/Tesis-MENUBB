@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { createComida } from '../services/comida.service';
+import { createComida } from '../services/comida.service.js';
 import { showError, showConfirmFormComida, CreateQuestion, VolverQuestion } from '../helpers/swaHelper.js';
 import '../styles/FormComida.css';
 

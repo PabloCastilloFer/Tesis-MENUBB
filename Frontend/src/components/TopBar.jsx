@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { logout } from '../services/auth.service';
+import { useAuth } from '../context/AuthContext.jsx';
+import { logout } from '../services/auth.service.js';
 import iuser from '../assets/user.png'; // Icono de usuario
 
 
@@ -18,7 +18,7 @@ const TopBar = () => {
     <div className="top-bar">
       <div className="user-section">
         <img src={iuser} alt="User Icon" className="user-icon" />
-        <span>Bienvenid@ {user?.email}</span>
+        <span>Bienvenid@ {user?.username}</span>
         <button className="logout-button" onClick={handleLogout}>
           Cerrar Sesión
         </button>

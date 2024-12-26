@@ -1,4 +1,4 @@
-import axios from './root.service';
+import axios from './root.service.js';
 
 export const createComida = async (formData) => {
     try {

@@ -17,7 +17,12 @@ async function setupServer() {
     const server = express();
     server.disable('x-powered-by');
     // Agregamos los cors
-    server.use(cors({ credentials: true, origin: true }));
+    server.use(cors({
+      credentials: true,
+      origin: 'http://localhost:5173', // Asegúrate de usar el dominio correcto del frontend
+      methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+      allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+    }));
     // Agrega el middleware para el manejo de datos en formato URL
     server.use(urlencoded({ extended: true }));
     // Agrega el middleware para el manejo de datos en formato JSON

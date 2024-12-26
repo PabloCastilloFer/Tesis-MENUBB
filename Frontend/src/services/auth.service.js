@@ -1,6 +1,6 @@
-import axios from './root.service';
+import axios from './root.service.js';
 import cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 export const login = async ({ email, password }) => {
   try {
@@ -10,8 +10,8 @@ export const login = async ({ email, password }) => {
     });
     const { status, data } = response;
     if (status === 200) {
-      const { email, roles ,rut} = await jwtDecode(data.data.accessToken);
-      localStorage.setItem('user', JSON.stringify({ email, roles, rut }));
+      const { id, email, roles ,local} = await jwtDecode(data.data.accessToken);
+      localStorage.setItem('user', JSON.stringify({id, email, roles ,local}));
       axios.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${data.data.accessToken}`;
@@ -30,16 +30,4 @@ export const logout = () => {
   delete axios.defaults.headers.common['Authorization'];
   cookies.remove('jwt');
   cookies.remove('jwt-auth');
-};
-
-export const test = async () => {
-  try {
-    const response = await axios.get('/users');
-    const { status, data } = response;
-    if (status === 200) {
-      console.log(data.data);
-    }
-  } catch (error) {
-    console.log(error);
-  }
 };

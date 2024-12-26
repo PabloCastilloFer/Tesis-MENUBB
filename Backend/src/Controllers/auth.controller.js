@@ -18,7 +18,7 @@ export const login = async (req, res) => {
 
     respondSuccess(req, res, 200, {
       message: "Inicio de sesión exitoso.",
-      accessToken,
+      accessToken: accessToken,
     });
   } catch (error) {
     console.error("Error en login:", error);

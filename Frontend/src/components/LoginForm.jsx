@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/Login.css'; // Asegúrate de importar el CSS aquí
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { login } from '../services/auth.service';
+import { login } from '../services/auth.service.js';
 import { showErrorLogin } from '../helpers/swaHelper.js'; // Asegúrate de importar tu helper
 
 function LoginForm() {
@@ -13,7 +13,7 @@ function LoginForm() {
     login(data).then(() => {
       navigate('/home');
     }).catch(() => {
-      showErrorLogin(); // Llama a la función de alerta de error
+      showErrorLogin();
     });
   };
 
@@ -22,7 +22,7 @@ function LoginForm() {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    backgroundColor: 'rgba(245, 245, 245, 0.8)', // Añadir un fondo semitransparente
+    backgroundColor: 'rgba(245, 245, 245, 0.8)',
   };
 
   const loginBoxStyle = {
@@ -43,40 +43,40 @@ function LoginForm() {
       <img src="UB.jpg" alt="Background" />
       <div style={containerStyle}>
         <div style={loginBoxStyle}>
-          <h1 className="title is-3">Iniciar sesión</h1>
+          <h1 className="login-title">Iniciar sesión</h1>
           <p>Ingresa tu correo electrónico para acceder a tu cuenta.</p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="field">
               <label className="label" htmlFor="email" style={labelStyle}>Correo electrónico</label>
               <div className="control">
                 <input
-                  className={`input ${errors.email ? 'is-danger' : ''}`}
+                  className={`custom-input ${errors.email ? 'input-error' : ''}`}
                   type="email"
                   id="email"
                   placeholder="ejemplo@dominio.com"
                   {...register('email', { required: 'Este campo es obligatorio' })}
                 />
               </div>
-              {errors.email && <p className="help is-danger">{errors.email.message}</p>}
+              {errors.email && <p className="error-message">{errors.email.message}</p>}
             </div>
 
             <div className="field">
               <label className="label" htmlFor="password" style={labelStyle}>Contraseña</label>
               <div className="control">
                 <input
-                  className={`input ${errors.password ? 'is-danger' : ''}`}
+                  className={`custom-input ${errors.password ? 'input-error' : ''}`}
                   type="password"
                   id="password"
                   placeholder="●●●●●●●●"
                   {...register('password', { required: 'Este campo es obligatorio' })}
                 />
               </div>
-              {errors.password && <p className="help is-danger">{errors.password.message}</p>}
+              {errors.password && <p className="error-message">{errors.password.message}</p>}
             </div>
 
             <div className="field">
               <div className="control">
-                <button type="submit" className="button is-link">Iniciar sesión</button>
+                <button type="submit" className="custom-button">Iniciar sesión</button>
               </div>
             </div>
           </form>
