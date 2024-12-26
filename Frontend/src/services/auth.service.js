@@ -21,7 +21,7 @@ export const login = async ({ email, password }) => {
       throw new Error('Login failed');
     }
   } catch (error) {
-    throw error; // Lanzar el error para que pueda ser capturado por el catch en LoginForm
+    throw error;
   }
 };
 
