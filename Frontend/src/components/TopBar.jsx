@@ -1,27 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
-import { logout } from '../services/auth.service.js';
-import iuser from '../assets/user.png'; // Icono de usuario
-
+import { useAuth } from '../context/AuthContext';
+import { logout } from '../services/auth.service';
+import '../styles/TopBar.css';
+import Logo from '../assets/Icono_MENUBB_Blanco.png'; // Importa el logo
 
 const TopBar = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { setAuthenticated, user } = useAuth(); // Accede al contexto de autenticación
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Estado para el menú desplegable
+  const username = user?.username; // Cambiar por el valor real del nombre del usuario
 
   const handleLogout = () => {
-    logout();
-    navigate('/auth');
+    logout(); // Limpia cookies, localStorage, y headers
+    setAuthenticated(false); // Actualizar estado global
+    navigate('/auth'); // Redirigir al login
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
     <div className="top-bar">
+      <div className="logo" onClick={() => navigate('/home')}>
+        <img src={Logo} alt="MENUBB Logo" />
+      </div>
       <div className="user-section">
-        <img src={iuser} alt="User Icon" className="user-icon" />
-        <span>Bienvenid@ {user?.username}</span>
-        <button className="logout-button" onClick={handleLogout}>
-          Cerrar Sesión
-        </button>
+        <span className="username" onClick={toggleDropdown}>
+          {username}
+        </span>
+        {dropdownOpen && (
+          <div className="dropdown-menu">
+            <button onClick={handleLogout}>Cerrar Sesión</button>
+          </div>
+        )}
       </div>
     </div>
   );

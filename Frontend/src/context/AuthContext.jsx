@@ -1,35 +1,26 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import cookies from 'js-cookie';
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-export function AuthProvider({ children }) {
-  const navigate = useNavigate();
-  const [jwt, setJwt] = useState('');
-
-  const user = JSON.parse(localStorage.getItem('user')) || '';
-  const isAuthenticated = user ? true : false;
+export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user')) || null;
 
   useEffect(() => {
-    // Obtener el token JWT de las cookies
     const token = cookies.get('jwt-auth');
-    if (token) {
-      setJwt(token);
+    if (token && user) {
+      setAuthenticated(true); // Autenticado si hay token y usuario
     } else {
-      navigate('/auth');
+      setAuthenticated(false); // No autenticado si faltan datos
     }
-    
-    if(!isAuthenticated) {
-      navigate('/auth');
-    }
-  }, [isAuthenticated, navigate]);
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, setAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};

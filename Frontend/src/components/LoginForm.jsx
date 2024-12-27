@@ -1,88 +1,53 @@
 import React from 'react';
-import '../styles/Login.css'; // Asegúrate de importar el CSS aquí
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { login } from '../services/auth.service.js';
-import { showErrorLogin } from '../helpers/swaHelper.js'; // Asegúrate de importar tu helper
+import { login } from '../services/auth.service';
+import { useAuth } from '../context/AuthContext';
+import '../styles/Login.css';
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { setAuthenticated } = useAuth(); // Para actualizar el estado global
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
-    login(data).then(() => {
-      navigate('/home');
-    }).catch(() => {
-      showErrorLogin();
-    });
-  };
-
-  const containerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    backgroundColor: 'rgba(245, 245, 245, 0.8)',
-  };
-
-  const loginBoxStyle = {
-    width: '400px',
-    padding: '2rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#fff',
-    textAlign: 'center',
-  };
-
-  const labelStyle = {
-    textAlign: 'left',
+  const onSubmit = async (data) => {
+    try {
+      await login(data); // Llama al servicio de login
+      setAuthenticated(true); // Actualiza el estado de autenticación
+      navigate('/home'); // Redirige al Home
+    } catch (error) {
+      console.error('Error en el login:', error.message);
+      alert('Error en el login: ' + error.message);
+    }
   };
 
   return (
-    <div className="page-container">
-      <img src="UB.jpg" alt="Background" />
-      <div style={containerStyle}>
-        <div style={loginBoxStyle}>
-          <h1 className="login-title">Iniciar sesión</h1>
-          <p>Ingresa tu correo electrónico para acceder a tu cuenta.</p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="field">
-              <label className="label" htmlFor="email" style={labelStyle}>Correo electrónico</label>
-              <div className="control">
-                <input
-                  className={`custom-input ${errors.email ? 'input-error' : ''}`}
-                  type="email"
-                  id="email"
-                  placeholder="ejemplo@dominio.com"
-                  {...register('email', { required: 'Este campo es obligatorio' })}
-                />
-              </div>
-              {errors.email && <p className="error-message">{errors.email.message}</p>}
-            </div>
-
-            <div className="field">
-              <label className="label" htmlFor="password" style={labelStyle}>Contraseña</label>
-              <div className="control">
-                <input
-                  className={`custom-input ${errors.password ? 'input-error' : ''}`}
-                  type="password"
-                  id="password"
-                  placeholder="●●●●●●●●"
-                  {...register('password', { required: 'Este campo es obligatorio' })}
-                />
-              </div>
-              {errors.password && <p className="error-message">{errors.password.message}</p>}
-            </div>
-
-            <div className="field">
-              <div className="control">
-                <button type="submit" className="custom-button">Iniciar sesión</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+<div className="login-container">
+  <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+    <div className="avatar">👤</div>
+    <h2>Inicio de Sesión</h2>
+    <div className="form-group">
+      <input
+        type="email"
+        id="email"
+        placeholder="Correo institucional"
+        {...register('email', { required: 'Este campo es obligatorio' })}
+      />
+      {errors.email && <span className="error">{errors.email.message}</span>}
     </div>
+    <div className="form-group">
+      <input
+        type="password"
+        id="password"
+        placeholder="Contraseña"
+        {...register('password', { required: 'Este campo es obligatorio' })}
+      />
+      {errors.password && <span className="error">{errors.password.message}</span>}
+    </div>
+    <button type="submit">Iniciar sesión</button>
+    <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
+  </form>
+</div>
   );
 }
 

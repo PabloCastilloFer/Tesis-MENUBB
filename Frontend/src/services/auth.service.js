@@ -1,33 +1,53 @@
 import axios from './root.service.js';
 import cookies from 'js-cookie';
-import jwtDecode from 'jwt-decode';
+import * as jwt from 'jwt-decode';
+
+const jwtDecode = jwt.default || jwt.jwtDecode || jwt; // Compatibilidad con diferentes estructuras
 
 export const login = async ({ email, password }) => {
   try {
-    const response = await axios.post('auth/login', {
-      email,
-      password,
-    });
+    // Enviar credenciales al backend
+    const response = await axios.post('auth/login', { email, password });
     const { status, data } = response;
-    if (status === 200) {
-      const { id, email, roles ,local} = await jwtDecode(data.data.accessToken);
-      localStorage.setItem('user', JSON.stringify({id, email, roles ,local}));
-      axios.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${data.data.accessToken}`;
-      cookies.set('jwt-auth', data.data.accessToken, { path: '/' });
-      return data;
+
+    // Verificar que el estado sea exitoso y el token esté presente
+    if (status === 200 && data?.message?.accessToken) {
+      const accessToken = data.message.accessToken;
+
+      // Decodificar el token
+      const decodedToken = jwtDecode(accessToken);
+      const { id, username, roles, local } = decodedToken;
+
+      // Guardar información en localStorage y cookies
+      localStorage.setItem('user', JSON.stringify({ id, username, roles,local }));
+      cookies.set('jwt-auth', accessToken, { path: '/' });
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+      return data; // Devolver los datos del backend
     } else {
-      throw new Error('Login failed');
+      console.error('Token no presente en la respuesta:', data);
+      throw new Error('Token no válido o no presente.');
     }
   } catch (error) {
-    throw error;
+    console.error('Error en el login:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Error desconocido al iniciar sesión.');
   }
 };
 
 export const logout = () => {
-  localStorage.removeItem('user');
-  delete axios.defaults.headers.common['Authorization'];
-  cookies.remove('jwt');
-  cookies.remove('jwt-auth');
+  try {
+    // Limpiar cookies relacionadas con el JWT
+    cookies.remove('jwt-auth', { path: '/' }); // Asegúrate de que el path coincida
+    cookies.remove('jwt', { path: '/' }); // Por si hay otra cookie JWT
+
+    // Limpiar localStorage
+    localStorage.removeItem('user');
+
+    // Limpia headers globales
+    delete axios.defaults.headers.common['Authorization'];
+
+    console.log('Cierre de sesión exitoso.');
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error.message);
+  }
 };

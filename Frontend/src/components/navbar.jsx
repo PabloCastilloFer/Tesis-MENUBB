@@ -1,127 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/NavBarStyle.css';
-import logo from '../assets/Logo.png';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import '../styles/NavBar.css';
 
-const Navbar = () => {
+const NavBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
-  const [isInformeEmpleadosMenuOpen, setIsInformeEmpleadosMenuOpen] = useState(false);
   const [userRole, setUserRole] = useState('');
+  const [locales, setLocales] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("useEffect executed"); // Verificar si el useEffect se ejecuta
+    // Leer el estado inicial de la barra desde las cookies
+    const sidebarState = Cookies.get('isSidebarCollapsed');
+    setIsCollapsed(sidebarState === 'true');
 
+    // Leer el rol del usuario desde localStorage
     const user = localStorage.getItem('user');
-    console.log("User from localStorage:", user); // Mostrar el objeto user del localStorage
-
     if (user) {
       const parsedUser = JSON.parse(user);
-      console.log("Parsed User:", parsedUser); // Mostrar el objeto user parseado
-
-      if (parsedUser.roles && parsedUser.roles.length > 0) {
-        const role = parsedUser.roles[0].name; // Asumimos que el rol está en el primer objeto del array
-        setUserRole(role);
-        console.log("User Role:", role); // Mostrar el rol del usuario
-      } else {
-        console.log("No roles found in user object.");
-      }
-    } else {
-      console.log("No user found in localStorage.");
+      setUserRole(parsedUser.roles || '');
     }
+
+    // Cargar locales dinámicamente desde la API
+    const fetchLocales = async () => {
+      try {
+        const response = await axios.get('/api/locales'); // Ruta de tu API
+        setLocales(response.data.locales || []);
+      } catch (error) {
+        console.error('Error al cargar los locales:', error);
+      }
+    };
+
+    fetchLocales();
   }, []);
 
   const handleToggleSidebar = () => {
     const newState = !isCollapsed;
     setIsCollapsed(newState);
-    localStorage.setItem('isSidebarCollapsed', JSON.stringify(newState));
+
+    // Guardar el estado en las cookies
+    Cookies.set('isSidebarCollapsed', newState, { expires: 7 });
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
+  // Opciones específicas por rol
+  const menuOptions = {
+    user: [
+      { name: 'Inicio', path: '/home' },
+      { name: 'Menús', path: '/menu' },
+    ],
+    admin: [
+      { name: 'Inicio', path: '/home' },
+      { name: 'Gestión de Usuarios', path: '/manage-users' },
+      { name: 'Reportes', path: '/reports' },
+    ],
+    encargado: [
+      { name: 'Inicio', path: '/home' },
+      { name: 'Mis Locales', path: '/my-locals' },
+      { name: 'Menús del Día', path: '/daily-menus' },
+    ],
   };
 
-  const handleUsersMenuToggle = () => {
-    setIsUsersMenuOpen(!isUsersMenuOpen);
-  };
-
-  const handleInformeEmpleadosMenuToggle = () => {
-    setIsInformeEmpleadosMenuOpen(!isInformeEmpleadosMenuOpen);
-  };
-
-  const navbarStyle = {
-    position: 'fixed',
-    right: '0',
-    top: '0',
-    height: '100vh',
-    width: '250px',
-    zIndex: 20,
-  };
+  const options = menuOptions[userRole] || []; // Opciones del menú según el rol
 
   return (
-    <div style={navbarStyle}>
-      <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-        <div className="logo-container" onClick={() => handleNavigation('/home')}>
-          <img src={logo} alt="Logo" />
-        </div>
-        <button onClick={handleToggleSidebar}>
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="sidebar-header">
+        <button className="toggle-btn" onClick={handleToggleSidebar}>
           {isCollapsed ? '🡸' : '🡺'}
         </button>
-        <ul>
-            <>
-              <li data-icon="🍽️" onClick={() => handleNavigation('/vercomidas')}>
-                <span>Ver comidas</span>
-              </li>
-              {isInformeEmpleadosMenuOpen && (
-                <ul className="submenu">
-                  <li data-icon=">" onClick={() => handleNavigation('/generarPDF')}>
-                    <span>Generar PDF</span>
-                  </li>
-                  <li data-icon=">" onClick={() => handleNavigation('/Agregarcomentario')}>
-                    <span>Agregar Comentario</span>
-                  </li>
-                  <li data-icon=">" onClick={() => handleNavigation('/comentarios')}>
-                    <span>Ver Comentarios</span>
-                  </li>
-                </ul>
-              )}
-              {isUsersMenuOpen && (
-                <ul className="submenu">
-                  <li data-icon=">" onClick={() => handleNavigation('/usuarios')}>
-                    <span>Crear Usuario</span>
-                  </li>
-                  <li data-icon=">" onClick={() => handleNavigation('/usuarios/ver')}>
-                    <span>Ver Usuarios</span>
-                  </li>
-                </ul>
-              )}
-            </>
-          
-          {userRole === 'admin' && (
-            <>
-              <li data-icon="🏢" onClick={() => handleNavigation('/facultades')}>
-                <span>Facultades</span>
-              </li>
-              <li data-icon="👤" onClick={handleUsersMenuToggle}>
-                <span>Usuarios {isUsersMenuOpen ? '▲' : '▼'}</span>
-              </li>
-            </>
-          )}
-          {userRole === 'empleado' && (
-            <>
-            <li data-icon="📃" onClick={() => handleNavigation('/tareas-asignadas')}>
-                <span>Ver tareas asignadas</span>
-              </li>
-              <li data-icon="📍" onClick={() => handleNavigation('/tareas-realizadas')}>
-                <span>Tareas Realizadas</span>
-              </li>
-          </>
-            )}
-        </ul>
       </div>
+      <ul className="sidebar-links">
+        {/* Opciones del menú general según el rol */}
+        {options.map((option, index) => (
+          <li key={index} onClick={() => navigate(option.path)}>
+            {option.name}
+          </li>
+        ))}
+
+        {/* Opciones de locales (solo para el rol 'user') */}
+        {userRole === 'user' &&
+          locales.map((local) => (
+            <li key={local.id} onClick={() => navigate(`/local/${local.id}`)}>
+              <img src={local.image} alt={local.name} className="local-image" />
+              {!isCollapsed && <span className="local-name">{local.name}</span>}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 };
 
-export default Navbar;
+export default NavBar;
