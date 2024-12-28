@@ -98,8 +98,8 @@ static generateAccessToken(user) {
     roles: user.roles.name,
   };
 
-  if (isEncargado && user.local) {
-    payload.local = user.local._id;
+  if (isEncargado && user.local && user.local._id) {
+    payload.local = user.local._id.toString(); // Asegúrate de que sea un ObjectId válido
   }
 
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "24h" });

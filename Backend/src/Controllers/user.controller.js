@@ -9,8 +9,6 @@ export const createUser = async (req, res) => {
   try {
     const { username, email, password, roles, local } = req.body;
 
-    console.log("Datos recibidos:", { username, email, password, roles, local });
-
     if (!req.user || req.user.roles.name !== "admin") {
       return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
     }

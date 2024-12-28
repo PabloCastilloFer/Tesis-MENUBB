@@ -38,7 +38,7 @@ function respondSuccess(req, res, statusCode = 200, message = "Operation success
       details,
     });
   }
-  
+
   /**
    * Envía una respuesta de error interno estandarizada.
    * @function respondInternalError

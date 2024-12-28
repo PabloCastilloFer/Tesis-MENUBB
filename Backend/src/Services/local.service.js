@@ -1,4 +1,6 @@
 import Local from "../Models/local.model.js";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 class LocalService {
   /**
@@ -95,6 +97,48 @@ class LocalService {
       throw { status: error.status || 500, message: error.message || "Error al obtener el local." };
     }
   }
+
+/**
+ * Obtener mi local (asociado al token)
+ * @param {String} token - Token de acceso
+ * @returns {Object} - Local encontrado
+ */
+static async getMyLocal(token) {
+  try {
+    // Decodificar el token
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    // Verificar que el payload contiene un local
+    if (!decoded.local) {
+      throw { status: 403, message: "No tienes un local asociado." };
+    }
+
+    // Validar que el ID del local sea un ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(decoded.local)) {
+      throw { status: 400, message: "ID de local no válido." };
+    }
+
+    // Buscar el local por ID
+    const local = await Local.findById(decoded.local);
+    if (!local) {
+      throw { status: 404, message: "Local no encontrado." };
+    }
+
+    return {
+      id: local._id,
+      name: local.name,
+      address: local.address,
+      accessibility: local.accessibility,
+      image: local.image,
+      schedule: local.schedule,
+    };
+  } catch (error) {
+    throw {
+      status: error.status || 500,
+      message: error.message || "Error al obtener tu local.",
+    };
+  }
+}
 
   /**
    * Actualizar un local por ID

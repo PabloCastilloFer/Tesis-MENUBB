@@ -1,5 +1,7 @@
 import LocalService from '../Services/local.service.js';
 import { respondSuccess, respondError } from '../Utils/resHandler.js';
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 /**
  * Obtener todos los locales
@@ -10,6 +12,28 @@ export const getLocals = async (req, res) => {
     return respondSuccess(req, res, 200, 'Locales obtenidos exitosamente.', locals);
   } catch (error) {
     return respondError(req, res, 500, error.message || 'Error al obtener locales.');
+  }
+};
+
+/**
+ * Obtener mi local
+ */
+export const getMyLocal = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    // Validar que el ID del local sea un ObjectId válido
+    if (!decoded.local || !mongoose.Types.ObjectId.isValid(decoded.local)) {
+      return res.status(400).json({ message: "ID de local no válido." });
+    }
+
+    // Pasar el token al servicio
+    const local = await LocalService.getMyLocal(token);
+
+    res.status(200).json(local);
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message });
   }
 };
 
