@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { login } from '../services/auth.service';
-import { useAuth } from '../context/AuthContext';
-import '../styles/Login.css';
+import { login } from '../../services/auth.service';
+import { useAuth } from '../../context/AuthContext';
+import '../../styles/generic/Login.css';
 
 function LoginForm() {
   const navigate = useNavigate();

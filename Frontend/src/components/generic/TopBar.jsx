@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { logout } from '../services/auth.service';
-import '../styles/TopBar.css';
-import Logo from '../assets/Icono_MENUBB_Blanco.png'; // Importa el logo
+import { useAuth } from '../../context/AuthContext';
+import { logout } from '../../services/auth.service';
+import '../../styles/generic/TopBar.css';
+import Logo from '../../assets/Icono_MENUBB_Blanco.png'; // Importa el logo
 
 const TopBar = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const TopBar = () => {
       </div>
       <div className="user-section">
         <span className="username" onClick={toggleDropdown}>
-          {username}
+          Bienvenid@ {username}
         </span>
         {dropdownOpen && (
           <div className="dropdown-menu">

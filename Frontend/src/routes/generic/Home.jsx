@@ -1,4 +1,4 @@
-import Hub from '../components/Hub.jsx';
+import Hub from '../../components/generic/Hub.jsx';
 export default function Home() {
     return (
         <div>

@@ -4,7 +4,7 @@
   top: 60px; /* Justo debajo de la TopBar */
   left: 0;
   height: calc(100vh - 60px); /* Altura total menos la TopBar */
-  width: 70px; /* Ancho colapsado */
+  width: 50px; /* Ancho colapsado */
   background-color: #1B2E51; /* Fondo */
   color: white;
   display: flex;
@@ -48,6 +48,24 @@
   color: #E0ECFA; /* Color al pasar el mouse */
 }
 
+/* Submenú de los locales */
+.local-item {
+  position: relative;
+  padding: 10px 5px;
+  cursor: pointer;
+}
+
+.local-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background-color 0.3s ease;
+}
+
+.local-header:hover {
+  background-color: #243b6b;
+}
+
 .local-image {
   height: 40px;
   width: 40px;
@@ -56,12 +74,39 @@
 }
 
 .local-name {
-  display: none;
   margin-left: 10px;
+  font-size: 0.9rem;
+  display: none; /* Oculto en estado colapsado */
   color: white;
-  font-size: 1rem;
 }
 
 .sidebar.expanded .local-name {
-  display: inline-block;
+  display: inline-block; /* Mostrar en estado expandido */
+}
+
+/* Submenú anidado */
+.nested-menu {
+  list-style: none;
+  padding: 5px 0 5px 20px;
+  margin: 0;
+  display: none; /* Ocultado por defecto */
+  flex-direction: column;
+}
+
+.nested-menu.visible {
+  display: flex; /* Mostrado cuando está activo */
+}
+
+.nested-menu li {
+  padding: 5px 10px;
+  margin: 5px 0;
+  color: white;
+  background-color: #014898;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nested-menu li:hover {
+  background-color: #243b6b;
 }

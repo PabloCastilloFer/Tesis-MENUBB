@@ -14,10 +14,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar.collapsed ~ .top-bar {
-  left: 70px; /* Ajusta según el ancho de la NavBar colapsada */
-}
-
 .logo img {
   height: 40px;
   cursor: pointer;

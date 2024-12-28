@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getLocales } from '../services/local.service'; // Llama al servicio
-import LocalCard from '../components/LocalCard'; // Componente reutilizable
-import './Local.css'; // Estilos de la página
+import { getLocales } from '../../services/local.service'; // Llama al servicio
+import LocalCard from './LocalCard'; // Componente reutilizable
+import '../../styles/local/Local.css'; // Estilos de la página
 
 const Local = () => {
   const [locales, setLocales] = useState([]);
