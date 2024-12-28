@@ -2,9 +2,6 @@ const authorizeRole = (allowedRoles) => (req, res, next) => {
   try {
     const userRole = req.user?.roles?.name;
 
-    console.log("Rol del usuario:", userRole);
-    console.log("Roles permitidos:", allowedRoles);
-
     if (!userRole || !allowedRoles.includes(userRole)) {
       return res.status(403).json({ message: "No tienes permisos para realizar esta acción. AAAAAA" });
     }

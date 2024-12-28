@@ -37,8 +37,8 @@ export const login = async ({ email, password }) => {
 export const logout = () => {
   try {
     // Limpiar cookies relacionadas con el JWT
-    cookies.remove('jwt-auth', { path: '/' }); // Asegúrate de que el path coincida
     cookies.remove('jwt', { path: '/' }); // Por si hay otra cookie JWT
+    cookies.remove('jwt-auth', { path: '/' }); // Asegúrate de que el path coincida
 
     // Limpiar localStorage
     localStorage.removeItem('user');

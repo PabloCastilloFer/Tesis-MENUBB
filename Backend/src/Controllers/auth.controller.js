@@ -11,7 +11,7 @@ export const login = async (req, res) => {
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false, // Cambiar a true en producción a "   secure: process.env.NODE_ENV === "production",  "
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });

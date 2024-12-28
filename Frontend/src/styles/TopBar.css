@@ -3,14 +3,19 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 60px; /* Ajusta la altura según tus necesidades */
-  background-color: #1B2E51; /* Color de fondo */
+  height: 60px;
+  background-color: #1B2E51; /* Fondo de la TopBar */
   color: white;
-  z-index: 1000; /* Asegura que esté encima de la NavBar */
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Espaciado entre los elementos */
   padding: 0 20px;
+  z-index: 1000; /* Más alto que la NavBar */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.collapsed ~ .top-bar {
+  left: 70px; /* Ajusta según el ancho de la NavBar colapsada */
 }
 
 .logo img {

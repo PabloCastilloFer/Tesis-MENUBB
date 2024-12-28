@@ -1,36 +1,27 @@
+/* Barra lateral */
 .sidebar {
   position: fixed;
-  top: 60px; /* Misma altura que la TopBar */
+  top: 60px; /* Justo debajo de la TopBar */
   left: 0;
-  height: calc(100vh - 60px); /* Resta la altura de la TopBar */
-  width: 250px;
-  background-color: #1B2E51;
+  height: calc(100vh - 60px); /* Altura total menos la TopBar */
+  width: 70px; /* Ancho colapsado */
+  background-color: #1B2E51; /* Fondo */
   color: white;
-  z-index: 999; /* Menor que la TopBar */
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 10px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  transition: width 0.3s ease;
+  flex-direction: column; /* Elementos en columna */
+  justify-content: flex-start; /* Elementos desde el inicio */
+  padding: 10px;
+  transition: width 0.3s ease; /* Animación de colapso/expansión */
+  z-index: 999; /* Debajo de la TopBar */
 }
 
-.sidebar.collapsed {
-  width: 70px;
+.sidebar.expanded {
+  width: 250px; /* Ancho expandido */
 }
 
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sidebar-logo {
-  height: 40px;
-  cursor: pointer;
-}
-
+/* Botón para colapsar/expandir */
 .toggle-btn {
+  margin-bottom: 20px;
   background: none;
   border: none;
   color: white;
@@ -38,63 +29,39 @@
   cursor: pointer;
 }
 
+/* Opciones del menú */
 .sidebar-links {
   list-style: none;
   padding: 0;
-  margin: 20px 0;
+  margin: 0;
 }
 
 .sidebar-links li {
-  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
 }
 
 .sidebar-links li:hover {
-  color: #E0ECFA;
+  color: #E0ECFA; /* Color al pasar el mouse */
 }
 
-.sidebar-user {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.local-image {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.sidebar-user span {
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.sidebar-user button {
-  background: none;
-  border: 1px solid white;
+.local-name {
+  display: none;
+  margin-left: 10px;
   color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
-.sidebar-user button:hover {
-  background-color: #E0ECFA;
-  color: #1B2E51;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    width: 70px;
-  }
-
-  .sidebar.collapsed {
-    width: 50px;
-  }
-
-  .sidebar-links li {
-    font-size: 0.8rem;
-  }
-
-  .sidebar-user span {
-    display: none;
-  }
+.sidebar.expanded .local-name {
+  display: inline-block;
 }

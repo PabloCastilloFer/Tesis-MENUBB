@@ -36,6 +36,23 @@ class LocalService {
   }
 
   /**
+   * Obtener todos los locales con datos específicos
+   * @returns {Array} - Lista de locales
+   */
+  static async getAllLocalsData() {
+    try {
+      const locals = await Local.find();
+      return locals.map((local) => ({
+        id: local._id,
+        name: local.name,
+        image: local.image,
+      }));
+    } catch (error) {
+      throw { status: 500, message: "Error al obtener los locales." };
+    }
+  }
+
+  /**
    * Obtener todos los locales
    * @returns {Array} - Lista de locales
    */
@@ -137,5 +154,6 @@ class LocalService {
     }
   }
 }
+
 
 export default LocalService;

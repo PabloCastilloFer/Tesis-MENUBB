@@ -3,7 +3,7 @@ import cors from 'cors';
 import express, { urlencoded, json } from 'express';
 import morgan from 'morgan';
 // Importa el módulo 'cookie-parser' para manejar las cookies
-//import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 /** El enrutador principal */
 import indexRoutes from './src/Routes/index.routes.js';
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
@@ -22,13 +22,14 @@ async function setupServer() {
       origin: 'http://localhost:5173', // Asegúrate de usar el dominio correcto del frontend
       methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
       allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+      exposedHeaders: ['Authorization'], // Encabezados expuestos
     }));
     // Agrega el middleware para el manejo de datos en formato URL
     server.use(urlencoded({ extended: true }));
     // Agrega el middleware para el manejo de datos en formato JSON
     server.use(json());
     // Agregamos el middleware para el manejo de cookies
-    //server.use(cookieParser());
+    server.use(cookieParser());
     // Agregamos morgan para ver las peticiones que se hacen al servidor
     server.use(morgan('dev'));
     // Agrega ruta para servir archivos estáticos

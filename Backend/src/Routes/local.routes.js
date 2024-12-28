@@ -5,6 +5,7 @@ import {
   createLocal,
   updateLocal,
   deleteLocal,
+  getAllLocalsData,
 } from '../Controllers/local.controller.js';
 import { handleFileSizeLimit, upload } from '../Middlewares/multer.middleware.js';
 import {
@@ -16,8 +17,9 @@ import authorizeRole from '../Middlewares/authorization.middleware.js';
 
 const router = express.Router();
 
-router.get('/', authorizeRole(["admin", "encargado"]), getLocals);
-router.get('/:id', authorizeRole(["admin", "encargado"]), getLocalById);
+router.get('/all', authorizeRole(["admin", "user"]), getLocals);
+router.get('/:id', authorizeRole(["admin", "encargado", "user"]), getLocalById);
+router.get('/', authorizeRole(["admin", "user"]), getAllLocalsData);
 router.post('/', upload.single('image'), handleFileSizeLimit, validateRequest(localCreateSchema), authorizeRole(["admin"]), createLocal );
 router.put('/:id', upload.single('image'), handleFileSizeLimit, validateRequest(localUpdateSchema), authorizeRole(["admin"]), updateLocal );
 router.delete('/:id', authorizeRole(["admin"]), deleteLocal);

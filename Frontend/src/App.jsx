@@ -5,18 +5,31 @@ import Login from './routes/Login';
 import Home from './routes/Home';
 import TopBar from './components/TopBar.jsx';
 import NavBar from './components/Navbar.jsx';
+import './styles/App.css'; // Global styles
+import './styles/Layout.css'; // Layout-specific styles
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
 
   return (
     <>
-      {isAuthenticated && <TopBar />} {/* Mostrar TopBar solo si está autenticado */}
-      {isAuthenticated && <NavBar />} {/* Mostrar NavBar solo si está autenticado */}
-      <Routes>
-        <Route path="/auth" element={<Login />} /> {/* Ruta pública */}
-        <Route path="/home" element={<Home />} /> {/* Ruta protegida */}
-      </Routes>
+      {isAuthenticated ? (
+        /* Diseño con barras para rutas protegidas */
+        <div className="layout-wrapper">
+          <TopBar />
+          <NavBar />
+          <main className="content">
+            <Routes>
+              <Route path="/home" element={<Home />} />
+            </Routes>
+          </main>
+        </div>
+      ) : (
+        /* Diseño sin barras para rutas públicas */
+        <Routes>
+          <Route path="/auth" element={<Login />} />
+        </Routes>
+      )}
     </>
   );
 }

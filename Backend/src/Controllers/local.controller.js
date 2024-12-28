@@ -121,3 +121,15 @@ export const deleteLocal = async (req, res) => {
     return respondError(req, res, 500, error.message || 'Error al eliminar el local.');
   }
 };
+
+/**
+ * Obtener los locales con datos específicos
+ */
+export const getAllLocalsData = async (req, res) => {
+  try {
+    const locals = await LocalService.getAllLocalsData();
+    return respondSuccess(req, res, 200, 'Locales obtenidos exitosamente.', locals);
+  } catch (error) {
+    return respondError(req, res, 500, error.message || 'Error al obtener locales.');
+  }
+}

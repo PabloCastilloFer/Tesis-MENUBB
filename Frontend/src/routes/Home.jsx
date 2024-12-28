@@ -1,11 +1,8 @@
-import React from 'react';
-
-function Home() {
-  return (
-    <div>
-      <h1>Bienvenido al Home</h1>
-    </div>
-  );
+import Hub from '../components/Hub.jsx';
+export default function Home() {
+    return (
+        <div>
+            <Hub />
+        </div>
+    );
 }
-
-export default Home;
