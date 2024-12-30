@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { logout } from '../../services/auth.service';
 import '../../styles/generic/TopBar.css';
 import Logo from '../../assets/Icono_MENUBB_Blanco.png'; // Importa el logo
+import UserIcon from '../../assets/user-icon.png'; // Importa el icono de usuario
 
 const TopBar = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const TopBar = () => {
   const handleLogout = () => {
     logout(); // Limpia cookies, localStorage, y headers
     setAuthenticated(false); // Actualizar estado global
-    navigate('/auth'); // Redirigir al login
+    window.location.href = '/auth'; // Redirige a la página de inicio de sesión
   };
 
   const toggleDropdown = () => {
@@ -27,6 +28,7 @@ const TopBar = () => {
         <img src={Logo} alt="MENUBB Logo" />
       </div>
       <div className="user-section">
+        <img src={UserIcon} className="user-icon" alt="User Icon"/>
         <span className="username" onClick={toggleDropdown}>
           Bienvenid@ {username}
         </span>

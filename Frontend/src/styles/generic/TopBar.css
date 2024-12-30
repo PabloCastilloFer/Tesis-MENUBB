@@ -19,6 +19,13 @@
   cursor: pointer;
 }
 
+.user-icon {
+  width: 30px; /* Ajusta el tamaño según sea necesario */
+  height: 30px; /* Mantén proporción para que sea cuadrado */
+  margin-right: 10px; /* Espaciado entre el ícono y el texto */
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor */
+}
+
 .user-section {
   position: relative;
   display: flex;

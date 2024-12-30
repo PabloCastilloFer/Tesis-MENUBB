@@ -45,8 +45,6 @@ const authenticationMiddleware = (req, res, next) => {
         local: decoded.local || null,
       };
 
-      console.log("req.user", req.user);
-
       next(); // Continúa al siguiente middleware o controlador
     });
   } catch (error) {

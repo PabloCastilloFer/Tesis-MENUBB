@@ -1,8 +1,8 @@
-import Hub from '../../components/generic/Hub.jsx';
+import HomeView from '../../components/generic/Home.jsx';
 export default function Home() {
     return (
         <div>
-            <Hub />
+            <HomeView />
         </div>
     );
 }

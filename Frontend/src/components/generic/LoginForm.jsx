@@ -14,7 +14,7 @@ function LoginForm() {
     try {
       await login(data); // Llama al servicio de login
       setAuthenticated(true); // Actualiza el estado de autenticación
-      navigate('/home'); // Redirige al Home
+      window.location.href = '/home'; // Recarga la página
     } catch (error) {
       console.error('Error en el login:', error.message);
       alert('Error en el login: ' + error.message);

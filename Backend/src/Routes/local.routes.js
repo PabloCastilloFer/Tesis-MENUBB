@@ -20,7 +20,7 @@ const router = express.Router();
 
 router.get('/all', authorizeRole(["admin", "user"]), getLocals);
 router.get('/my-local', authorizeRole(["encargado"]), getMyLocal);
-router.get('/:id', authorizeRole(["admin", "encargado", "user"]), getLocalById);
+router.get('/:id', authorizeRole(["admin", "user"]), getLocalById);
 router.get('/', authorizeRole(["admin", "user"]), getAllLocalsData);
 router.post('/', upload.single('image'), handleFileSizeLimit, validateRequest(localCreateSchema), authorizeRole(["admin"]), createLocal );
 router.put('/:id', upload.single('image'), handleFileSizeLimit, validateRequest(localUpdateSchema), authorizeRole(["admin"]), updateLocal );

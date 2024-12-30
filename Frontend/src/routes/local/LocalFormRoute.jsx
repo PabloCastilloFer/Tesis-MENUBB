@@ -1,4 +1,4 @@
-import LocalForm from '../components/LocalForm.jsx';
+import LocalForm from '../../components/local/LocalForm.jsx';
 
 export default function Local() {
     return (
