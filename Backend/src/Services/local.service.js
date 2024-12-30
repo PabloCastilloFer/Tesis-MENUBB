@@ -140,6 +140,61 @@ static async getMyLocal(token) {
   }
 }
 
+/**
+ * Actualizar el horario de un local por ID
+ * @param {String} id - ID del local
+ * @param {Object} data - Datos a actualizar
+ * @returns {Object} - Local actualizado
+ */
+static async updateLocalSchedule(id, data) {
+  try {
+    const { schedule } = data;
+
+    // Validar que el campo 'schedule' exista y sea un array
+    if (!Array.isArray(schedule)) {
+      throw { status: 400, message: "El horario debe ser un array válido." };
+    }
+
+    // Validar que los datos del horario sean correctos
+    const validDays = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    for (const item of schedule) {
+      if (
+        !item.day ||
+        !validDays.includes(item.day) ||
+        typeof item.isOpen !== 'boolean' ||
+        (item.isOpen && (!item.open || !item.close))
+      ) {
+        throw { status: 400, message: "El formato del horario es inválido." };
+      }
+    }
+
+    // Actualizar el horario del local
+    const updatedLocal = await Local.findByIdAndUpdate(
+      id,
+      { schedule },
+      { new: true } // Retornar el documento actualizado
+    );
+
+    if (!updatedLocal) {
+      throw { status: 404, message: "Local no encontrado." };
+    }
+
+    return {
+      id: updatedLocal._id,
+      name: updatedLocal.name,
+      address: updatedLocal.address,
+      accessibility: updatedLocal.accessibility,
+      image: updatedLocal.image,
+      schedule: updatedLocal.schedule,
+    };
+  } catch (error) {
+    throw {
+      status: error.status || 500,
+      message: error.message || "Error al actualizar el horario del local.",
+    };
+  }
+}
+
   /**
    * Actualizar un local por ID
    * @param {String} id - ID del local

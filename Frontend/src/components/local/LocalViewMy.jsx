@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Para redirigir a otra página
 import { getMyLocal } from '../../services/local.service.js';
 import '../../styles/local/LocalView.css';
 
@@ -6,6 +7,7 @@ const LocalViewMy = () => {
   const [localInfo, setLocalInfo] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Estado para el spinner
+  const navigate = useNavigate(); // Hook para navegar a otra página
 
   useEffect(() => {
     const fetchLocalInformation = async () => {
@@ -93,6 +95,12 @@ const LocalViewMy = () => {
       ) : (
         <p>No hay horario definido.</p>
       )}
+            <button
+              className="edit-schedule-button"
+              onClick={() => navigate(`/local/${localInfo.id}/schedule`)}
+            >
+              Editar Horario
+            </button>
     </div>
   );
 };

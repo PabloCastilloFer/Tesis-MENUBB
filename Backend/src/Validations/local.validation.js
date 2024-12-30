@@ -118,3 +118,12 @@ export const localUpdateSchema = Joi.object({
       'array.base': 'El horario debe ser una lista de objetos válidos.',
     }),
   });
+
+  export const localUpdateSchedule = Joi.object({
+    schedule: Joi.array().items(scheduleSchema).required().messages({
+      'any.required': 'El campo `schedule` es obligatorio y debe contener una lista de objetos.',
+      'array.base': 'El campo `schedule` debe ser un array válido.',
+    }),
+  }).messages({
+    'object.unknown': 'Solo se permite actualizar el horario (schedule).',
+  });

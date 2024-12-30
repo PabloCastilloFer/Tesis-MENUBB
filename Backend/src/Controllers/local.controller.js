@@ -112,6 +112,29 @@ export const createLocal = async (req, res) => {
 };
 
 /**
+ * Actualizar el horario de un local por ID
+ */
+export const updateLocalSchedule = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+
+    const updatedLocal = await LocalService.updateLocalSchedule(id, data);
+
+    res.status(200).json({
+      success: true,
+      message: "Horario actualizado correctamente.",
+      data: updatedLocal,
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      message: error.message || "Error al actualizar el horario.",
+    });
+  }
+};
+
+/**
  * Actualizar un local por ID
  */
 export const updateLocal = async (req, res) => {

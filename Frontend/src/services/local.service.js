@@ -42,3 +42,25 @@ export const getMyLocal = async () => {
     throw new Error(error.response?.data?.message || 'Error al cargar el local.');
   }
 };
+
+export const updateLocalSchedule = async (localId, schedule) => {
+  try {
+    const token = Cookies.get('jwt-auth');
+    if (!token) {
+      throw new Error('Token no encontrado en las cookies.');
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.put(`/local/${localId}/schedule`, { schedule }, config);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar el horario:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Error al actualizar el horario.');
+  }
+};

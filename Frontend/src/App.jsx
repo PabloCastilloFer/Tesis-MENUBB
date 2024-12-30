@@ -10,6 +10,7 @@ import './styles/generic/App.css'; // Global styles
 
 import LocalView from './routes/local/LocalViewRoute.jsx';
 import LocalViewMy from './routes/local/LocalViewMyRoute.jsx';
+import LocalEditMySchedule from './routes/local/LocalEditScheduleRoute.jsx';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -26,6 +27,7 @@ function AppContent() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/local/:id" element={<LocalView />} />
                 <Route path="/local/my-local" element={<LocalViewMy />} />
+                <Route path="/local/:id/schedule" element={<LocalEditMySchedule />} />
               </Routes>
             </main>
           </>
