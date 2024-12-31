@@ -23,8 +23,8 @@ const TopBar = () => {
   };
 
   return (
-    <div class="topbar-container">
-      <div class="top-bar">
+    <div className="topbar-container">
+      <div className="top-bar">
           <div className="logo" onClick={() => navigate('/home')}>
           <img src={Logo} alt="MENUBB Logo" />
         </div>

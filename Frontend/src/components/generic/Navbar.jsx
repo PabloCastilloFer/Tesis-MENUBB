@@ -59,8 +59,8 @@ const NavBar = () => {
         {/* Opciones para usuarios 'admin' */}
         {userRole === 'admin' && (
           <>
-            <li onClick={() => navigate('/manage-users')}>Gestión de Usuarios</li>
             <li onClick={() => navigate('/local')}>Locales</li>
+            <li onClick={() => navigate('/users/')}>Usuarios</li>
           </>
         )}
 

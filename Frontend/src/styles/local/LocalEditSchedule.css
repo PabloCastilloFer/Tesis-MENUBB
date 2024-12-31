@@ -90,6 +90,22 @@ legend {
   background-color: #d32f2f;
 }
 
+.volver-button {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.volver-button:hover {
+  background-color: #aaa;
+}
+
 .loading-container,
 .error-container {
   text-align: center;

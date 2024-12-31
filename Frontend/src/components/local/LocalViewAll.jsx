@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllLocalsData } from '../../services/local.service'; // Servicio para obtener datos
+import { getAllLocalsData, deleteLocal } from '../../services/local.service'; // Servicio para obtener datos
 import '../../styles/local/LocalViewAll.css'; // CSS para la página
 
 const LocalViewAll = () => {
@@ -39,68 +39,86 @@ const LocalViewAll = () => {
     }
   }, [searchTerm, locals]);
 
+  const handleDelete = async (id) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar este local?')) {
+      try {
+        await deleteLocal(id);
+        setLocals((prevLocals) => prevLocals.filter((local) => local.id !== id));
+        setFilteredLocals((prevFilteredLocals) => prevFilteredLocals.filter((local) => local.id !== id));
+      } catch (error) {
+        setError('Error al eliminar el local');
+      }
+    }
+  };
+
   if (loading) return <div className="loading">Cargando locales...</div>;
   if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="local-grid-page">
-        <div className="content-wrapper">
-            <div className="header-container">
-                <h1 className="page-title">Locales</h1>
-                <div className="search-add-container">
-                    <input
-                        type="text"
-                        className="search-input"
-                        placeholder="Buscar por nombre..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <button
-                        className="create-button"
-                        onClick={() => navigate('/local/create')}
-                    >
-                        Crear Nuevo Local
-                    </button>
-                </div>
+      <div className="content-wrapper">
+        <fieldset>
+          <legend>Gestión de Locales</legend>
+          <div className="header-container">
+            <h1 className="page-title">Locales</h1>
+            <div className="search-add-container">
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Buscar por nombre..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button
+                className="create-button"
+                onClick={() => navigate('/local/create')}
+              >
+                Crear Nuevo Local
+              </button>
             </div>
+          </div>
+        </fieldset>
 
-            <div className="local-grid">
-                {filteredLocals.map((local) => (
-                    <div key={local.id} className="local-card">
-                        <img
-                            src={local.image}
-                            alt={local.name}
-                            className="local-image-card"
-                            onClick={() => navigate(`/local/${local.id}`)}
-                            style={{ cursor: 'pointer' }}
-                        />
-                        <h3
-                            className="local-name-card"
-                            onClick={() => navigate(`/local/${local.id}`)}
-                            style={{ cursor: 'pointer' }}
-                        >
-                            {local.name}
-                        </h3>
-                        <div className="local-actions">
-                            <button
-                                className="edit-button"
-                                onClick={() => navigate(`/local/${local.id}/edit`)}
-                            >
-                                Editar
-                            </button>
-                            <button
-                                className="delete-button"
-                                onClick={() => console.log(`Eliminar local con ID: ${local.id}`)}
-                            >
-                                Eliminar
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
+        <fieldset>
+          <legend>Lista de Locales</legend>
+          <div className="local-grid">
+            {filteredLocals.map((local) => (
+              <div key={local.id} className="local-card">
+                <img
+                  src={local.image}
+                  alt={local.name}
+                  className="local-image-card"
+                  onClick={() => navigate(`/local/${local.id}`)}
+                  style={{ cursor: 'pointer' }}
+                />
+                <h3
+                  className="local-name-card"
+                  onClick={() => navigate(`/local/${local.id}`)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {local.name}
+                </h3>
+                <div className="local-actions">
+                  <button
+                    className="edit-button"
+                    onClick={() => navigate(`/local/${local.id}/edit`)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDelete(local.id)}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </fieldset>
+      </div>
     </div>
   );
-}
+};
 
 export default LocalViewAll;

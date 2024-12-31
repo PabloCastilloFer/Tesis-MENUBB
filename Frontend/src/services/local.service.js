@@ -1,6 +1,27 @@
 import axios from './root.service.js';
 import Cookies from 'js-cookie';
 
+export const deleteLocal = async (localId) => {
+  try {
+    const token = Cookies.get('jwt-auth');
+    if (!token) {
+      throw new Error('Token no encontrado en las cookies.');
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.delete(`/local/${localId}`, config);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar el local:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Error al eliminar el local.');
+  }
+};
+
 export const getLocals = async () => {
   try {
     const token = Cookies.get('jwt-auth');
@@ -25,7 +46,18 @@ export const getLocals = async () => {
 
 export const getAllLocalsData = async () => {
   try {
-    const response = await axios.get('/local');
+    const token = Cookies.get('jwt-auth');
+    if (!token) {
+      throw new Error('Token no encontrado en las cookies.');
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get('/local', config);
     return response.data.data;
   } catch (error) {
     console.error('Error al obtener los locales:', error.response?.data || error.message);
@@ -35,7 +67,18 @@ export const getAllLocalsData = async () => {
 
 export const getLocalById = async (localId) => {
   try {
-    const response = await axios.get(`/local/${localId}`);
+    const token = Cookies.get('jwt-auth');
+    if (!token) {
+      throw new Error('Token no encontrado en las cookies.');
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get(`/local/${localId}`,config);
     return response.data.data;
   } catch (error) {
     console.error('Error al obtener el local:', error.response?.data || error.message);

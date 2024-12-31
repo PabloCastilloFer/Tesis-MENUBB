@@ -1,176 +1,121 @@
-.local-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(750px, 1fr)); /* Ajuste automático */
-  gap: 30px; /* Espacio entre las tarjetas */
-  padding: 20px; /* Espacio alrededor */
-  margin: 0 auto; /* Centrar horizontalmente */
-  max-width: 1200px; /* Limitar el ancho máximo */
-  box-sizing: border-box;
-  margin-bottom: 20px;
-}
-
-.local-card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  text-align: center;
-  width: 300px; /* Ancho dinámico */
-  max-width: 400px; /* Límite máximo del ancho */
-  height: auto; /* Ajustar altura automáticamente */
-  margin: 10px auto; /* Espaciado alrededor */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between; /* Distribuir elementos correctamente */
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.local-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.local-image-card {
-  width: 150px; /* Aumentar el tamaño de la imagen */
-  height: 150px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-  object-fit: cover;
-}
-
-.local-name-card {
-  font-size: 18px; /* Tamaño de la fuente */
-  margin: 10px 0; /* Espaciado superior e inferior */
-  color: #333; /* Color del texto */
-  text-align: center; /* Centrar el texto */
-  white-space: normal; /* Permitir saltos de línea */
-  word-wrap: break-word; /* Ajustar texto largo */
-  overflow-wrap: break-word; /* Asegurar ajuste en navegadores modernos */
-  max-width: 90%; /* Limitar el ancho máximo del texto */
-  line-height: 1.5; /* Espaciado entre líneas */
-}
-
-/* Botones */
-.local-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px; /* Espacio entre botones */
-}
-
-.edit-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  flex: 1;
-}
-
-.edit-button:hover {
-  background-color: #0056b3;
-}
-
-.delete-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  flex: 1;
-}
-
-.delete-button:hover {
-  background-color: #c82333;
-}
-
-/* Recuadro blanco para el encabezado */
-.header-container {
-  background-color: #fff;
+.local-grid-page {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo del título */
-.page-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0 0 10px 0; /* Separación entre el título y la barra */
-  color: #333;
-  text-align: center;
-}
-
-/* Contenedor del buscador y botón */
-.search-add-container {
-  display: flex;
-  justify-content: space-between; /* Alinear el buscador y el botón horizontalmente */
-  align-items: center;
-  gap: 10px; /* Espacio entre el buscador y el botón */
-}
-
-/* Barra de búsqueda */
-.search-input {
-  flex: 1; /* Ocupa todo el espacio disponible */
-  padding: 8px; /* Reducir padding */
-  font-size: 14px; /* Reducir tamaño de fuente */
+fieldset {
+  margin: 20px 0;
+  padding: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Botón de agregar */
+legend {
+  padding: 0 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 24px;
+  color: #333;
+}
+
+.search-add-container {
+  display: flex;
+  gap: 10px;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
 .create-button {
-  width: 160px; /* Ancho fijo */
-  height: 40px; /* Altura fija */
-  padding: 6px 12px; /* Reducir padding para hacerlo más pequeño */
-  font-size: 14px; /* Reducir tamaño de fuente */
-  font-weight: normal; /* Cambiar a un peso de fuente normal */
+  padding: 8px 16px;
+  background-color: #4caf50;
   color: white;
-  background-color: #007bff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  font-size: 16px;
 }
 
 .create-button:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
 }
 
-.create-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+.local-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-@media (max-width: 480px) {
-  .local-grid {
-      padding: 10px; /* Espaciado reducido pero consistente */
-      grid-template-columns: 1fr; /* Una sola columna */
-  }
+.local-card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-@media (max-width: 768px) {
-  .local-grid {
-      grid-template-columns: 2fr; /* Una sola columna en pantallas pequeñas */
-  }
+.local-image-card {
+  max-width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
 
-@media (min-width: 769px) and (max-width: 1200px) {
-  .local-grid {
-      grid-template-columns: repeat(auto-fill, minmax(300px, 3fr)); /* Ajuste en pantallas medianas */
-  }
+.local-name-card {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
-@media (min-width: 1200px) {
-  .local-grid {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 4fr));
-      max-width: 1500px; /* Limitar ancho máximo en pantallas grandes */
-  }
+.local-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-button,
+.delete-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.edit-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
 }

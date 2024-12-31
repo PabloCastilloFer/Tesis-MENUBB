@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getLocalById } from '../../services/local.service.js';
+import { getLocalById, deleteLocal } from '../../services/local.service.js';
 import '../../styles/local/LocalView.css';
 
 const LocalView = () => {
@@ -38,10 +38,14 @@ const LocalView = () => {
     fetchLocalInformation();
   }, [id]);
 
-  const handleDelete = () => {
-    if (window.confirm('¿Estás seguro de que deseas eliminar este local?')) {
-      console.log(`Eliminando local con ID: ${id}`);
-      navigate('/locals');
+  const handleDelete = async (id) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar este local?')) {
+      try {
+        await deleteLocal(id);
+        navigate('/local', { replace: true });
+      } catch (error) {
+        setError('Error al eliminar el local');
+      }
     }
   };
 
@@ -140,7 +144,7 @@ const LocalView = () => {
           <button className="edit-button" onClick={handleEdit}>
             Editar
           </button>
-          <button className="delete-button" onClick={handleDelete}>
+          <button className="delete-button" onClick={() => handleDelete(localInfo.id)}>
             Eliminar
           </button>
         </div>

@@ -27,11 +27,6 @@ export const createUser = async (req, res) => {
  */
 export const getUsers = async (req, res) => {
   try {
-
-    if (!req.user || req.user.roles.name !== "admin") {
-      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-    }
-
     const users = await UserService.getUsers();
 
     if (!users || users.length === 0) {

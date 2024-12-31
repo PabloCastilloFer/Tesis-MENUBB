@@ -81,13 +81,22 @@ const EditLocal = () => {
     }
   };
 
+  const handleCancel = () => {
+    if (window.confirm('¿Estás seguro de que deseas cancelar? Los cambios no guardados se perderán.')) {
+      navigate(-1); // Navegar a la página anterior
+    }
+  };
+
   if (isLoading) return <p>Cargando datos del local...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="edit-local-container">
-      <h1>Editar Local</h1>
-      <form onSubmit={handleSubmit}>
+<div className="edit-local-container">
+  <button className="volver-button" onClick={() => navigate(-1)}>
+    Volver
+  </button>
+  <h1>Editar Local</h1>
+  <form onSubmit={handleSubmit}>
         <label>
           Nombre:
           <input
@@ -182,9 +191,16 @@ const EditLocal = () => {
             </div>
           ))}
         </fieldset>
-        <button type="submit">Guardar cambios</button>
-      </form>
-    </div>
+        <div className="buttons-container">
+        <button className="save-button" type="button" onClick={handleSubmit}>
+          Guardar Cambios
+        </button>
+        <button className="cancel-button" type="button" onClick={() => navigate('/local/my-local')}>
+          Cancelar
+        </button>
+      </div>
+  </form>
+</div>
   );
 };
 
