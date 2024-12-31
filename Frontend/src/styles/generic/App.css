@@ -10,6 +10,7 @@
 .sidebar.collapsed ~ .content {
   margin-left: 70px; /* Ajuste del margen para la NavBar colapsada */
 }
+
 /* Aplica el fondo al body */
 body {
   margin: 0;

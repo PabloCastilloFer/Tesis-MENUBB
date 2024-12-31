@@ -23,20 +23,22 @@ const TopBar = () => {
   };
 
   return (
-    <div className="top-bar">
-      <div className="logo" onClick={() => navigate('/home')}>
-        <img src={Logo} alt="MENUBB Logo" />
-      </div>
-      <div className="user-section">
-        <img src={UserIcon} className="user-icon" alt="User Icon"/>
-        <span className="username" onClick={toggleDropdown}>
-          Bienvenid@ {username}
-        </span>
-        {dropdownOpen && (
-          <div className="dropdown-menu">
-            <button onClick={handleLogout}>Cerrar Sesión</button>
-          </div>
-        )}
+    <div class="topbar-container">
+      <div class="top-bar">
+          <div className="logo" onClick={() => navigate('/home')}>
+          <img src={Logo} alt="MENUBB Logo" />
+        </div>
+        <div className="user-section">
+          <img src={UserIcon} className="user-icon" alt="User Icon"/>
+          <span className="username" onClick={toggleDropdown}>
+            Bienvenid@ {username}
+          </span>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <button onClick={handleLogout}>Cerrar Sesión</button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

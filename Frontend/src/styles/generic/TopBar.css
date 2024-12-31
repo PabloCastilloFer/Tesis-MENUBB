@@ -1,4 +1,4 @@
-.top-bar {
+.topbar-container .top-bar {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,33 +14,33 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.logo img {
+.topbar-container .logo img {
   height: 40px;
   cursor: pointer;
 }
 
-.user-icon {
+.topbar-container .user-icon {
   width: 30px; /* Ajusta el tamaño según sea necesario */
   height: 30px; /* Mantén proporción para que sea cuadrado */
   margin-right: 10px; /* Espaciado entre el ícono y el texto */
   object-fit: cover; /* Ajusta la imagen dentro del contenedor */
 }
 
-.user-section {
+.topbar-container .user-section {
   position: relative;
   display: flex;
   align-items: center;
   cursor: pointer;
 }
 
-.username {
+.topbar-container .username {
   margin-right: 10px;
   font-size: 1rem;
   color: white;
   font-weight: bold;
 }
 
-.dropdown-menu {
+.topbar-container .dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
@@ -53,7 +53,7 @@
   z-index: 10;
 }
 
-.dropdown-menu button {
+.topbar-container .dropdown-menu button {
   width: 100%;
   padding: 10px;
   border: none;
@@ -64,6 +64,6 @@
   color: #1B2E51;
 }
 
-.dropdown-menu button:hover {
+.topbar-container .dropdown-menu button:hover {
   background-color: #E0ECFA;
 }

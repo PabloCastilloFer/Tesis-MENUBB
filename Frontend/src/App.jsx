@@ -6,11 +6,14 @@ import Home from './routes/generic/Home';
 import TopBar from './components/generic/TopBar.jsx';
 import NavBar from './components/generic/Navbar.jsx';
 import Footer from './components/generic/Footer.jsx';
-import './styles/generic/App.css'; // Global styles
+import './styles/generic/App.css';
 
 import LocalView from './routes/local/LocalViewRoute.jsx';
 import LocalViewMy from './routes/local/LocalViewMyRoute.jsx';
 import LocalEditMySchedule from './routes/local/LocalEditScheduleRoute.jsx';
+import LocalAllView from './routes/local/LocalViewAllRoute.jsx';
+import LocalCreate from './routes/local/LocalCreateRoute.jsx';
+import LocalEdit from './routes/local/LocalEditRoute.jsx';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -28,6 +31,9 @@ function AppContent() {
                 <Route path="/local/:id" element={<LocalView />} />
                 <Route path="/local/my-local" element={<LocalViewMy />} />
                 <Route path="/local/:id/schedule" element={<LocalEditMySchedule />} />
+                <Route path="/local" element={<LocalAllView />} />
+                <Route path="/local/create" element={<LocalCreate />} />
+                <Route path="/local/:id/edit" element={<LocalEdit />} />
               </Routes>
             </main>
           </>

@@ -14,7 +14,6 @@ const LocalEditSchedule = () => {
     const fetchSchedule = async () => {
       try {
         const data = await getMyLocal();
-        // Convertir valores al formato de 24 horas si es necesario
         const scheduleWith24HourFormat = data.schedule.map((day) => ({
           ...day,
           open: day.open || '',
@@ -27,7 +26,7 @@ const LocalEditSchedule = () => {
         setIsLoading(false);
       }
     };
-  
+
     fetchSchedule();
   }, []);
 
@@ -45,9 +44,6 @@ const LocalEditSchedule = () => {
         open,
         close,
       }));
-  
-      console.log("Datos enviados al backend:", filteredSchedule);
-  
       await updateLocalSchedule(id, filteredSchedule);
       alert('Horario actualizado correctamente.');
       navigate('/local/my-local');
@@ -57,65 +53,76 @@ const LocalEditSchedule = () => {
   };
 
   if (isLoading) {
-    return <p>Cargando horario...</p>;
+    return (
+      <div className="loading-container">
+        <p className="loading-message">Cargando horario...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <div className="error-container">
+        <p className="error-message">{error}</p>
+      </div>
+    );
   }
 
   return (
     <div className="edit-schedule-container">
       <h1>Editar Horario</h1>
-      <table className="schedule-table">
-        <thead>
-          <tr>
-            <th>Día</th>
-            <th>¿Abierto?</th>
-            <th>Hora de Apertura</th>
-            <th>Hora de Cierre</th>
-          </tr>
-        </thead>
-        <tbody>
-          {editedSchedule.map((day, index) => (
-            <tr key={index}>
-              <td>{day.day}</td>
-              <td>
-                <select
-                  value={day.isOpen}
-                  onChange={(e) => handleChange(index, 'isOpen', e.target.value === 'true')}
-                >
-                  <option value="true">Sí</option>
-                  <option value="false">No</option>
-                </select>
-              </td>
-              <td>
-                <input
-                  type="time"
-                  lang="en-GB" // Forzar formato de 24 horas
-                  value={day.isOpen ? day.open : ''} 
-                  onChange={(e) => handleChange(index, 'open', e.target.value)}
-                  disabled={!day.isOpen}
-                />
-              </td>
-              <td>
-                <input
-                  type="time"
-                  lang="en-GB" // Forzar formato de 24 horas
-                  value={day.isOpen ? day.close : ''} 
-                  onChange={(e) => handleChange(index, 'close', e.target.value)}
-                  disabled={!day.isOpen}
-                />
-              </td>
+      <fieldset>
+        <legend>Horario Semanal</legend>
+        <table className="schedule-table">
+          <thead>
+            <tr>
+              <th>Día</th>
+              <th>¿Abierto?</th>
+              <th>Hora de Apertura</th>
+              <th>Hora de Cierre</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {editedSchedule.map((day, index) => (
+              <tr key={index}>
+                <td>{day.day}</td>
+                <td>
+                  <select
+                    value={day.isOpen}
+                    onChange={(e) => handleChange(index, 'isOpen', e.target.value === 'true')}
+                  >
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    lang="en-GB"
+                    value={day.isOpen ? day.open : ''}
+                    onChange={(e) => handleChange(index, 'open', e.target.value)}
+                    disabled={!day.isOpen}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    lang="en-GB"
+                    value={day.isOpen ? day.close : ''}
+                    onChange={(e) => handleChange(index, 'close', e.target.value)}
+                    disabled={!day.isOpen}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </fieldset>
       <div className="buttons-container">
-        <button type="button" onClick={handleSubmit}>
+        <button className="save-button" type="button" onClick={handleSubmit}>
           Guardar Cambios
         </button>
-        <button type="button" onClick={() => navigate('/local/my-local')}>
+        <button className="cancel-button" type="button" onClick={() => navigate('/local/my-local')}>
           Cancelar
         </button>
       </div>

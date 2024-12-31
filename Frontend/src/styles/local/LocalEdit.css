@@ -1,0 +1,122 @@
+/* Estilo general para el contenedor */
+.edit-local-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Título principal */
+  .edit-local-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo general para el formulario */
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Etiquetas */
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  /* Inputs de texto */
+  input[type="text"],
+  input[type="time"] {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  /* Checkbox */
+  input[type="checkbox"] {
+    margin-left: 10px;
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+  
+  /* Fieldsets */
+  fieldset {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Leyendas */
+  legend {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Botones */
+  button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Estilo para errores */
+  .error-message {
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  /* Estilo para cada día del horario */
+  .schedule-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  /* Ajuste para los inputs dentro del horario */
+  .schedule-item input {
+    margin-left: 10px;
+    flex: 1;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .edit-local-container {
+      padding: 10px;
+    }
+  
+    button {
+      font-size: 14px;
+    }
+  
+    label {
+      font-size: 14px;
+    }
+  
+    fieldset {
+      padding: 10px;
+    }
+  }

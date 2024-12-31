@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllLocalsData, getMyLocal } from '../../services/local.service.js';
+import { getAllLocalsData } from '../../services/local.service.js';
 import '../../styles/generic/NavBar.css';
 
 const NavBar = () => {
@@ -52,7 +52,7 @@ const NavBar = () => {
 
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : 'expanded'}`}>
-      <button className="toggle-btn" onClick={toggleNavbar}>
+      <button className="toggle-btn-sidebrar" onClick={toggleNavbar}>
         {isCollapsed ? '🡸' : '🡺'}
       </button>
       <ul className="sidebar-links">
@@ -60,7 +60,7 @@ const NavBar = () => {
         {userRole === 'admin' && (
           <>
             <li onClick={() => navigate('/manage-users')}>Gestión de Usuarios</li>
-            <li onClick={() => navigate('/my-local')}>Mis Locales</li> {/*reemplazar por 'Gestión de Locales'*/}
+            <li onClick={() => navigate('/local')}>Locales</li>
           </>
         )}
 
@@ -77,25 +77,25 @@ const NavBar = () => {
           <>
             {Array.isArray(locales) &&
               locales.map((local) => (
-                <li key={local.id} className="local-item">
+                <li key={local.id} className="local-item-sidebrar">
                   {/* Encabezado del local */}
                   <div
                     onClick={() => toggleSubmenu(local.id)}
-                    className={`local-header ${
+                    className={`local-header-sidebrar ${
                       activeSubmenu === local.id ? 'active' : ''
                     }`}
                   >
                     <img
                       src={local.image}
                       alt={local.name}
-                      className="local-image"
+                      className="local-image-sidebrar"
                     />
                     {!isCollapsed && <span>{local.name}</span>}
                   </div>
 
                   {/* Submenú anidado */}
                   <ul
-                    className={`nested-menu ${
+                    className={`nested-menu-sidebrar ${
                       activeSubmenu === local.id ? 'visible' : 'hidden'
                     }`}
                   >

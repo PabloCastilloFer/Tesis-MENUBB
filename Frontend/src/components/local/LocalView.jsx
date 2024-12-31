@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getLocalById } from '../../services/local.service.js';
 import '../../styles/local/LocalView.css';
 
 const LocalView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [localInfo, setLocalInfo] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.roles) {
+      setUserRole(user.roles);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchLocalInformation = async () => {
@@ -28,6 +37,17 @@ const LocalView = () => {
 
     fetchLocalInformation();
   }, [id]);
+
+  const handleDelete = () => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar este local?')) {
+      console.log(`Eliminando local con ID: ${id}`);
+      navigate('/locals');
+    }
+  };
+
+  const handleEdit = () => {
+    navigate(`/local/${id}/edit`);
+  };
 
   if (isLoading) {
     return (
@@ -56,45 +76,74 @@ const LocalView = () => {
   }
 
   return (
-    <div className="local-info-container">
+    <div className="local-view-container">
+      {/* Botón de Volver */}
+      <button className="back-button" onClick={() => navigate(-1)}>
+        Volver
+      </button>
+
       <h1>{localInfo.name}</h1>
       {localInfo.image && (
         <img src={localInfo.image} alt={localInfo.name} className="local-image" />
       )}
-      <p><strong>Dirección:</strong> {localInfo.address}</p>
 
-      <h2>Accesibilidad</h2>
-      <p>
-        <strong>Adaptación para personas en situación de discapacidad:</strong> {localInfo.accessibility?.isAccessible ? 'Sí' : 'No'}
-      </p>
-      {localInfo.accessibility?.details && (
-        <p><strong>Detalles:</strong> {localInfo.accessibility.details}</p>
-      )}
+      <fieldset>
+        <legend>Información General</legend>
+        <p>
+          <strong>Dirección:</strong> {localInfo.address}
+        </p>
+      </fieldset>
 
-      <h2>Horario</h2>
-      {localInfo.schedule?.length > 0 ? (
-        <table className="schedule-table">
-  <thead>
-    <tr>
-      <th>Día</th>
-      <th>Estado</th>
-      <th>Hora de Apertura</th>
-      <th>Hora de Cierre</th>
-    </tr>
-  </thead>
-  <tbody>
-    {localInfo.schedule.map((day, index) => (
-      <tr key={index}>
-        <td>{day.day}</td>
-        <td>{day.isOpen ? 'Abierto' : 'Cerrado'}</td>
-        <td>{day.isOpen ? day.open || ' ' : ' '}</td>
-        <td>{day.isOpen ? day.close || ' ' : ' '}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-      ) : (
-        <p>No hay horario definido.</p>
+      <fieldset>
+        <legend>Accesibilidad</legend>
+        <p>
+          <strong>Adaptado para personas en situación de discapacidad:</strong>{' '}
+          {localInfo.accessibility?.isAccessible ? 'Sí' : 'No'}
+        </p>
+        {localInfo.accessibility?.details && (
+          <p>
+            <strong>Detalles:</strong> {localInfo.accessibility.details}
+          </p>
+        )}
+      </fieldset>
+
+      <fieldset>
+        <legend>Horario</legend>
+        {localInfo.schedule?.length > 0 ? (
+          <table className="schedule-table">
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th>Estado</th>
+                <th>Hora de Apertura</th>
+                <th>Hora de Cierre</th>
+              </tr>
+            </thead>
+            <tbody>
+              {localInfo.schedule.map((day, index) => (
+                <tr key={index}>
+                  <td>{day.day}</td>
+                  <td>{day.isOpen ? 'Abierto' : 'Cerrado'}</td>
+                  <td>{day.isOpen ? day.open || ' ' : ' '}</td>
+                  <td>{day.isOpen ? day.close || ' ' : ' '}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No hay horario definido.</p>
+        )}
+      </fieldset>
+
+      {userRole === 'admin' && (
+        <div className="admin-buttons">
+          <button className="edit-button" onClick={handleEdit}>
+            Editar
+          </button>
+          <button className="delete-button" onClick={handleDelete}>
+            Eliminar
+          </button>
+        </div>
       )}
     </div>
   );

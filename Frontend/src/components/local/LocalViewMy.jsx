@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para redirigir a otra página
+import { useNavigate } from 'react-router-dom';
 import { getMyLocal } from '../../services/local.service.js';
-import '../../styles/local/LocalView.css';
+import '../../styles/local/LocalViewMy.css';
 
 const LocalViewMy = () => {
   const [localInfo, setLocalInfo] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Estado para el spinner
-  const navigate = useNavigate(); // Hook para navegar a otra página
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLocalInformation = async () => {
       try {
-        const data = await getMyLocal(); // Llama al servicio
+        const data = await getMyLocal();
         setTimeout(() => {
           setLocalInfo(data);
-          setIsLoading(false); // Termina el estado de carga después del retraso
-        }, 500); // Simula 1 segundo adicional de carga
+          setIsLoading(false);
+        }, 500);
       } catch (err) {
         setTimeout(() => {
           setError('Hubo un problema al cargar la información del local.');
-          setIsLoading(false); // Termina el estado de carga después del retraso
+          setIsLoading(false);
         }, 500);
       }
     };
@@ -60,47 +60,59 @@ const LocalViewMy = () => {
       {localInfo.image && (
         <img src={localInfo.image} alt={localInfo.name} className="local-image" />
       )}
-      <p><strong>Dirección:</strong> {localInfo.address}</p>
 
-      <h2>Accesibilidad</h2>
-      <p>
-        <strong>Adaptación para personas en situación de discapacidad:</strong> {localInfo.accessibility?.isAccessible ? 'Sí' : 'No'}
-      </p>
-      {localInfo.accessibility?.details && (
-        <p><strong>Detalles:</strong> {localInfo.accessibility.details}</p>
-      )}
+      <fieldset>
+        <legend>Información General</legend>
+        <p><strong>Dirección:</strong> {localInfo.address}</p>
+      </fieldset>
 
-      <h2>Horario</h2>
-      {localInfo.schedule?.length > 0 ? (
-        <table className="schedule-table">
-          <thead>
-            <tr>
-              <th>Día</th>
-              <th>Estado</th>
-              <th>Hora de Apertura</th>
-              <th>Hora de Cierre</th>
-            </tr>
-          </thead>
-          <tbody>
-            {localInfo.schedule.map((day, index) => (
-              <tr key={index}>
-                <td>{day.day}</td>
-                <td>{day.isOpen ? 'Abierto' : 'Cerrado'}</td>
-                <td>{day.isOpen ? day.open || ' ' : ' '}</td>
-                <td>{day.isOpen ? day.close || ' ' : ' '}</td>
+      <fieldset>
+        <legend>Accesibilidad</legend>
+        <p>
+          <strong>Adaptación para personas en situación de discapacidad:</strong>{' '}
+          {localInfo.accessibility?.isAccessible ? 'Sí' : 'No'}
+        </p>
+        {localInfo.accessibility?.details && (
+          <p><strong>Detalles:</strong> {localInfo.accessibility.details}</p>
+        )}
+      </fieldset>
+
+      <fieldset>
+        <legend>Horario</legend>
+        {localInfo.schedule?.length > 0 ? (
+          <table className="schedule-table">
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th>Estado</th>
+                <th>Hora de Apertura</th>
+                <th>Hora de Cierre</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No hay horario definido.</p>
-      )}
-            <button
-              className="edit-schedule-button"
-              onClick={() => navigate(`/local/${localInfo.id}/schedule`)}
-            >
-              Editar Horario
-            </button>
+            </thead>
+            <tbody>
+              {localInfo.schedule.map((day, index) => (
+                <tr key={index}>
+                  <td>{day.day}</td>
+                  <td>{day.isOpen ? 'Abierto' : 'Cerrado'}</td>
+                  <td>{day.isOpen ? day.open || ' ' : ' '}</td>
+                  <td>{day.isOpen ? day.close || ' ' : ' '}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No hay horario definido.</p>
+        )}
+      </fieldset>
+
+      <div className="buttons-container">
+        <button
+          className="edit-schedule-button"
+          onClick={() => navigate(`/local/${localInfo.id}/schedule`)}
+        >
+          Editar Horario
+        </button>
+      </div>
     </div>
   );
 };

@@ -20,7 +20,7 @@
 }
 
 /* Botón para colapsar/expandir */
-.toggle-btn {
+.toggle-btn-sidebrar {
   margin-bottom: 20px;
   background: none;
   border: none;
@@ -49,43 +49,43 @@
 }
 
 /* Submenú de los locales */
-.local-item {
+.local-item-sidebrar {
   position: relative;
   padding: 10px 5px;
   cursor: pointer;
 }
 
-.local-header {
+.local-header-sidebrar {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   transition: background-color 0.3s ease;
 }
 
-.local-header:hover {
+.local-header-sidebrar:hover {
   background-color: #243b6b;
 }
 
-.local-image {
+.local-image-sidebrar{
   height: 40px;
   width: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.local-name {
+.local-name-sidebrar {
   margin-left: 10px;
   font-size: 0.9rem;
   display: none; /* Oculto en estado colapsado */
   color: white;
 }
 
-.sidebar.expanded .local-name {
+.sidebar.expanded .local-name-sidebrar {
   display: inline-block; /* Mostrar en estado expandido */
 }
 
 /* Submenú anidado */
-.nested-menu {
+.nested-menu-sidebrar {
   list-style: none;
   padding: 5px 0 5px 20px;
   margin: 0;
@@ -93,11 +93,11 @@
   flex-direction: column;
 }
 
-.nested-menu.visible {
+.nested-menu-sidebrar.visible {
   display: flex; /* Mostrado cuando está activo */
 }
 
-.nested-menu li {
+.nested-menu-sidebrar li {
   padding: 5px 10px;
   margin: 5px 0;
   color: white;
@@ -107,6 +107,6 @@
   transition: background-color 0.3s ease;
 }
 
-.nested-menu li:hover {
+.nested-menu-sidebrar li:hover {
   background-color: #243b6b;
 }
