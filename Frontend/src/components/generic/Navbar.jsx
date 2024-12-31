@@ -60,7 +60,7 @@ const NavBar = () => {
         {userRole === 'admin' && (
           <>
             <li onClick={() => navigate('/local')}>Locales</li>
-            <li onClick={() => navigate('/users/')}>Usuarios</li>
+            <li onClick={() => navigate('/users')}>Usuarios</li>
           </>
         )}
 

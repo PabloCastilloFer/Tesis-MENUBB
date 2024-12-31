@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: #F9F9F9; /* Azul claro PANTONE P 115-9 C */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -10,14 +10,15 @@
 fieldset {
   margin: 20px 0;
   padding: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
   border-radius: 5px;
+  background-color: #F9F9F9; /* Blanco neutro */
 }
 
 legend {
   padding: 0 10px;
   font-weight: bold;
-  color: #555;
+  color: #005B99; /* Azul mediano PANTONE P 106-16 C */
 }
 
 .header-container {
@@ -29,7 +30,7 @@ legend {
 
 .page-title {
   font-size: 24px;
-  color: #333;
+  color: #183859; /* Azul oscuro PANTONE P 108-16 C */
 }
 
 .search-add-container {
@@ -39,14 +40,19 @@ legend {
 
 .search-input {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
   border-radius: 4px;
   font-size: 16px;
 }
 
+.search-input:focus {
+  outline: none;
+  border-color: #4CA548; /* Verde PANTONE P 151-8 C */
+}
+
 .create-button {
   padding: 8px 16px;
-  background-color: #4caf50;
+  background-color: #4CA548; /* Verde PANTONE P 151-8 C */
   color: white;
   border: none;
   border-radius: 4px;
@@ -55,7 +61,7 @@ legend {
 }
 
 .create-button:hover {
-  background-color: #45a049;
+  background-color: #3CB344; /* Verde más oscuro PANTONE P 149-7 C */
 }
 
 .local-grid {
@@ -65,7 +71,7 @@ legend {
 }
 
 .local-card {
-  background-color: #f9f9f9;
+  background-color: #F9F9F9; /* Blanco neutro */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -82,7 +88,7 @@ legend {
 
 .local-name-card {
   font-size: 18px;
-  color: #333;
+  color: #183859; /* Azul oscuro PANTONE P 108-16 C */
   margin-bottom: 10px;
   cursor: pointer;
 }
@@ -103,19 +109,19 @@ legend {
 }
 
 .edit-button {
-  background-color: #4caf50;
+  background-color: #4CA548; /* Verde PANTONE P 151-8 C */
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #45a049;
+  background-color: #3CB344; /* Verde más oscuro PANTONE P 149-7 C */
 }
 
 .delete-button {
-  background-color: #f44336;
+  background-color: #D9453C; /* Rojo PANTONE P 48-7 C */
   color: white;
 }
 
 .delete-button:hover {
-  background-color: #d32f2f;
+  background-color: #AE2424; /* Rojo más oscuro PANTONE P 49-8 C */
 }

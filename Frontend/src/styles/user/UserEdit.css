@@ -1,0 +1,146 @@
+/* Estilo general para el contenedor */
+.edit-user-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #F9F9F9; /* Azul claro PANTONE P 115-9 C */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Título principal */
+.edit-user-container h1 {
+    text-align: center;
+    color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+    margin-bottom: 20px;
+}
+
+/* Estilo general para el formulario */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Etiquetas */
+label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #005B99; /* Azul mediano PANTONE P 106-16 C */
+}
+
+/* Inputs de texto */
+input[type="text"],
+input[type="email"],
+select {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #FFFFFF; /* Fondo blanco */
+    color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+}
+
+/* Enfocar inputs */
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #4CA548; /* Verde (PANTONE P 151-8 C) */
+    box-shadow: 0 0 3px rgba(76, 165, 72, 0.5);
+}
+
+/* Fieldsets */
+fieldset {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
+    border-radius: 4px;
+}
+
+/* Leyendas */
+legend {
+    font-weight: bold;
+    font-size: 16px;
+    color: #005B99; /* Azul mediano PANTONE P 106-16 C */
+    margin-bottom: 10px;
+}
+
+/* Botones */
+.buttons-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-button,
+.cancel-button,
+.volver-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Botón Guardar/Confirmar/Crear */
+.save-button {
+    background-color: #4CA548; /* Verde PANTONE P 151-8 C */
+    color: #fff;
+}
+
+.save-button:hover {
+    background-color: #3CB344; /* Verde más oscuro PANTONE P 149-7 C */
+}
+
+/* Botón Cancelar/Eliminar */
+.cancel-button {
+    background-color: #D9453C; /* Rojo PANTONE P 48-7 C */
+    color: #fff;
+}
+
+.cancel-button:hover {
+    background-color: #AE2424; /* Rojo más oscuro PANTONE P 49-8 C */
+}
+
+/* Botón Volver */
+.volver-button {
+    background-color: #CDCDCD; /* Gris PANTONE P 179-3 C */
+    color: #333;
+}
+
+.volver-button:hover {
+    background-color: #A8ACAE; /* Gris más oscuro PANTONE P 174-2 C */
+}
+
+/* Estilo para errores */
+.error-message {
+    color: #D9453C; /* Rojo PANTONE P 48-7 C */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .edit-user-container {
+        padding: 10px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    fieldset {
+        padding: 10px;
+    }
+}

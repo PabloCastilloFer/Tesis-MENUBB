@@ -16,6 +16,8 @@ import LocalCreate from './routes/local/LocalCreateRoute.jsx';
 import LocalEdit from './routes/local/LocalEditRoute.jsx';
 
 import UserAllView from './routes/user/UserViewAllRoute.jsx';
+import UserEdit from './routes/user/UserEditRoute.jsx';
+import UserCreate from './routes/user/UserCreateRoute.jsx';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -37,6 +39,8 @@ function AppContent() {
                 <Route path="/local/create" element={<LocalCreate />} />
                 <Route path="/local/:id/edit" element={<LocalEdit />} />
                 <Route path="/users" element={<UserAllView />} />
+                <Route path="/users/:id/edit" element={<UserEdit />} />
+                <Route path="/users/create" element={<UserCreate />} />
               </Routes>
             </main>
           </>
@@ -45,8 +49,7 @@ function AppContent() {
             <Route path="/auth" element={<Login />} />
           </Routes>
         )}
-              <Footer />
-
+            <Footer />
       </div>
     </div>
   );

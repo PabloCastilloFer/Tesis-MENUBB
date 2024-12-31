@@ -1,87 +1,132 @@
 .local-info-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #F9F9F9; /* Azul claro PANTONE P 115-9 C */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+}
+
+fieldset {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
+  border-radius: 5px;
+  background-color: #F9F9F9; /* Blanco neutro */
+}
+
+legend {
+  font-weight: bold;
+  font-size: 16px;
+  color: #005B99; /* Azul mediano PANTONE P 106-16 C */
+}
+
+p {
+  margin: 10px 0;
+  color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+}
+
+.local-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.schedule-table th,
+.schedule-table td {
+  border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
+  padding: 10px;
+  text-align: center;
+}
+
+.schedule-table th {
+  background-color: #E3EDF2; /* Azul claro PANTONE P 115-9 C */
+  font-weight: bold;
+  color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+}
+
+.schedule-table tr:nth-child(even) {
+  background-color: #F9F9F9; /* Blanco neutro */
+}
+
+.schedule-table tr:hover {
+  background-color: #DCDCDC; /* Gris claro PANTONE P 179-3 C */
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.edit-schedule-button {
+  background-color: #4CA548; /* Verde PANTONE P 151-8 C */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-schedule-button:hover {
+  background-color: #3CB344; /* Verde más oscuro PANTONE P 149-7 C */
+}
+
+.loading-container {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.loading-message {
+  font-size: 16px;
+  color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  border: 5px solid #CDCDCD; /* Gris PANTONE P 179-3 C */
+  border-top: 5px solid #4CA548; /* Verde PANTONE P 151-8 C */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  fieldset {
-    margin: 20px 0;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  legend {
-    padding: 0 10px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  .local-image {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-  }
-  
-  .schedule-table th,
-  .schedule-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .schedule-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  .schedule-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .schedule-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .buttons-container {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .edit-schedule-button {
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    background-color: #4caf50;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .edit-schedule-button:hover {
-    background-color: #45a049;
-  }
+}
+
+.error-container {
+  background-color: #FFDDDD; /* Rojo muy claro */
+  border-left: 4px solid #D9453C; /* Rojo PANTONE P 48-7 C */
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.error-message {
+  color: #AE2424; /* Rojo más oscuro PANTONE P 49-8 C */
+  font-weight: bold;
+}

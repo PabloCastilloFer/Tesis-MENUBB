@@ -9,10 +9,6 @@ export const createUser = async (req, res) => {
   try {
     const { username, email, password, roles, local } = req.body;
 
-    if (!req.user || req.user.roles.name !== "admin") {
-      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-    }
-
     const user = await UserService.createUser({ username, email, password, roles, local });
 
     return respondSuccess(req, res, 201, "Usuario creado exitosamente.", user);
@@ -27,6 +23,7 @@ export const createUser = async (req, res) => {
  */
 export const getUsers = async (req, res) => {
   try {
+
     const users = await UserService.getUsers();
 
     if (!users || users.length === 0) {
@@ -44,10 +41,6 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
 
-    if (!req.user || req.user.roles.name !== "admin") {
-      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-    }
-
     const { id } = req.params;
     const user = await UserService.getUserById(id);
     return respondSuccess(req, res, 200, "Usuario obtenido exitosamente.", user);
@@ -62,10 +55,6 @@ export const getUserById = async (req, res) => {
  */
 export const updateUser = async (req, res) => {
   try {
-
-    if (!req.user || req.user.roles.name !== "admin") {
-      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-    }
 
     const { id } = req.params;
     const { username, email, password, roles, local } = req.body;
@@ -85,10 +74,6 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!req.user || req.user.roles.name !== "admin") {
-      return respondError(req, res, 403, "No tienes permisos para realizar esta acción.");
-    }
 
     const result = await UserService.deleteUser(id, req.user.id);
     return respondSuccess(req, res, 200, result.message);

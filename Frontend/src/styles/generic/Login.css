@@ -5,12 +5,18 @@ body {
   background: linear-gradient(135deg, #E0ECFA, #B9BBBB);
 }
 
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../assets/fondo.png');
+}
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-image: url('../../assets/fondo.png');
 }
 
 .login-form {
@@ -35,7 +41,7 @@ body {
   font-size: 2rem;
 }
 
-.login-form h2 {
+.login-title {
   color: #1B2E51;
   margin-bottom: 20px;
 }
@@ -44,31 +50,26 @@ body {
   margin-bottom: 15px;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-group input {
-  width: 100%; /* Esto asegura que el ancho se ajuste al contenedor */
+.login-input {
+  width: 100%;
   padding: 10px;
   border: 1px solid #B9BBBB;
   border-radius: 5px;
-  box-sizing: border-box; /* Incluye padding y bordes en el ancho */
+  box-sizing: border-box;
 }
 
-.form-group input:focus {
+.login-input:focus {
   outline: none;
   border-color: #014898;
 }
 
-.error {
+.login-error {
   color: red;
   font-size: 0.8rem;
 }
 
-button {
-  width: 100%; /* Asegura que el botón ocupe el mismo ancho que los inputs */
+.login-button {
+  width: 100%;
   padding: 10px;
   background-color: #014898;
   color: white;
@@ -78,11 +79,11 @@ button {
   font-size: 1rem;
 }
 
-button:hover {
+.login-button:hover {
   background-color: #1B2E51;
 }
 
-.forgot-password {
+.login-forgot-password {
   display: block;
   margin-top: 10px;
   font-size: 0.9rem;
@@ -90,11 +91,11 @@ button:hover {
   text-decoration: none;
 }
 
-.forgot-password:hover {
+.login-forgot-password:hover {
   text-decoration: underline;
 }
 
-input::placeholder {
+.login-input::placeholder {
   color: #B9BBBB;
   font-size: 0.9rem;
 }

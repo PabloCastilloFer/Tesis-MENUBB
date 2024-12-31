@@ -9,14 +9,21 @@ const UserViewAll = () => {
   const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda
   const [loading, setLoading] = useState(true); // Estado para mostrar "Cargando"
   const [error, setError] = useState(null); // Estado para manejar errores
+  const [loggedUserId, setLoggedUserId] = useState(''); // Estado para almacenar el ID del usuario logueado
   const navigate = useNavigate(); // Hook para navegación
 
   useEffect(() => {
+    // Obtener datos del usuario logueado desde localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.id) {
+      setLoggedUserId(user.id); // Guardar la ID del usuario logueado
+    }
+
     const fetchUsers = async () => {
       try {
-        const data = await getUsers(); // Llamada al servicio
-        setUsers(data); // Guardar los datos en el estado
-        setFilteredUsers(data); // Mostrar todos inicialmente
+        const data = await getUsers();
+        setUsers(data);
+        setFilteredUsers(data);
       } catch (err) {
         setError('Error al cargar los usuarios.');
       } finally {
@@ -27,13 +34,12 @@ const UserViewAll = () => {
     fetchUsers();
   }, []);
 
-  // Filtrar usuarios por el término de búsqueda
   useEffect(() => {
     if (searchTerm === '') {
-      setFilteredUsers(users); // Mostrar todos si no hay búsqueda
+      setFilteredUsers(users);
     } else {
       const filtered = users.filter((user) =>
-        user.username.toLowerCase().includes(searchTerm.toLowerCase()) // Filtro case-insensitive
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredUsers(filtered);
     }
@@ -42,11 +48,9 @@ const UserViewAll = () => {
   const handleDelete = async (id) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
       try {
-        await deleteUser(id);
+        await deleteUser(id, loggedUserId);
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-        setFilteredUsers((prevFilteredUsers) =>
-          prevFilteredUsers.filter((user) => user.id !== id)
-        );
+        setFilteredUsers((prevFilteredUsers) => prevFilteredUsers.filter((user) => user.id !== id));
       } catch (error) {
         setError('Error al eliminar el usuario');
       }
@@ -61,7 +65,7 @@ const UserViewAll = () => {
   }
 
   return (
-    <div className="user-grid-page">
+    <div className="user-table-page">
       <div className="content-wrapper">
         <fieldset>
           <legend>Gestión de Usuarios</legend>
@@ -77,7 +81,7 @@ const UserViewAll = () => {
               />
               <button
                 className="create-button"
-                onClick={() => navigate('/usuarios/create')}
+                onClick={() => navigate('/users/create')}
               >
                 Crear Nuevo Usuario
               </button>
@@ -87,36 +91,41 @@ const UserViewAll = () => {
 
         <fieldset>
           <legend>Lista de Usuarios</legend>
-          <div className="user-grid">
-            {filteredUsers.map((user) => (
-              <div key={user.id} className="user-card">
-                <h3
-                  className="user-name-card"
-                  onClick={() => navigate(`/usuarios/${user.id}`)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {user.username}
-                </h3>
-                <p>Email: {user.email}</p>
-                <p>Rol: {user.roles || 'Sin rol asignado'}</p>
-                <p>Local: {user.local || 'Sin local asignado'}</p>
-                <div className="user-actions">
-                  <button
-                    className="edit-button"
-                    onClick={() => navigate(`/usuarios/${user.id}/edit`)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Nombre de Usuario</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Local</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.roles || 'Sin rol asignado'}</td>
+                  <td>{user.local || 'Sin local asignado'}</td>
+                  <td>
+                    <button
+                      className="edit-button"
+                      onClick={() => navigate(`/users/${user.id}/edit`)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(user.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </fieldset>
       </div>
     </div>

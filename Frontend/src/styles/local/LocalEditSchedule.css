@@ -2,7 +2,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: #F9F9F9; /* Azul claro (PANTONE P 115-9 C) */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
@@ -11,20 +11,20 @@
 h1 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
+  color: #183859; /* Azul oscuro (PANTONE P 108-16 C) */
 }
 
 fieldset {
   margin: 20px 0;
   padding: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #B9B7B6; /* Gris (PANTONE P 173-1 C) */
   border-radius: 5px;
 }
 
 legend {
   padding: 0 10px;
   font-weight: bold;
-  color: #555;
+  color: #005B99; /* Azul mediano (PANTONE P 106-16 C) */
 }
 
 .schedule-table {
@@ -35,22 +35,22 @@ legend {
 
 .schedule-table th,
 .schedule-table td {
-  border: 1px solid #ddd;
+  border: 1px solid #B9B7B6; /* Gris (PANTONE P 173-1 C) */
   padding: 10px;
   text-align: center;
 }
 
 .schedule-table th {
-  background-color: #f4f4f4;
+  background-color: #E3EDF2; /* Azul claro (PANTONE P 115-9 C) */
   font-weight: bold;
 }
 
 .schedule-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #F9F9F9; /* Blanco neutro */
 }
 
 .schedule-table tr:hover {
-  background-color: #f1f1f1;
+  background-color: #DCDCDC; /* Gris claro */
 }
 
 .buttons-container {
@@ -72,29 +72,32 @@ legend {
   transition: background-color 0.3s ease;
 }
 
+/* Botón Guardar */
 .save-button {
-  background-color: #4caf50;
+  background-color: #4CA548; /* Verde (PANTONE P 151-8 C) */
   color: #fff;
 }
 
 .save-button:hover {
-  background-color: #45a049;
+  background-color: #3CB344; /* Verde más oscuro (PANTONE P 149-7 C) */
 }
 
+/* Botón Cancelar */
 .cancel-button {
-  background-color: #f44336;
+  background-color: #D9453C; /* Rojo (PANTONE P 48-7 C) */
   color: #fff;
 }
 
 .cancel-button:hover {
-  background-color: #d32f2f;
+  background-color: #AE2424; /* Rojo más oscuro (PANTONE P 49-8 C) */
 }
 
+/* Botón Volver */
 .volver-button {
   display: inline-block;
   margin-bottom: 15px;
   padding: 10px 15px;
-  background-color: #ccc;
+  background-color: #CDCDCD; /* Gris (PANTONE P 179-3 C) */
   color: #333;
   border: none;
   border-radius: 5px;
@@ -103,7 +106,7 @@ legend {
 }
 
 .volver-button:hover {
-  background-color: #aaa;
+  background-color: #A8ACAE; /* Gris más oscuro (PANTONE P 174-2 C) */
 }
 
 .loading-container,
@@ -112,8 +115,13 @@ legend {
   margin: 50px 0;
 }
 
-.loading-message,
+.loading-message {
+  font-size: 16px;
+  color: #555;
+}
+
 .error-message {
   font-size: 16px;
   font-weight: bold;
+  color: #AE2424; /* Rojo más oscuro (PANTONE P 49-8 C) */
 }

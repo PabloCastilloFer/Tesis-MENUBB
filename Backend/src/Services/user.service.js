@@ -160,13 +160,17 @@ class UserService {
  * @returns {Object} - Mensaje de éxito
  */
 static async deleteUser(id, currentUserId) {
+  if (!id || !currentUserId) {
+    throw { status: 400, message: "IDs inválidos." };
+  }
+  
   const userToDelete = await User.findById(id).populate("roles", "name");
   if (!userToDelete) {
     throw { status: 404, message: "Usuario no encontrado." };
   }
 
-  const isAdmin = userToDelete.roles.some((role) => role.name === "admin");
-
+  const isAdmin = userToDelete.roles && userToDelete.roles.name === "admin";
+  
   if (isAdmin) {
     const remainingAdmins = await User.countDocuments({ roles: { $elemMatch: { name: "admin" } } });
     if (remainingAdmins <= 1) {
