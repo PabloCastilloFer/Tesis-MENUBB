@@ -34,11 +34,14 @@ const LocalSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     address: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        unique: true
     },
     accessibility: AccessibilitySchema,
     image: {
