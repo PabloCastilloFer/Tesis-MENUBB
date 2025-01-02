@@ -121,10 +121,11 @@ const NavBar = () => {
                     className={`nested-menu-sidebrar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
                   >
                     <li onClick={() => navigate(`/local/${local.id}`)}>Información</li>
-                    <li onClick={() => navigate(`/local/${local.id}/comida`)}> {/*reemplazar por 'menu' específico por local*/ }
+                    <li onClick={() => navigate(`/comidas`)}> {/*reemplazar por 'menu' específico por local*/ }
                       Comida
                     </li>
                   </ul>
+                  
                 </li>
               ))}
           </>

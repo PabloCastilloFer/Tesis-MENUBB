@@ -6,8 +6,9 @@ import authorizeRole from "../Middlewares/authorization.middleware.js";
 
 const router = Router();
 
+
 router
-    .get('/', authorizeRole(["encargado"]), getComidas)
+    .get('/', authorizeRole(["encargado","user"]), getComidas)
     .get('/:id', authorizeRole(["encargado"]), getComida)
     .post('/', upload.single("imagen"), authorizeRole(["encargado"]), handleFileSizeLimit, createComida)
     .put('/:id', upload.single("imagen"), authorizeRole(["encargado"]), handleFileSizeLimit,updateComida)
