@@ -1,4 +1,4 @@
-import FormComida from '../components/FormComida.jsx';
+import FormComida from '../../components/comida/FormComida.jsx';
 export default function Comida() {
     return (
         <div>

@@ -93,7 +93,7 @@ const EditLocal = () => {
   return (
 <div className="edit-local-container">
   <button className="volver-button" onClick={() => navigate(-1)}>
-    Volver
+  ← Volver
   </button>
   <h1>Editar Local</h1>
   <form onSubmit={handleSubmit}>

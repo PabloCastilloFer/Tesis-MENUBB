@@ -23,9 +23,9 @@ import UserEdit from './routes/user/UserEditRoute.jsx';
 import UserCreate from './routes/user/UserCreateRoute.jsx';
 import UpdatePassword from './routes/user/UserEditPasswordRoute.jsx';
 
-import Comidas from './routes/ViewComidaRoutes.jsx';
-import Comida from './routes/Comida.jsx';
-import UpdateComida from './routes/UpdateComidaRoute.jsx';
+import Comidas from './routes/comida/ViewComidaRoutes.jsx';
+import Comida from './routes/comida/Comida.jsx';
+import UpdateComida from './routes/comida/UpdateComidaRoute.jsx';
 
 
 function AppContent() {

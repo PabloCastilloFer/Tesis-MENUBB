@@ -84,7 +84,12 @@ const LocalCreate = () => {
 
   return (
     <div className="create-local-container">
-      <h1>Crear Nuevo Local</h1>
+    <button
+      className="volver-button"
+      onClick={() => navigate('/local')}
+    >
+      ← Volver
+    </button>      <h1>Crear Nuevo Local</h1>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <label>

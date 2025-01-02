@@ -149,3 +149,20 @@ button.volver-button:hover {
     padding: 10px;
   }
 }
+
+.volver-button {
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background-color: #CDCDCD; /* Gris claro */
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.volver-button:hover {
+  background-color: #A8ACAE; /* Gris oscuro */
+}

@@ -71,7 +71,7 @@ const LocalEditSchedule = () => {
   return (
     <div className="edit-schedule-container">
         <button className="volver-button" onClick={() => navigate(-1)}>
-          Volver
+        ← Volver
         </button>
       <h1>Editar Horario</h1>
       <fieldset>

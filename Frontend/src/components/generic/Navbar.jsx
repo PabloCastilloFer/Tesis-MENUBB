@@ -59,16 +59,40 @@ const NavBar = () => {
         {/* Opciones para usuarios 'admin' */}
         {userRole === 'admin' && (
           <>
-            <li onClick={() => navigate('/local')}>Locales</li>
-            <li onClick={() => navigate('/users')}>Usuarios</li>
+            <li onClick={() => navigate('/local')}>
+              {isCollapsed ? (
+                <span className="local-icon-sidebrar">🏢</span> // Icono para "Locales"
+              ) : (
+                'Locales'
+              )}
+            </li>
+            <li onClick={() => navigate('/users')}>
+              {isCollapsed ? (
+                <span className="local-icon-sidebrar">👤</span> // Icono para "Usuarios"
+              ) : (
+                'Usuarios'
+              )}
+            </li>
           </>
         )}
 
         {/* Opciones para usuarios 'encargado' */}
         {userRole === 'encargado' && (
           <>
-            <li onClick={() => navigate('/local/my-local')}>Mi Local</li>
-            <li onClick={() => navigate('/comidas')}>Comidas</li>
+            <li onClick={() => navigate('/local/my-local')}>
+              {isCollapsed ? (
+                <span className="local-icon-sidebrar">🏠</span> // Icono representativo
+              ) : (
+                'Mi Local'
+              )}
+            </li>
+            <li onClick={() => navigate('/comidas')}>
+              {isCollapsed ? (
+                <span className="local-icon-sidebrar">🍔</span> // Icono representativo
+              ) : (
+                'Comidas'
+              )}
+            </li>
           </>
         )}
 
@@ -90,9 +114,6 @@ const NavBar = () => {
                       className="local-image-sidebrar"
                     />
                     {!isCollapsed && <span className="local-name-sidebrar">{local.name}</span>}
-                    {isCollapsed && (
-                      <span className="local-icon-sidebrar">🍔</span> // Ejemplo de ícono
-                    )}
                   </div>
 
                   {/* Submenú anidado */}

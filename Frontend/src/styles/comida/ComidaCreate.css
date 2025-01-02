@@ -1,160 +1,121 @@
-/* Estilo general para el contenedor */
-.create-local-container {
-    max-width: 800px;
-    margin: 0 auto;
+/* Contenedor principal */
+.create-comida-container {
+  max-width: 800px; /* Ancho reducido para mejorar la proporción */
+  margin: 50px auto; /* Espaciado superior para centrar mejor */
+  padding: 30px;
+  background-color: #FFFFFF; /* Fondo blanco */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+  font-family: Arial, sans-serif;
+}
+
+/* Título principal */
+.create-comida-container h1 {
+  text-align: center;
+  color: #183859; /* Azul oscuro */
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* Botón volver */
+.create-comida-container .volver-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #CDCDCD; /* Gris claro */
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.create-comida-container .volver-button:hover {
+  background-color: #A8ACAE; /* Gris oscuro */
+}
+
+/* Estilo general para el formulario */
+.create-comida-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Espaciado uniforme entre elementos */
+}
+
+/* Etiquetas */
+.create-comida-form .label {
+  font-size: 14px;
+  color: #005B99; /* Azul medio */
+  margin-bottom: 5px;
+}
+
+/* Inputs */
+.create-comida-form .input {
+  padding: 10px;
+  border: 1px solid #B9B7B6; /* Gris */
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #FFFFFF; /* Fondo blanco */
+  color: #183859; /* Azul oscuro */
+  width: 100%; /* Asegurar ancho completo */
+  box-sizing: border-box; /* Evitar desbordes */
+}
+
+/* Inputs con error */
+.create-comida-form .input.is-danger {
+  border-color: #D9453C; /* Rojo */
+  background-color: #FFE6E6; /* Fondo claro de error */
+}
+
+/* Mensajes de error */
+.create-comida-form .help.is-danger {
+  color: #D9453C; /* Rojo */
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+/* Botón Guardar */
+.create-comida-form .save-button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #4CA548; /* Verde */
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.create-comida-form .save-button:hover {
+  background-color: #3CB344; /* Verde oscuro */
+  transform: translateY(-2px);
+}
+
+.create-comida-form .save-button.is-loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Estilo responsivo */
+@media (max-width: 768px) {
+  .create-comida-container {
     padding: 20px;
-    background-color: #F9F9F9; /* Azul claro PANTONE P 115-9 C */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
   }
-  
-  /* Título principal */
-  .create-local-container h1 {
-    text-align: center;
-    color: #183859; /* Azul oscuro PANTONE P 108-16 C */
-    margin-bottom: 20px;
+
+  .create-comida-container h1 {
+    font-size: 18px;
   }
-  
-  /* Estilo general para el formulario */
-  .create-local-form {
-    display: flex;
-    flex-direction: column;
+
+  .volver-button {
+    font-size: 12px;
   }
-  
-  /* Etiquetas */
-  .form-group label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: #005B99; /* Azul mediano PANTONE P 106-16 C */
-  }
-  
-  /* Inputs de texto */
-  .form-group input,
-  .form-group textarea,
-  .schedule-group input {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
-    border-radius: 4px;
+
+  .create-comida-form .save-button {
     font-size: 14px;
-    background-color: #FFFFFF; /* Fondo blanco para los inputs */
-    color: #183859; /* Azul oscuro PANTONE P 108-16 C */
   }
-  
-  /* Checkbox */
-  input[type="checkbox"] {
-    margin-left: 10px;
-    transform: scale(1.2);
-    cursor: pointer;
-  }
-  
-  /* Fieldsets */
-  fieldset {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
-    border-radius: 4px;
-    background-color: #F9F9F9; /* Fondo neutro */
-  }
-  
-  /* Leyendas */
-  legend {
-    font-weight: bold;
-    font-size: 16px;
-    color: #005B99; /* Azul mediano PANTONE P 106-16 C */
-    margin-bottom: 10px;
-  }
-  
-  /* Botones */
-  button {
-    padding: 10px 20px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Botón Guardar/Aceptar */
-  button.save-button {
-    background-color: #4CA548; /* Verde PANTONE P 151-8 C */
-    color: white;
-  }
-  
-  button.save-button:hover {
-    background-color: #3CB344; /* Verde oscuro PANTONE P 149-7 C */
-  }
-  
-  /* Botón Cancelar/Eliminar */
-  button.cancel-button {
-    background-color: #D9453C; /* Rojo PANTONE P 48-7 C */
-    color: white;
-  }
-  
-  button.cancel-button:hover {
-    background-color: #AE2424; /* Rojo oscuro PANTONE P 49-8 C */
-  }
-  
-  /* Botón Volver */
-  button.volver-button {
-    background-color: #CDCDCD; /* Gris claro PANTONE P 179-3 C */
-    color: #333;
-  }
-  
-  button.volver-button:hover {
-    background-color: #A8ACAE; /* Gris oscuro PANTONE P 174-2 C */
-  }
-  
-  /* Estilo para errores */
-  .error-message {
-    color: #D9453C; /* Rojo PANTONE P 48-7 C */
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-  
-  /* Estilo para cada día del horario */
-  .schedule-group {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  /* Ajuste para los inputs dentro del horario */
-  .schedule-group input {
-    margin-left: 10px;
-    flex: 1;
-  }
-
-  .input.is-danger {
-    border-color: red !important;
-    background-color: #ffe6e6 !important; /* Fondo suave para el error */
 }
-
-.help.is-danger {
-    color: red !important;
-}
-  
-  /* Mobile responsive */
-  @media (max-width: 768px) {
-    .create-local-container {
-      padding: 10px;
-    }
-  
-    button {
-      font-size: 14px;
-    }
-  
-    .form-group label {
-      font-size: 14px;
-    }
-  
-    fieldset {
-      padding: 10px;
-    }
-  }

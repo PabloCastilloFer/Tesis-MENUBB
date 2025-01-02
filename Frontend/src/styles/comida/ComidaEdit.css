@@ -1,0 +1,149 @@
+/* Contenedor principal */
+.edit-comida-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #F9F9F9; /* Azul claro */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Título principal */
+  .edit-comida-container h1 {
+    text-align: center;
+    color: #183859; /* Azul oscuro */
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  /* Botón volver */
+  .volver-button {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background-color: #CDCDCD; /* Gris claro */
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .volver-button:hover {
+    background-color: #A8ACAE; /* Gris oscuro */
+  }
+  
+  /* Estilo general para el formulario */
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Etiquetas */
+  form label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #005B99; /* Azul medio */
+  }
+  
+  /* Inputs de texto */
+  form input[type="text"],
+  form input[type="number"],
+  form input[type="file"] {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #B9B7B6; /* Gris */
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #FFFFFF; /* Fondo blanco */
+    color: #183859; /* Azul oscuro */
+  }
+  
+  /* Inputs con error */
+  form input.is-danger {
+    border-color: #D9453C; /* Rojo */
+    background-color: #FFE6E6; /* Fondo claro de error */
+  }
+  
+  /* Mensajes de error */
+  .error-message {
+    color: #D9453C; /* Rojo */
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+  
+  /* Botones */
+  .buttons-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .save-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CA548; /* Verde */
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-button:hover {
+    background-color: #3CB344; /* Verde oscuro */
+  }
+  
+  .save-button.is-loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .cancel-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #D9453C; /* Rojo */
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cancel-button:hover {
+    background-color: #AE2424; /* Rojo oscuro */
+  }
+  
+  /* Estilo responsivo */
+  @media (max-width: 768px) {
+    .edit-comida-container {
+      padding: 10px;
+    }
+  
+    .volver-button {
+      font-size: 14px;
+    }
+  
+    form label {
+      font-size: 14px;
+    }
+  
+    .buttons-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .save-button,
+    .cancel-button {
+      width: 100%;
+    }
+  }

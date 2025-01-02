@@ -83,7 +83,7 @@ const LocalView = () => {
     <div className="local-view-container">
       {/* Botón de Volver */}
       <button className="back-button" onClick={() => navigate(-1)}>
-        Volver
+      ← Volver
       </button>
 
       <h1>{localInfo.name}</h1>

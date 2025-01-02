@@ -1,4 +1,4 @@
-import UpdateComida from '../components/UpdateComida.jsx'
+import UpdateComida from '../../components/comida/UpdateComida.jsx'
 export default function modificarComida() {
 
     return (
