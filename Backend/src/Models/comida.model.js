@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
 
-const comidaSchema = new Schema({
+const ComidaSchema = new mongoose.Schema({
     nombreComida: {
         type: String,
         required: true,
@@ -11,34 +11,38 @@ const comidaSchema = new Schema({
     },
     calorias: {
         type: Number,
-        required: false,
+        default: null,
     },
     proteinas: {
         type: Number,
-        required: false,
+        default: null,
     },
     lipidos: {
         type: Number,
-        required: false,
+        default: null,
     },
     carbohidratos: {
         type: Number,
-        required: false,
+        default: null,
     },
     imagen: {
         type: String,
-        required: true,
+        default: null,
     },
-    Estado: {
+    estado: {
         type: Boolean,
         default: false,
     },
-    etiquetas: [
-        {
-            type: String,
-            required: false
-        }
-    ],
+    local: {
+        type: mongoose.Schema.Types.ObjectId,  // Cambiado para guardar el ID del local
+        ref: 'Local',  // Referencia al modelo Local
+        required: true,
+    },
+}, {
+    versionKey: false,
+    timestamps: true,
 });
 
-export default model('comida', comidaSchema);
+const Comida = mongoose.models.Comida || mongoose.model('Comida', ComidaSchema);
+
+export default Comida;

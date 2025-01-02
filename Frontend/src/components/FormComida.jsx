@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { createComida } from '../services/comida.service.js';
 import { showError, showConfirmFormComida, CreateQuestion, VolverQuestion } from '../helpers/swaHelper.js';
-import '../styles/FormComida.css';
+import '../styles/comida/ComidaCreate.css';
 
 export default function FormComida() {
     const navigate = useNavigate();
@@ -49,52 +49,58 @@ export default function FormComida() {
     };
 
     return (
-        <div className="container">
+        <div className="create-local-container">
             <button className="volver-button" onClick={handleVolver}>
                 <span>← Volver</span>
             </button>
             <div>
-                <h2 className="title">Formulario para crear comida</h2>
-                <p className="subtitle">Ingresa los detalles de la nueva comida</p>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="field">
+                <h1 className="title">Formulario para crear comida</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className="create-local-form">
+                    <div className="form-group">
                         <label className="label">Nombre de la comida:</label>
                         <input
                             type="text"
                             className={`input ${errors.nombreComida ? 'is-danger' : ''}`}
                             {...register('nombreComida', { required: "Este campo es obligatorio" })}
                         />
+                        {errors.nombreComida && <p className="help is-danger">{errors.nombreComida.message}</p>}
                     </div>
-                    <div className="field">
+                    <div className="form-group">
                         <label className="label">Precio:</label>
                         <input
                             type="number"
                             className="input"
                             {...register('precio', { required: "Este campo es obligatorio" })}
                         />
+                        {errors.precio && <p className="help is-danger">{errors.precio.message}</p>}
                     </div>
-                    <div className="field">
+                    <div className="form-group">
                         <label className="label">Calorías:</label>
-                        <input type="number" className="input" {...register('calorias')} />
+                        <input type="number" className="input" {...register('calorias', { required: "Este campo es obligatorio" })} />
+                        {errors.calorias && <p className="help is-danger">{errors.calorias.message}</p>}
                     </div>
-                    <div className="field">
+                    <div className="form-group">
                         <label className="label">Proteínas:</label>
-                        <input type="number" className="input" {...register('proteinas')} />
+                        <input type="number" className="input" {...register('proteinas', { required: "Este campo es obligatorio" })} />
+                        {errors.proteinas && <p className="help is-danger">{errors.proteinas.message}</p>}
                     </div>
-                    <div className="field">
+                    <div className="form-group">
                         <label className="label">Lípidos:</label>
-                        <input type="number" className="input" {...register('lipidos')} />
+                        <input type="number" className="input" {...register('lipidos', { required: "Este campo es obligatorio" })} />
+                        {errors.lipidos && <p className="help is-danger">{errors.lipidos.message}</p>}
                     </div>
-                    <div className="field">
+                    <div className="form-group">
                         <label className="label">Carbohidratos:</label>
-                        <input type="number" className="input" {...register('carbohidratos')} />
+                        <input type="number" className="input" {...register('carbohidratos', { required: "Este campo es obligatorio" })} />
+                        {errors.carbohidratos && <p className="help is-danger">{errors.carbohidratos.message}</p>}
                     </div>
-                    <div className="field">
+                    <div className="form-group">
                         <label className="label">Imagen:</label>
-                        <input type="file" className="input" onChange={handleArchivoChange} />
+                        <input type="file" className="input" onChange={handleArchivoChange} {...register('imagen', { required: "Este campo es obligatorio" })}/>
+                        {errors.imagen && <p className="help is-danger">{errors.imagen.message}</p>}
                     </div>
                     <button
-                        className={`button-submit ${isLoading ? 'is-loading' : ''}`}
+                        className={`save-button ${isLoading ? 'is-loading' : ''}`}
                         type="submit"
                     >
                         Guardar Comida

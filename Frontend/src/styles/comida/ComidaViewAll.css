@@ -1,0 +1,134 @@
+.local-grid-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #F9F9F9; /* Azul claro PANTONE P 115-9 C */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  fieldset {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
+    border-radius: 5px;
+    background-color: #F9F9F9; /* Blanco neutro */
+  }
+  
+  legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: #005B99; /* Azul mediano PANTONE P 106-16 C */
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .page-title {
+    font-size: 24px;
+    color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+  }
+  
+  .search-add-container {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .search-input {
+    padding: 8px;
+    border: 1px solid #B9B7B6; /* Gris PANTONE P 173-1 C */
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #4CA548; /* Verde PANTONE P 151-8 C */
+  }
+  
+  .create-button {
+    padding: 8px 16px;
+    background-color: #4CA548; /* Verde PANTONE P 151-8 C */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .create-button:hover {
+    background-color: #3CB344; /* Verde más oscuro PANTONE P 149-7 C */
+  }
+  
+  .local-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .local-card {
+    background-color: #F9F9F9; /* Blanco neutro */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s; /* Animación */
+  }
+  
+  .local-card:hover {
+    transform: scale(1.05); /* Agranda la tarjeta */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más marcada */
+  }
+  
+  .local-image-card {
+    max-width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .local-name-card {
+    font-size: 18px;
+    color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .local-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .edit-button,
+  .delete-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .edit-button {
+    background-color: #4CA548; /* Verde PANTONE P 151-8 C */
+    color: white;
+  }
+  
+  .edit-button:hover {
+    background-color: #3CB344; /* Verde más oscuro PANTONE P 149-7 C */
+  }
+  
+  .delete-button {
+    background-color: #D9453C; /* Rojo PANTONE P 48-7 C */
+    color: white;
+  }
+  
+  .delete-button:hover {
+    background-color: #AE2424; /* Rojo más oscuro PANTONE P 49-8 C */
+  }
+  

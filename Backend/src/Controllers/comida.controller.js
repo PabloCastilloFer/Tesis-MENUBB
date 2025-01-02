@@ -1,16 +1,33 @@
-
 import comida from '../Models/comida.model.js';
-import { crearComidaSchema, updateComidaSchema } from '../Validations/comida.validation.js';
+import { crearComidaSchema } from '../Validations/comida.validation.js';
 import { HOST, PORT } from '../Config/configEnv.js';
+import User from '../Models/user.model.js';
+import Local from '../Models/local.model.js'; // Importa el modelo de Local
 
 export const createComida = async (req, res) => {
     try {
         const { nombreComida } = req.body;
         let archivoURL = null;
 
+        // Verifica si hay un archivo subido
         if (req.file) {
             const imagen = req.file.filename;
             archivoURL = `http://${HOST}:${PORT}/api/src/Upload/` + imagen;
+        }
+
+        // Obtener el ID del usuario autenticado
+        const userId = req.user.id; // Suponiendo que el middleware añade req.user
+        const user = await User.findById(userId).populate('local');
+
+        if (!user || !user.local) {
+            return res.status(400).json({ message: "El usuario no tiene un local asociado." });
+        }
+
+        // Obtener el local utilizando el ID
+        const local = await Local.findById(user.local._id);
+
+        if (!local) {
+            return res.status(400).json({ message: "El local asociado no existe." });
         }
 
         const nuevaComida = {
@@ -22,7 +39,7 @@ export const createComida = async (req, res) => {
             carbohidratos: req.body.carbohidratos || null,
             imagen: archivoURL,
             estado: false,
-            etiquetas: req.body.etiquetas || [],
+            local: local._id, // Asignar el ID del local, no su nombre
         };
 
         // Reemplazar valores nulos por "Información no proporcionada"
@@ -39,7 +56,7 @@ export const createComida = async (req, res) => {
         }
 
         // Validación con Joi
-        const { error } = crearComidaSchema.validate(nuevaComida);
+        const { error } = crearComidaSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ error: error.message });
         }
@@ -59,9 +76,10 @@ export const createComida = async (req, res) => {
 };
 
 
+
 export const getComidas = async (req, res) => {
     try {
-        const comidas = await comida.find().populate('etiquetas', 'nombre -_id');
+        const comidas = await comida.find();
         if (comidas.length === 0) {
             return res.status(200).json({ message: "No hay comidas registradas" });
         }
@@ -74,7 +92,7 @@ export const getComidas = async (req, res) => {
 export const getComida = async (req, res) => {
     const { id } = req.params;
     try {
-        const comidaEncontrada = await comida.findById(id).populate('etiquetas', 'nombre -_id');
+        const comidaEncontrada = await comida.findById(id);
         if (!comidaEncontrada) {
             return res.status(200).json({ message: "Comida no encontrada" });
         }

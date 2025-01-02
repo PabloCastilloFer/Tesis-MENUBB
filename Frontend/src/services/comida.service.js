@@ -1,9 +1,10 @@
 import axios from './root.service.js';
 
-export const createComida = async (formData) => {
+export const createComida = async (formData, jwt) => {
     try {
         const config = {
             headers: { 'Content-Type': 'multipart/form-data' },
+            'Authorization': `Bearer ${jwt}`
         };
         const response = await axios.post('/comida', formData, config);
         console.log(response);
@@ -54,9 +55,12 @@ export const deleteComida = async (id) => {
     }
 };
 
-
-
-//FALTA HACER ESTO
- //export const obtenerMisComidas = (idlocal)
-
- //falta lo de las etiquetas
+export const obtenerMisComidas = async (idLocal) => {
+    try {
+        const response = await axios.get(`/comida/mis-comidas/${idLocal}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error en la solicitud de mis comidas: ', error);
+        return { status: 500, data: [error], error: error.message };
+    }
+};

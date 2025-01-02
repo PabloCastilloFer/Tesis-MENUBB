@@ -18,6 +18,9 @@ import LocalEdit from './routes/local/LocalEditRoute.jsx';
 import UserAllView from './routes/user/UserViewAllRoute.jsx';
 import UserEdit from './routes/user/UserEditRoute.jsx';
 import UserCreate from './routes/user/UserCreateRoute.jsx';
+import Comidas from './routes/ViewComidaRoutes.jsx';
+import Comida from './routes/Comida.jsx';
+import UpdateComida from './routes/UpdateComidaRoute.jsx';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -41,6 +44,9 @@ function AppContent() {
                 <Route path="/users" element={<UserAllView />} />
                 <Route path="/users/:id/edit" element={<UserEdit />} />
                 <Route path="/users/create" element={<UserCreate />} />
+                <Route path="/comidas" element={<Comidas />} />
+                <Route path="/crear-comida" element={<Comida />} />
+                <Route path="/comida/modificar" element={<UpdateComida />} />
               </Routes>
             </main>
           </>

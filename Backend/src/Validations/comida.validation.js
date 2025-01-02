@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 /**
- * Esquema de validación para la creación de una tarea
+ * Esquema de validación para la creación de una comida
  * @constant {Object}
  */
 export const crearComidaSchema = Joi.object({
@@ -24,7 +24,7 @@ export const crearComidaSchema = Joi.object({
             "number.min": "El precio debe ser mayor a 0.",
             "any.required": "El precio es obligatorio.",
         }),
-        calorias: Joi.number()
+    calorias: Joi.number()
         .label('calorias')
         .optional()
         .min(1)
@@ -69,18 +69,6 @@ export const crearComidaSchema = Joi.object({
         .allow(null)
         .messages({
             "boolean.base": "El estado debe ser de tipo boolean.",
-        }),
-    etiquetas: Joi.array()
-        .items(
-            Joi.string()
-                .regex(/^[0-9a-fA-F]{24}$/)
-                .message("Cada etiqueta debe ser un ID válido de MongoDB.")
-        )
-        .optional()
-        .label('etiquetas')
-        .messages({
-            "array.base": "Las etiquetas deben ser un arreglo.",
-            "array.includes": "Cada etiqueta debe ser un ID válido de MongoDB.",
         }),
 });
 

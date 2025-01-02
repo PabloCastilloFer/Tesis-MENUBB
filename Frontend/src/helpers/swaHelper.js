@@ -19,12 +19,6 @@ export const showConfirmFormComida = async () => {
     });
 };
 
-export const showConfirmFormTareaDuplicar = async () => {
-  await Toast.fire({
-      icon: "success",
-      title: "Tarea duplicada exitosamente!"
-  });
-};
 
 export const showErrorFormTarea = async (message) => {
     await Toast.fire({
@@ -208,14 +202,14 @@ export const CreateQuestion = async () => {
 
     if (result.isConfirmed) {
         await Swal.fire({
-            title: "Tarea creada correctamente!",
-            text: "La tarea ha sido creada",
+            title: "Comida creada correctamente!",
+            text: "La comida ha sido creada",
             icon: "success"
         });
     } else if (result.dismiss === Swal.DismissReason.cancel) {
         await Swal.fire({
             title: "Cancelado",
-            text: "Tu tarea no ha sido creada",
+            text: "La comida no ha sido creada",
             icon: "success"
         });
     }

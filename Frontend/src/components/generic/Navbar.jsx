@@ -68,7 +68,7 @@ const NavBar = () => {
         {userRole === 'encargado' && (
           <>
             <li onClick={() => navigate('/local/my-local')}>Mi Local</li>
-            <li onClick={() => navigate('/comida')}>Comida</li>
+            <li onClick={() => navigate('/comidas')}>Comidas</li>
           </>
         )}
 
@@ -81,28 +81,26 @@ const NavBar = () => {
                   {/* Encabezado del local */}
                   <div
                     onClick={() => toggleSubmenu(local.id)}
-                    className={`local-header-sidebrar ${
-                      activeSubmenu === local.id ? 'active' : ''
-                    }`}
+                    className={`local-header-sidebrar ${activeSubmenu === local.id ? 'active' : ''}`}
                   >
+                    {/* Si la barra está colapsada, mostramos solo el ícono */}
                     <img
                       src={local.image}
                       alt={local.name}
                       className="local-image-sidebrar"
                     />
-                    {!isCollapsed && <span>{local.name}</span>}
+                    {!isCollapsed && <span className="local-name-sidebrar">{local.name}</span>}
+                    {isCollapsed && (
+                      <span className="local-icon-sidebrar">🍔</span> // Ejemplo de ícono
+                    )}
                   </div>
 
                   {/* Submenú anidado */}
                   <ul
-                    className={`nested-menu-sidebrar ${
-                      activeSubmenu === local.id ? 'visible' : 'hidden'
-                    }`}
+                    className={`nested-menu-sidebrar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
                   >
-                    <li onClick={() => navigate(`/local/${local.id}`)}>
-                      Información
-                    </li>
-                    <li onClick={() => navigate(`/local/${local.id}/comida`)}> {/*reemplazar por 'menu' especifico por local*/}
+                    <li onClick={() => navigate(`/local/${local.id}`)}>Información</li>
+                    <li onClick={() => navigate(`/local/${local.id}/comida`)}> {/*reemplazar por 'menu' específico por local*/ }
                       Comida
                     </li>
                   </ul>
