@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
-import Navbar from '../components/navbar.jsx';
 import { useNavigate } from 'react-router-dom';
 import axios from '../services/root.service.js';
 import { deleteComida } from '../services/comida.service.js';
 import { showDeleteComida, DeleteQuestion } from '../helpers/swaHelper.js';
-import '../styles/ViewComida.css'; // Importa el CSS
+import '../styles/comida/ComidaViewAll.css';
 
 export default function VerComidas() {
     const navigate = useNavigate();
     const [comidas, setComidas] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [idLocalUsuario, setIdLocalUsuario] = useState(''); // Aquí guardamos el id del local del usuario logeado
 
     useEffect(() => {
         fetchData();
+        // Aquí obtienes el id del local del usuario logueado
+        // Esto depende de cómo estés gestionando el estado del usuario.
+        const localStorageUser = JSON.parse(localStorage.getItem('user')); // Esto es un ejemplo
+        setIdLocalUsuario(localStorageUser?.localId); // Ajusta según cómo guardes el id del local
     }, []);
 
     const fetchData = () => {
@@ -25,9 +29,9 @@ export default function VerComidas() {
 
     const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
-    const handleEditClick = (comida) => navigate(`/comida/modificar`, { state: { comida } });
+    const handleEditClick = (comida) => navigate('/comida/modificar', { state: { comida } });
 
-    const handleCreateClick = () => navigate('/comida');
+    const handleCreateClick = () => navigate('/crear-comida');
 
     const handleDeleted = async (comida) => {
         const isConfirmed = await DeleteQuestion();
@@ -44,63 +48,51 @@ export default function VerComidas() {
         }
     };
 
-    const filteredComidas = comidas.filter(comida =>
-        comida.nombreComida.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredComidas = comidas.filter(comida => 
+        comida.nombreComida.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        comida.idLocal === idLocalUsuario // Filtrar por el id del local del usuario
     );
 
     return (
-        <div className="container">
-            <Navbar />
-            <button
-                style={{
-                    alignSelf: 'flex-end',
-                    padding: '0.5rem 1rem',
-                    backgroundColor: '#007BFF',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                }}
-                onClick={handleCreateClick}
-            >
-                Crear comida
-            </button>
-
-            <h1 className="title is-2">Lista de Comidas</h1>
-
-            <div className="search-bar">
-                <input
-                    type="text"
-                    placeholder="Buscar por nombre de comida..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                />
+        <div className="local-grid-page">
+            <div className="header-container">
+                <h1 className="page-title">Lista de Comidas</h1>
+                <div className="search-add-container">
+                    <input
+                        type="text"
+                        placeholder="Buscar por nombre de comida..."
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        className="search-input"
+                    />
+                    <button className="create-button" onClick={handleCreateClick}>
+                        Crear comida
+                    </button>
+                </div>
             </div>
 
-            <div className="grid-container">
+            <div className="local-grid">
                 {filteredComidas.length === 0 ? (
                     <p>No hay comidas existentes con ese nombre.</p>
                 ) : (
                     filteredComidas.reverse().map((comida, index) => (
-                        <div key={index} className="card">
-                            <img src={comida.imagen || 'placeholder.png'} alt={comida.nombreComida} />
-                            <h2 className="card-title">
+                        <div key={index} className="local-card">
+                            <img 
+                                src={comida.imagen || 'placeholder.png'} 
+                                alt={comida.nombreComida} 
+                                className="local-image-card"
+                            />
+                            <h2 className="local-name-card" onClick={() => handleEditClick(comida)}>
                                 {comida.nombreComida.charAt(0).toUpperCase() + comida.nombreComida.slice(1)}
                             </h2>
                             <p><strong>Precio:</strong> {comida.precio}</p>
                             <p><strong>Calorías:</strong> {comida.calorias || 'N/A'}</p>
 
-                            <div className="button-container">
-                                <button
-                                    className="button button-primary"
-                                    onClick={() => handleEditClick(comida)}
-                                >
+                            <div className="local-actions">
+                                <button className="edit-button" onClick={() => handleEditClick(comida)}>
                                     Editar
                                 </button>
-                                <button
-                                    className="button button-danger"
-                                    onClick={() => handleDeleted(comida)}
-                                >
+                                <button className="delete-button" onClick={() => handleDeleted(comida)}>
                                     Eliminar
                                 </button>
                             </div>
