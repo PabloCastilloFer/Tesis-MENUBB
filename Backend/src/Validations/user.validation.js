@@ -57,9 +57,6 @@ import ROLES from "../Constants/roles.constants.js";
         "string.email": "El correo debe ser válido.",
         "string.pattern.base": "El correo debe pertenecer al dominio @ubiobio.cl.",
       }),
-    password: Joi.string().min(8).optional().messages({
-      "string.min": "La contraseña debe tener al menos 8 caracteres.",
-    }),
     roles: Joi.string()
       .valid(...ROLES)
       .optional()
@@ -90,4 +87,11 @@ import ROLES from "../Constants/roles.constants.js";
         "string.pattern.base": "El ID debe ser un ObjectId válido de MongoDB.",
         "any.required": "El ID es obligatorio.",
       }),
+  });
+
+  export const userPasswordSchema = Joi.object({
+    password: Joi.string().min(8).required().messages({
+      "string.min": "La contraseña debe tener al menos 8 caracteres.",
+      "any.required": "La contraseña es obligatoria.",
+    }),
   });

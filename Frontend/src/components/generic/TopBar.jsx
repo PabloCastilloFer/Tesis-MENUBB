@@ -35,6 +35,7 @@ const TopBar = () => {
           </span>
           {dropdownOpen && (
             <div className="dropdown-menu">
+              <button onClick={() => navigate(`/users/${user.id}/password`)}>Actualizar Contraseña</button>
               <button onClick={handleLogout}>Cerrar Sesión</button>
             </div>
           )}

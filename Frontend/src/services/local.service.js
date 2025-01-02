@@ -169,7 +169,6 @@ export const createLocal = async (formData) => {
     const response = await axios.post('/local', formData, config);
     return response.data;
   } catch (error) {
-    console.error('Error al crear el local:', error.response?.data || error.message);
     throw new Error(error.response?.data?.message || 'Error al crear el local.');
   }
 };

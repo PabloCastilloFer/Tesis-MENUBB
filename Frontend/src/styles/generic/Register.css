@@ -5,7 +5,7 @@ body {
   background: linear-gradient(135deg, #E0ECFA, #B9BBBB);
 }
 
-.login-page {
+.register-page {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,13 +14,14 @@ body {
   background-image: url('../../assets/fondo.png');
 }
 
-.login-container {
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
-.login-form {
+.register-form {
   background-color: white;
   padding: 30px;
   border-radius: 15px;
@@ -29,7 +30,7 @@ body {
   text-align: center;
 }
 
-.avatar {
+.avatar-register {
   width: 80px;
   height: 80px;
   background-color: #1B2E51;
@@ -42,16 +43,16 @@ body {
   font-size: 2rem;
 }
 
-.login-title {
+.register-title {
   color: #1B2E51;
   margin-bottom: 20px;
 }
 
-.form-group {
+.form-group-register {
   margin-bottom: 15px;
 }
 
-.login-input {
+.register-input {
   width: 100%;
   padding: 10px;
   border: 1px solid #B9BBBB;
@@ -59,17 +60,18 @@ body {
   box-sizing: border-box;
 }
 
-.login-input:focus {
+.register-input:focus {
   outline: none;
   border-color: #014898;
 }
 
-.login-error {
+.register-error {
   color: red;
   font-size: 0.8rem;
+  margin-bottom: 10px;
 }
 
-.login-button {
+.register-button-submit {
   width: 100%;
   padding: 10px;
   background-color: #014898;
@@ -80,44 +82,23 @@ body {
   font-size: 1rem;
 }
 
-.login-button:hover {
+.register-button-submit:hover {
   background-color: #1B2E51;
 }
 
-.login-forgot-password {
-  display: block;
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: #1B2E51;
-  text-decoration: none;
-}
-
-.login-forgot-password:hover {
-  text-decoration: underline;
-}
-
-.login-input::placeholder {
-  color: #B9BBBB;
-  font-size: 0.9rem;
-}
-
-.register-container {
-  text-align: center;
+.register-back-button {
   margin-top: 20px;
-}
-
-.register-button {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
   color: #FFFFFF;
-  background-color: #005B99; /* Azul oscuro */
+  background-color: #005B99; /* Gris */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.register-button:hover {
-  background-color: #183859; /* Azul más oscuro */
+.register-back-button:hover {
+  background-color: #183859; /* Gris oscuro */
 }

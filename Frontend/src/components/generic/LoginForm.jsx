@@ -48,9 +48,24 @@ function LoginForm() {
             {errors.password && <span className="login-error">{errors.password.message}</span>}
           </div>
           <button type="submit" className="login-button">Iniciar sesión</button>
-          <a href="#" className="login-forgot-password">¿Olvidaste tu contraseña?</a>
+          <a 
+            href="#" 
+            className="login-forgot-password" 
+            onClick={(e) => {
+              e.preventDefault(); // Previene el comportamiento predeterminado del enlace
+              navigate('/auth/forgot-password'); // Cambia a la ruta de "Olvidé mi contraseña"
+            }}
+          >
+            ¿Olvidaste tu contraseña?
+          </a>
         </form>
       </div>
+      <button
+          className="register-button"
+          onClick={() => navigate('/auth/register')} // Cambia la ruta a la que redirigirá
+        >
+          Crear Cuenta
+        </button>
     </div>
   );
 }

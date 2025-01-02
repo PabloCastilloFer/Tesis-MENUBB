@@ -43,7 +43,7 @@ const scheduleSchema = Joi.object({
 });
 
 export const localCreateSchema = Joi.object({
-  name: Joi.string().trim().required().messages({
+  name: Joi.string().trim().min(3).required().messages({
     'string.empty': 'El nombre es obligatorio.',
     'any.required': 'El nombre es obligatorio.',
   }),
@@ -91,7 +91,7 @@ export const localCreateSchema = Joi.object({
 });
 
 export const localUpdateSchema = Joi.object({
-    name: Joi.string().trim().optional().messages({
+    name: Joi.string().trim().min(3).optional().messages({
       'string.empty': 'El nombre no puede estar vacío.',
     }),
   

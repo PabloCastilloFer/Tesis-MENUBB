@@ -1,4 +1,6 @@
+import React from 'react';
 import HomeView from '../../components/generic/Home.jsx';
+
 export default function Home() {
     return (
         <div>

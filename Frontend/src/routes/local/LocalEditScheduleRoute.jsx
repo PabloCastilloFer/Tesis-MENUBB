@@ -1,3 +1,4 @@
+import React from 'react';
 import LocalEditSchedule from '../../components/local/LocalEditSchedule.jsx';
 
 export default function LocalEditMySchedule(){

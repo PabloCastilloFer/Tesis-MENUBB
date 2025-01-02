@@ -22,9 +22,9 @@ const UserEdit = () => {
                 // Obtener datos del usuario
                 const userData = await getUserById(id);
                 setForm({
-                    username: userData.username,
-                    email: userData.email,
-                    roles: userData.roles,
+                    username: userData.username || '',
+                    email: userData.email || '',
+                    roles: userData.roles || '',
                     local: userData.local || '',
                 });
 
@@ -46,11 +46,14 @@ const UserEdit = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         try {
             await updateUser(id, form); // Llamar al servicio para actualizar el usuario
+    
             alert('Usuario actualizado correctamente.');
             navigate('/users'); // Redirigir a la lista de usuarios
         } catch (err) {
+            console.error('Error al actualizar el usuario:', err);
             setError('Error al actualizar el usuario.');
         }
     };
@@ -86,17 +89,17 @@ const UserEdit = () => {
                 <label>
                     Rol:
                     <select
-                        name="roles"
-                        value={form.roles}
-                        onChange={handleChange}
-                        required
+                    name="roles"
+                    value={form.roles}
+                    onChange={handleChange}
+                    required
                     >
-                        <option value="" disabled>
-                            Selecciona un rol
-                        </option>
-                        <option value="admin">Admin</option>
-                        <option value="encargado">Encargado</option>
-                        <option value="user">User</option>
+                    <option value="" disabled>
+                        Selecciona un rol
+                    </option>
+                    <option value="admin">Admin</option>
+                    <option value="encargado">Encargado</option>
+                    <option value="user">User</option>
                     </select>
                 </label>
                 <label>

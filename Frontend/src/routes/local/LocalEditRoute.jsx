@@ -1,3 +1,4 @@
+import React from 'react';
 import EditLocal from '../../components/local/LocalEdit.jsx';
 
 export default function LocalEdit() {

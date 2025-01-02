@@ -1,3 +1,4 @@
+import React from 'react';
 import LocalViewMy from '../../components/local/LocalViewMy.jsx';
 
 export default function LocalMyData(){

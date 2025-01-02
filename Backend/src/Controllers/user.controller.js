@@ -13,7 +13,6 @@ export const createUser = async (req, res) => {
 
     return respondSuccess(req, res, 201, "Usuario creado exitosamente.", user);
   } catch (error) {
-    console.log(error);
     return respondError(req, res, error.status || 500, error.message || "Error interno del servidor.");
   }
 };
@@ -57,15 +56,31 @@ export const updateUser = async (req, res) => {
   try {
 
     const { id } = req.params;
-    const { username, email, password, roles, local } = req.body;
+    const { username, email, roles, local } = req.body;
 
-    const user = await UserService.updateUser(id, { username, email, password, roles, local });
+    const user = await UserService.updateUser(id, { username, email, roles, local });
 
     return respondSuccess(req, res, 200, "Usuario actualizado exitosamente.", user);
   } catch (error) {
     return respondError(req, res, error.status || 500, error.message || "Error interno del servidor.");
   }
 };
+
+/**
+ * Actualizar la contraseña de un usuario por ID
+ */
+export const updatePassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    const result = await UserService.updatePassword(id, password);
+    return respondSuccess(req, res, 200, result.message);
+  } catch (error) {
+    return respondError(req, res, error.status || 500, error.message || "Error al actualizar la contraseña.");
+  }
+};
+
 
 /**
  * Eliminar un usuario por ID
