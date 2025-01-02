@@ -1,7 +1,8 @@
 import { useAuth } from '../../context/AuthContext';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import Logo from '../../assets/Logo_MENUBB_Blanco.png';
+import '../../styles/generic/Home.css';
 
 const Home = () => {
   const { isAuthenticated, user } = useAuth();
@@ -18,8 +19,8 @@ const Home = () => {
   }
 
   return (
-    <div>
-      <h1>Bienvenido, {user?.username}</h1>
+    <div className="logo-menubb">
+          <img src={Logo} alt="MENUBB Logo" />
     </div>
   );
 };

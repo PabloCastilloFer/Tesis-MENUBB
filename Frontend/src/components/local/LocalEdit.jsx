@@ -72,8 +72,25 @@ const EditLocal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const formData = new FormData();
+    formData.append('name', form.name);
+    formData.append('address', form.address);
+    formData.append('isAccessible', form.accessibility.isAccessible);
+    formData.append('details', form.accessibility.details);
+    formData.append('image', form.image); // Añadir archivo
+  
+    form.schedule.forEach((day, index) => {
+      formData.append(`schedule[${index}][day]`, day.day);
+      formData.append(`schedule[${index}][isOpen]`, day.isOpen);
+      if (day.isOpen) {
+        formData.append(`schedule[${index}][open]`, day.open);
+        formData.append(`schedule[${index}][close]`, day.close);
+      }
+    });
+  
     try {
-      await updateLocal(id, form);
+      await updateLocal(id, formData); // Cambiado a 'FormData'
       alert('Local actualizado correctamente.');
       navigate(`/local/${id}`);
     } catch (err) {
@@ -120,10 +137,16 @@ const EditLocal = () => {
         <label>
           Imagen:
           <input
-            type="text"
+            type="file"
             name="image"
-            value={form.image}
-            onChange={handleChange}
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setForm((prev) => ({
+                ...prev,
+                image: file, // Guardar el archivo en el estado
+              }));
+            }}
           />
         </label>
         <fieldset>

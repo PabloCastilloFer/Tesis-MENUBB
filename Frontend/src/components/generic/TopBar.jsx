@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { logout } from '../../services/auth.service';
 import '../../styles/generic/TopBar.css';
-import Logo from '../../assets/Icono_MENUBB_Blanco.png'; // Importa el logo
+import Icono from '../../assets/Icono_MENUBB_Blanco.png'; // Importa el logo
 import UserIcon from '../../assets/user-icon.png'; // Importa el icono de usuario
 
 const TopBar = () => {
@@ -25,13 +25,13 @@ const TopBar = () => {
   return (
     <div className="topbar-container">
       <div className="top-bar">
-          <div className="logo" onClick={() => navigate('/home')}>
-          <img src={Logo} alt="MENUBB Logo" />
+          <div className="icono-menubb" onClick={() => navigate('/home')}>
+          <img src={Icono} alt="MENUBB Icono" />
         </div>
         <div className="user-section">
           <img src={UserIcon} className="user-icon" alt="User Icon"/>
           <span className="username" onClick={toggleDropdown}>
-            Bienvenid@ {username}
+            Bienvenid@, {username}
           </span>
           {dropdownOpen && (
             <div className="dropdown-menu">

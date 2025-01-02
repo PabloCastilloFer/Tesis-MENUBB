@@ -1,4 +1,4 @@
-/* Ajusta la estructura para incluir el footer */
+/* Ajusta el contenido para incluir el footer */
 .content {
   margin-top: 60px; /* Altura de la TopBar */
   margin-left: 270px; /* Ancho de la NavBar cuando está expandida */
@@ -7,8 +7,19 @@
   flex: 1; /* Hace que el contenido ocupe el espacio disponible */
 }
 
-.sidebar.collapsed ~ .content {
-  margin-left: 70px; /* Ajuste del margen para la NavBar colapsada */
+/* Footer alineado con la NavBar */
+footer {
+  margin-left: 270px; /* Ancho de la NavBar cuando está expandida */
+  text-align: center; /* Centra el texto */
+  padding: 20px 0; /* Espaciado vertical */
+  font-size: 14px; /* Tamaño del texto */
+  transition: margin-left 0.3s ease; /* Animación suave */
+}
+
+/* Ajuste del margen para la NavBar colapsada */
+.sidebar.collapsed ~ .content,
+.sidebar.collapsed ~ footer {
+  margin-left: 70px; /* Ajusta el margen cuando la NavBar está colapsada */
 }
 
 /* Aplica el fondo al body */
@@ -18,7 +29,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Asegura que ocupe toda la ventana */
-
 }
 
 /* Estructura principal de la aplicación */
@@ -27,13 +37,4 @@ body {
   background-image: url('../../assets/fondo.png'); /* Ruta de la imagen de fondo */
   flex-direction: column;
   min-height: 100vh; /* Ocupa toda la altura de la ventana */
-}
-
-Footer {
-  text-align: center; /* Centra el texto */
-  bottom: 0; /* Ajusta el footer al final de la página */
-  color: white; /* Texto blanco para visibilidad */
-  padding: 10px 0; /* Espaciado vertical */
-  font-size: 14px; /* Tamaño del texto */
-  position: relastive; /* Mantén el footer en el flujo del diseño */
 }
