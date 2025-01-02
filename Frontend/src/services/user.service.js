@@ -46,7 +46,8 @@ export const deleteUser = async (userId, loggedUserId) => {
             loggedUserId,
         };
 
-        await axios.delete(`/users/${userId}`, { ...config, data: body });
+        const response = await axios.delete(`/users/${userId}`, { ...config, data: body });
+        return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || "Error al eliminar el usuario.");
     }
@@ -79,7 +80,7 @@ export const getUserById = async (userId) => {
     }
 };
 
-export const updateUser = async (userId, data) => {
+export const updateUser = async (userId, formData) => {
     try {
         const token = Cookies.get('jwt-auth');
         if (!token) {
@@ -92,13 +93,15 @@ export const updateUser = async (userId, data) => {
             },
         };
 
-        await axios.put(`/users/${userId}`, data, config);
+        const response = await axios.put(`/users/${userId}`, formData, config);
+        return response.data;
+
     } catch (error) {
         throw new Error(error.response?.data?.message || "Error al actualizar el usuario.");
     }
 };
 
-export const createUser = async (data) => {
+export const createUser = async (formData) => {
     try {
         const token = Cookies.get('jwt-auth');
         if (!token) {
@@ -111,8 +114,31 @@ export const createUser = async (data) => {
             },
         };
 
-        await axios.post('/users', data, config);
+        const response = await axios.post('/users', formData, config);
+        return response.data;
+
     } catch (error) {
         throw new Error(error.response?.data?.message || "Error al crear el usuario.");
+    }
+}
+
+export const updatePassword = async (userId, formData) => {
+    try {
+        const token = Cookies.get('jwt-auth');
+        if (!token) {
+            throw new Error('Token no encontrado en las cookies.');
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        const response = await axios.put(`/users/${userId}/password`, formData, config);
+        return response.data;
+
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al actualizar la contraseña.");
     }
 }

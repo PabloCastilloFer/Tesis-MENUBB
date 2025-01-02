@@ -1,3 +1,4 @@
+import React from 'react';
 import EditUser from '../../components/user/UserEdit.jsx';
 
 export default function UserEdit() {
