@@ -91,3 +91,10 @@ import ROLES from "../Constants/roles.constants.js";
         "any.required": "El ID es obligatorio.",
       }),
   });
+
+  export const userPasswordSchema = Joi.object({
+    password: Joi.string().min(8).required().messages({
+      "string.min": "La contraseña debe tener al menos 8 caracteres.",
+      "any.required": "La contraseña es obligatoria.",
+    }),
+  });

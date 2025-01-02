@@ -68,6 +68,22 @@ export const updateUser = async (req, res) => {
 };
 
 /**
+ * Actualizar la contraseña de un usuario por ID
+ */
+export const updatePassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    const result = await UserService.updatePassword(id, password, req.user.id);
+    return respondSuccess(req, res, 200, result.message);
+  } catch (error) {
+    return respondError(req, res, error.status || 500, error.message || "Error al actualizar la contraseña.");
+  }
+};
+
+
+/**
  * Eliminar un usuario por ID
  * Requiere rol de administrador.
  */

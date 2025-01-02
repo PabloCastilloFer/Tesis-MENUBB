@@ -154,6 +154,30 @@ class UserService {
   }
 
   /**
+   * Actualizar la contraseña de un usuario
+   * @param {String} id - ID del usuario
+   * @param {String} password - Nueva contraseña
+   * @param {String} currentUserId - ID del usuario que solicita el cambio
+   * @returns {Object} - Mensaje de éxito
+   */
+  static async updatePassword(id, password, currentUserId) {
+    if (!id || !password || !currentUserId) {
+      throw { status: 400, message: "Datos inválidos." };
+    }
+
+    if (id !== currentUserId) {
+      throw { status: 403, message: "No tienes permiso para actualizar la contraseña de otro usuario." };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(id, { password: hashedPassword });
+
+    return { message: "Contraseña actualizada exitosamente." };
+  }
+
+
+
+  /**
  * Eliminar un usuario
  * @param {String} id - ID del usuario
  * @param {String} currentUserId - ID del usuario que solicita la eliminación
