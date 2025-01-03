@@ -3,6 +3,9 @@ import { crearComidaSchema } from '../Validations/comida.validation.js';
 import { HOST, PORT } from '../Config/configEnv.js';
 import User from '../Models/user.model.js';
 import Local from '../Models/local.model.js'; // Importa el modelo de Local
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import ComidaService from '../Services/comida.service.js';
 
 export const createComida = async (req, res) => {
     try {
@@ -153,3 +156,26 @@ export const deleteComida = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+/**
+ * Obtener las comidas del local
+ */
+
+export const getComidasLocal = async (req, res) => {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  
+      // Validar que el ID del local sea un ObjectId válido
+      if (!decoded.local || !mongoose.Types.ObjectId.isValid(decoded.local)) {
+        return res.status(400).json({ message: "ID de local no válido." });
+      }
+  
+      // Obtener las comidas del local desde el servicio
+      const comidas = await ComidaService.getComidasByLocal(token);
+  
+      res.status(200).json(comidas);
+    } catch (error) {
+      res.status(error.status || 500).json({ message: error.message });
+    }
+  };
