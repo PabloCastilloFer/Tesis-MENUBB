@@ -163,3 +163,19 @@ legend {
     padding: 10px;
   }
 }
+
+input[type="file"] {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #183859; /* Azul oscuro */
+  border: 1px solid #B9B7B6; /* Gris claro */
+  border-radius: 4px;
+  padding: 8px;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+input[type="file"]:hover {
+  border-color: #005B99; /* Azul medio */
+}

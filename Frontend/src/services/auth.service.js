@@ -1,8 +1,6 @@
 import axios from './root.service.js';
 import cookies from 'js-cookie';
-import * as jwt from 'jwt-decode';
-
-const jwtDecode = jwt.default || jwt.jwtDecode || jwt; // Compatibilidad con diferentes estructuras
+import jwtDecode from 'jwt-decode';
 
 export const login = async ({ email, password }) => {
   try {

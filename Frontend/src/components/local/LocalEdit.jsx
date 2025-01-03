@@ -6,13 +6,11 @@ import '../../styles/local/LocalEdit.css';
 const EditLocal = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [localInfo, setLocalInfo] = useState(null);
-  
   const [form, setForm] = useState({
     name: '',
     address: '',
-    accessibility: { isAccessible: false, details: '' },
-    image: '',
+    accessibility: { isAccessible: false, details: '' }, // Manejo inicial correcto
+    image: null, // Imagen como null al inicio
     schedule: [],
   });
   const [error, setError] = useState(null);
@@ -22,7 +20,6 @@ const EditLocal = () => {
     const fetchLocal = async () => {
       try {
         const data = await getLocalById(id);
-        setLocalInfo(data);
         setForm({
           name: data.name,
           address: data.address,
@@ -30,7 +27,7 @@ const EditLocal = () => {
             isAccessible: data.accessibility?.isAccessible || false,
             details: data.accessibility?.details || '',
           },
-          image: data.image,
+          image: null,
           schedule: data.schedule || [],
         });
         setIsLoading(false);
@@ -48,6 +45,14 @@ const EditLocal = () => {
     setForm((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setForm((prev) => ({
+      ...prev,
+      image: file, // Guardar el archivo en el estado
     }));
   };
 
@@ -72,14 +77,29 @@ const EditLocal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    if (!form.name || !form.address) {
+      setError('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', form.name);
     formData.append('address', form.address);
-    formData.append('isAccessible', form.accessibility.isAccessible);
-    formData.append('details', form.accessibility.details);
-    formData.append('image', form.image); // Añadir archivo
-  
+
+    // Serializa el objeto accessibility
+    formData.append(
+      'accessibility',
+      JSON.stringify({
+        isAccessible: form.accessibility.isAccessible,
+        details: form.accessibility.details,
+      })
+    );
+
+    if (form.image) {
+      formData.append('image', form.image); // Adjuntar archivo de imagen si existe
+    }
+
     form.schedule.forEach((day, index) => {
       formData.append(`schedule[${index}][day]`, day.day);
       formData.append(`schedule[${index}][isOpen]`, day.isOpen);
@@ -88,32 +108,30 @@ const EditLocal = () => {
         formData.append(`schedule[${index}][close]`, day.close);
       }
     });
-  
+
     try {
-      await updateLocal(id, formData); // Cambiado a 'FormData'
-      alert('Local actualizado correctamente.');
-      navigate(`/local/${id}`);
+      const response = await updateLocal(id, formData);
+      if (response.status === 200) {
+        alert('Local actualizado correctamente.');
+        navigate(`/local/${id}`);
+      } else {
+        setError('Error al actualizar el local.');
+      }
     } catch (err) {
       setError('Error al actualizar el local.');
     }
   };
 
-  const handleCancel = () => {
-    if (window.confirm('¿Estás seguro de que deseas cancelar? Los cambios no guardados se perderán.')) {
-      navigate(-1); // Navegar a la página anterior
-    }
-  };
-
   if (isLoading) return <p>Cargando datos del local...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="error-message">{error}</p>;
 
   return (
-<div className="edit-local-container">
-  <button className="volver-button" onClick={() => navigate(-1)}>
-  ← Volver
-  </button>
-  <h1>Editar Local</h1>
-  <form onSubmit={handleSubmit}>
+    <div className="edit-local-container">
+      <button className="volver-button" onClick={() => navigate(-1)}>
+        ← Volver
+      </button>
+      <h1>Editar Local</h1>
+      <form onSubmit={handleSubmit}>
         <label>
           Nombre:
           <input
@@ -140,13 +158,7 @@ const EditLocal = () => {
             type="file"
             name="image"
             accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              setForm((prev) => ({
-                ...prev,
-                image: file, // Guardar el archivo en el estado
-              }));
-            }}
+            onChange={handleFileChange}
           />
         </label>
         <fieldset>
@@ -215,15 +227,19 @@ const EditLocal = () => {
           ))}
         </fieldset>
         <div className="buttons-container">
-        <button className="save-button" type="button" onClick={handleSubmit}>
-          Guardar Cambios
-        </button>
-        <button className="cancel-button" type="button" onClick={() => navigate('/local/my-local')}>
-          Cancelar
-        </button>
-      </div>
-  </form>
-</div>
+          <button className="save-button" type="submit">
+            Guardar Cambios
+          </button>
+          <button
+            className="cancel-button"
+            type="button"
+            onClick={() => navigate('/local/my-local')}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
