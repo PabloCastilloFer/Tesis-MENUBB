@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { ACCESS_TOKEN_SECRET } from "../config/configEnv.js";
-import { respondError } from "../utils/resHandler.js";
-import { handleError } from "../utils/errorHandler.js";
+import { ACCESS_TOKEN_SECRET } from "../Config/configEnv.js";
+import { respondError } from "../Utils/resHandler.js";
+import { handleError } from "../Utils/errorHandler.js";
 
 /**
  * Middleware para verificar JWT
