@@ -26,6 +26,7 @@ import UpdatePassword from './routes/user/UserEditPasswordRoute.jsx';
 import Comidas from './routes/comida/ViewComidaRoutes.jsx';
 import Comida from './routes/comida/Comida.jsx';
 import UpdateComida from './routes/comida/UpdateComidaRoute.jsx';
+import MyComidas from './routes/comida/ViewComidaMyRoutes.jsx';
 
 
 function AppContent() {
@@ -53,6 +54,7 @@ function AppContent() {
                 <Route path="/comidas" element={<Comidas />} />
                 <Route path="/crear-comida" element={<Comida />} />
                 <Route path="/comida/modificar" element={<UpdateComida />} />
+                <Route path="/mis-comidas" element={<MyComidas />} />
                 <Route path="/users/:id/password" element={<UpdatePassword />} />
               </Routes>
             </main>

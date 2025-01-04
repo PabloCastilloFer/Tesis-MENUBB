@@ -55,12 +55,31 @@ export const deleteComida = async (id) => {
     }
 };
 
-export const obtenerMisComidas = async (idLocal) => {
+export const obtenerMisComidas = async () => {
     try {
-        const response = await axios.get(`/comida/mis-comidas/${idLocal}`);
-        return response.data;
+      // Obtener el token desde las cookies
+      const token = Cookies.get('jwt-auth');
+      if (!token) {
+        throw new Error('Token no encontrado en las cookies.');
+      }
+  
+      // Configurar los headers con el token
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      
+      const response = await axios.get('/comida/local/comidas', config);
+  
+      return response.data;
     } catch (error) {
-        console.error('Error en la solicitud de mis comidas: ', error);
-        return { status: 500, data: [error], error: error.message };
+      console.error(
+        'Error en la solicitud de mis comidas:',
+        error.response?.data || error.message
+      );
+      throw new Error(
+        error.response?.data?.message || 'Error al cargar las comidas.'
+      );
     }
-};
+  };
