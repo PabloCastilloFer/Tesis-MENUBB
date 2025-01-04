@@ -52,10 +52,14 @@ export const createComida = async (req, res) => {
             }
         });
 
-        // Comprobación de duplicados
-        const comidaExistente = await comida.findOne({ nombreComida });
+        // Comprobación de duplicados considerando nombre y local
+        const comidaExistente = await comida.findOne({ 
+            nombreComida, 
+            local: local._id // Compara el nombre y el local
+        });
+
         if (comidaExistente) {
-            return res.status(400).json({ message: "La comida ya existe." });
+            return res.status(400).json({ message: "La comida ya existe en este local." });
         }
 
         // Validación con Joi
@@ -77,6 +81,7 @@ export const createComida = async (req, res) => {
         res.status(500).json({ message: "Error al crear la comida." });
     }
 };
+
 
 
 
@@ -179,3 +184,31 @@ export const getComidasLocal = async (req, res) => {
       res.status(error.status || 500).json({ message: error.message });
     }
   };
+  
+  export const getComidasLocalUser = async (req, res) => {
+    try {
+        // Obtén el ID del local desde los parámetros de la URL
+        const localId = req.params.localId;
+
+        // Verifica si el ID del local es válido
+        if (!localId) {
+            return res.status(400).json({ message: 'El ID del local es obligatorio' });
+        }
+
+        // Encuentra las comidas asociadas al local
+        const comidas = await comida.find({ local: localId });
+
+        // Si no se encuentran comidas, responde con un mensaje
+        if (comidas.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron comidas para este local' });
+        }
+
+        // Responde con las comidas encontradas
+        res.status(200).json(comidas);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener las comidas del local' });
+    }
+};
+
+  
