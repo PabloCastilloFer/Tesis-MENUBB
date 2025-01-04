@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import axios from '../../services/root.service.js';
 import { obtenerMisComidas } from '../../services/comida.service.js';
 import { deleteComida } from '../../services/comida.service.js';
 import { showDeleteComida, DeleteQuestion } from '../../helpers/swaHelper.js';

@@ -86,7 +86,7 @@ const NavBar = () => {
                 'Mi Local'
               )}
             </li>
-            <li onClick={() => navigate('/comidas')}>
+            <li onClick={() => navigate('/mis-comidas')}>
               {isCollapsed ? (
                 <span className="local-icon-sidebrar">🍔</span> // Icono representativo
               ) : (

@@ -1,4 +1,5 @@
 import axios from './root.service.js';
+import Cookies from 'js-cookie';
 
 export const createComida = async (formData, jwt) => {
     try {
@@ -69,7 +70,7 @@ export const obtenerMisComidas = async () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      
+
       const response = await axios.get('/comida/local/comidas', config);
   
       return response.data;
