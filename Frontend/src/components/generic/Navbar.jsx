@@ -52,7 +52,7 @@ const NavBar = () => {
 
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : 'expanded'}`}>
-      <button className="toggle-btn-sidebrar" onClick={toggleNavbar}>
+      <button className="toggle-btn-sidebar" onClick={toggleNavbar}>
         {isCollapsed ? '🡸' : '🡺'}
       </button>
       <ul className="sidebar-links">
@@ -60,11 +60,11 @@ const NavBar = () => {
         {userRole === 'admin' && (
           <>
             <li onClick={() => navigate('/local')}>
-              <span className="local-icon-sidebrar">🏢</span> {/* Ícono siempre visible */}
+              <span className="local-icon-sidebar">🏢</span> {/* Ícono siempre visible */}
               {!isCollapsed && 'Locales'} {/* Texto visible solo cuando está expandido */}
             </li>
             <li onClick={() => navigate('/users')}>
-              <span className="local-icon-sidebrar">👤</span> {/* Ícono siempre visible */}
+              <span className="local-icon-sidebar">👤</span> {/* Ícono siempre visible */}
               {!isCollapsed && 'Usuarios'} {/* Texto visible solo cuando está expandido */}
             </li>
           </>
@@ -74,11 +74,11 @@ const NavBar = () => {
         {userRole === 'encargado' && (
           <>
             <li onClick={() => navigate('/local/my-local')}>
-              <span className="local-icon-sidebrar">🏠</span>
+              <span className="local-icon-sidebar">🏠</span>
               {!isCollapsed && 'Mi Local'}
             </li>
             <li onClick={() => navigate('/comidas')}>
-            <span className="local-icon-sidebrar">🍔</span>
+            <span className="local-icon-sidebar">🍔</span>
               {!isCollapsed && 'Comidas'}
             </li>
           </>
@@ -89,24 +89,24 @@ const NavBar = () => {
           <>
             {Array.isArray(locales) &&
               locales.map((local) => (
-                <li key={local.id} className="local-item-sidebrar">
+                <li key={local.id} className="local-item-sidebar">
                   {/* Encabezado del local */}
                   <div
                     onClick={() => toggleSubmenu(local.id)}
-                    className={`local-header-sidebrar ${activeSubmenu === local.id ? 'active' : ''}`}
+                    className={`local-header-sidebar ${activeSubmenu === local.id ? 'active' : ''}`}
                   >
                     {/* Si la barra está colapsada, mostramos solo el ícono */}
                     <img
                       src={local.image}
                       alt={local.name}
-                      className="local-image-sidebrar"
+                      className="local-image-sidebar"
                     />
-                    {!isCollapsed && <span className="local-name-sidebrar">{local.name}</span>}
+                    {!isCollapsed && <span className="local-name-sidebar">{local.name}</span>}
                   </div>
 
                   {/* Submenú anidado */}
                   <ul
-                    className={`nested-menu-sidebrar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
+                    className={`nested-menu-sidebar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
                   >
                     <li onClick={() => navigate(`/local/${local.id}`)}>Información</li>
                     <li onClick={() => navigate(`/local/${local.id}/comida`)}> {/*reemplazar por 'menu' específico por local*/ }
