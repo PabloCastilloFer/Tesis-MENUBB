@@ -15,6 +15,7 @@ const scheduleSchema = Joi.object({
 
   open: Joi.string()
     .pattern(timePattern)
+    .allow("")
     .when('isOpen', { is: true, then: Joi.required() })
     .messages({
       'string.pattern.base': 'La hora de apertura debe estar en formato HH:mm.',
@@ -23,6 +24,7 @@ const scheduleSchema = Joi.object({
 
   close: Joi.string()
     .pattern(timePattern)
+    .allow("")
     .when('isOpen', { is: true, then: Joi.required() })
     .messages({
       'string.pattern.base': 'La hora de cierre debe estar en formato HH:mm.',

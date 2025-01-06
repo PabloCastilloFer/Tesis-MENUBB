@@ -1,0 +1,13 @@
+/* Home.css */
+.logo-menubb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  }
+  
+  .logo-menubb img {
+    max-width: 60%; /* Ocupa como máximo el 80% del ancho de la pantalla */
+    max-height: 60%; /* Ocupa como máximo el 80% de la altura de la pantalla */
+    object-fit: contain; /* Mantiene la proporción del logo */
+  }

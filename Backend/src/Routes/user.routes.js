@@ -20,8 +20,8 @@ const router = express.Router();
 router.post("/", validateRequest(userCreateSchema), authorizeRole(["admin"]), createUser);
 router.get("/", authorizeRole(["admin"]), getUsers);
 router.get("/:id", authorizeRole(["admin"]), getUserById);
-router.put("/:id", validateRequest(userUpdateSchema), authorizeRole(["admin"]), updateUser);
 router.put("/:id/password", validateRequest(userPasswordSchema), authorizeRole(["admin","encargado","user"]), updatePassword);
+router.put("/:id", validateRequest(userUpdateSchema), authorizeRole(["admin"]), updateUser);
 router.delete("/:id", authorizeRole(["admin"]), deleteUser);
 
 export default router;

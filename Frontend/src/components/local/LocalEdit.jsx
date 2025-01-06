@@ -87,14 +87,9 @@ const EditLocal = () => {
     formData.append('name', form.name);
     formData.append('address', form.address);
 
-    // Serializa el objeto accessibility
-    formData.append(
-      'accessibility',
-      JSON.stringify({
-        isAccessible: form.accessibility.isAccessible,
-        details: form.accessibility.details,
-      })
-    );
+  // Agregar cada propiedad de accessibility como campos planos
+  formData.append('accessibility[isAccessible]', form.accessibility.isAccessible);
+  formData.append('accessibility[details]', form.accessibility.details);
 
     if (form.image) {
       formData.append('image', form.image); // Adjuntar archivo de imagen si existe
@@ -111,14 +106,17 @@ const EditLocal = () => {
 
     try {
       const response = await updateLocal(id, formData);
-      if (response.status === 200) {
-        alert('Local actualizado correctamente.');
+  
+      // Verifica si el backend responde con el estado de éxito
+      if (response.state === 'Success') {
+        alert(response.message || 'Local actualizado correctamente.');
         navigate(`/local/${id}`);
       } else {
-        setError('Error al actualizar el local.');
+        setError(`Error al actualizar el local: ${response.message || 'Desconocido'}`);
       }
     } catch (err) {
-      setError('Error al actualizar el local.');
+      setError('Error al conectar con el servidor.');
+      console.error('Error:', err);
     }
   };
 

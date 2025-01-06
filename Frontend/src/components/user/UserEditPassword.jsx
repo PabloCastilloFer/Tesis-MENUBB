@@ -11,11 +11,23 @@ const EditPasswordUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Validación básica del password
+    if (!newPassword || newPassword.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+  
     try {
-      await updatePassword( id,{ newPassword });
+      const payload = { password: newPassword }; // No necesitas incluir la ID en el cuerpo si ya está en la URL
+
+      console.log('ID del usuario:', id);
+      console.log('Datos enviados al backend:', payload);
+      await updatePassword(id, payload); // Llama al servicio con la ID y el nuevo password
       alert('Contraseña actualizada correctamente.');
-      navigate('/home'); // Redirige al inicio o donde prefieras
+      navigate('/home'); // Redirige al inicio o a otra página deseada
     } catch (err) {
+      console.error('Error al actualizar la contraseña:', err.response?.data || err);
       setError(err.response?.data?.message || 'Error al actualizar la contraseña.');
     }
   };

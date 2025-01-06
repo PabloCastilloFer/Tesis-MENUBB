@@ -51,7 +51,7 @@ import ROLES from "../Constants/roles.constants.js";
     }),
     email: Joi.string()
       .email()
-      .pattern(/^[a-zA-Z0-9._%+-]+@ubiobio\.cl$/)
+      .pattern(/^[a-zA-Z0-9._%+-]+@(alumnos\.)?ubiobio\.cl$/)
       .optional()
       .messages({
         "string.email": "El correo debe ser válido.",
@@ -77,7 +77,7 @@ import ROLES from "../Constants/roles.constants.js";
       .messages({
         "string.pattern.base": "El local debe ser un ID válido de MongoDB.",
       }),
-  });
+    }).or("username", "email", "roles", "local");
 
   export const userIdSchema = Joi.object({
     id: Joi.string()

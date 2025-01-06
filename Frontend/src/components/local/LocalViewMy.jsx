@@ -32,7 +32,7 @@ const LocalViewMy = () => {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
-        <p className="loading-message">Cargando información...</p>
+        <p2 className="loading-message">Cargando información...</p2>
       </div>
     );
   }
@@ -40,7 +40,7 @@ const LocalViewMy = () => {
   if (error) {
     return (
       <div className="error-container">
-        <p className="error-message">{error}</p>
+        <p2 className="error-message">{error}</p2>
       </div>
     );
   }
@@ -49,7 +49,7 @@ const LocalViewMy = () => {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
-        <p className="loading-message">Cargando información...</p>
+        <p2 className="loading-message">Cargando información...</p2>
       </div>
     );
   }

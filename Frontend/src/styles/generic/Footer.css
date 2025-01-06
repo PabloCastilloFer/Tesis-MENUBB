@@ -1,10 +1,8 @@
-global-footer {
-  position: absolute; /* Mantiene el footer en la parte inferior de la página */
-  bottom: 0;
-  left: 0;
-  width: 100%; /* Ancho completo */
+Footer {
   text-align: center; /* Centra el texto */
-  padding: 20px;
+  width: 100%; /* Asegura que ocupe todo el ancho */
   color: rgb(255, 255, 255); /* Texto blanco para visibilidad */
+  padding: 10px 0; /* Espaciado vertical */
   font-size: 14px; /* Tamaño del texto */
+  margin-top: auto; /* Empuja el footer hacia el final del contenedor */
 }

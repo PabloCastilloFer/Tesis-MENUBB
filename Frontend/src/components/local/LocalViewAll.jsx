@@ -15,12 +15,16 @@ const LocalViewAll = () => {
     const fetchLocals = async () => {
       try {
         const data = await getAllLocalsData(); // Llamada al servicio
-        setLocals(data); // Guardar los datos en el estado
-        setFilteredLocals(data); // Mostrar todos inicialmente
-        setLoading(false);
+        setTimeout(() => {
+          setLocals(data); // Guardar los datos en el estado
+          setFilteredLocals(data); // Mostrar todos inicialmente
+          setLoading(false);
+        }, 500); // Simulación de carga
       } catch (err) {
-        setError('Error al cargar los locales.');
-        setLoading(false);
+        setTimeout(() => {
+          setError('Error al cargar los locales.');
+          setLoading(false);
+        }, 500);
       }
     };
 
@@ -51,8 +55,22 @@ const LocalViewAll = () => {
     }
   };
 
-  if (loading) return <div className="loading">Cargando locales...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p className="loading-message">Cargando locales...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <p className="error-message">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="local-grid-page">

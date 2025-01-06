@@ -142,20 +142,45 @@
   margin-left: 10px;
   display: inline-block;
   text-align: center;
+  margin-right: 10px;
 }
 
 /* Mantener el nombre del local visible solo cuando la barra está expandida */
 .local-name-sidebrar {
   margin-left: 10px;
   font-size: 1rem;
-  display: inline-block; /* Mostrar solo cuando esté expandido */
   color: white;
+  opacity: 0; /* Comienza invisible */
+  visibility: hidden;
 }
 
 .sidebar.expanded .local-name-sidebrar {
-  display: inline-block;
+  animation: fadeIn 0.5s ease forwards; /* Animación para hacerla visible */
 }
 
 .sidebar.collapsed .local-name-sidebrar {
-  display: none; /* Ocultar cuando esté colapsada */
+  animation: fadeOut 0.5s ease forwards; /* Animación para ocultarla */
+}
+
+/* Definición de las animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

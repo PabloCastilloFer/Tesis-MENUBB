@@ -120,7 +120,7 @@ p {
 
 .loading-message {
   font-size: 16px;
-  color: #183859; /* Azul oscuro PANTONE P 108-16 C */
+  color: #4CA548; /* Azul oscuro PANTONE P 108-16 C */
 }
 
 .spinner {
@@ -147,11 +147,15 @@ p {
   border-left: 4px solid #D9453C; /* Rojo PANTONE P 48-7 C */
   padding: 10px;
   margin: 20px 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .error-message {
   color: #AE2424; /* Rojo más oscuro PANTONE P 49-8 C */
   font-weight: bold;
+  font-size: 16px;
+  text-align: center;
 }
 
 .admin-buttons {

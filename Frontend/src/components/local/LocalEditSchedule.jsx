@@ -38,16 +38,21 @@ const LocalEditSchedule = () => {
 
   const handleSubmit = async () => {
     try {
-      const filteredSchedule = editedSchedule.map(({ day, isOpen, open, close }) => ({
+      // Mapeo de los datos para incluir el formato adecuado
+      const filteredSchedule = editedSchedule.map(({ day, isOpen, open, close, _id }) => ({
+        _id, // Incluye el _id para identificar cada día en el backend
         day,
         isOpen,
-        open,
-        close,
+        open: isOpen ? open : '', // Si no está abierto, los valores deben ser cadenas vacías
+        close: isOpen ? close : '',
       }));
+
+      // Enviar los datos al backend
       await updateLocalSchedule(id, filteredSchedule);
       alert('Horario actualizado correctamente.');
       navigate('/local/my-local');
     } catch (err) {
+      console.error("Error al actualizar el horario:", err);
       alert('Error al actualizar el horario.');
     }
   };
@@ -70,9 +75,9 @@ const LocalEditSchedule = () => {
 
   return (
     <div className="edit-schedule-container">
-        <button className="volver-button" onClick={() => navigate(-1)}>
+      <button className="volver-button" onClick={() => navigate(-1)}>
         ← Volver
-        </button>
+      </button>
       <h1>Editar Horario</h1>
       <fieldset>
         <legend>Horario Semanal</legend>

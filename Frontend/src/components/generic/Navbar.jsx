@@ -60,18 +60,12 @@ const NavBar = () => {
         {userRole === 'admin' && (
           <>
             <li onClick={() => navigate('/local')}>
-              {isCollapsed ? (
-                <span className="local-icon-sidebrar">🏢</span> // Icono para "Locales"
-              ) : (
-                'Locales'
-              )}
+              <span className="local-icon-sidebrar">🏢</span> {/* Ícono siempre visible */}
+              {!isCollapsed && 'Locales'} {/* Texto visible solo cuando está expandido */}
             </li>
             <li onClick={() => navigate('/users')}>
-              {isCollapsed ? (
-                <span className="local-icon-sidebrar">👤</span> // Icono para "Usuarios"
-              ) : (
-                'Usuarios'
-              )}
+              <span className="local-icon-sidebrar">👤</span> {/* Ícono siempre visible */}
+              {!isCollapsed && 'Usuarios'} {/* Texto visible solo cuando está expandido */}
             </li>
           </>
         )}
@@ -80,18 +74,12 @@ const NavBar = () => {
         {userRole === 'encargado' && (
           <>
             <li onClick={() => navigate('/local/my-local')}>
-              {isCollapsed ? (
-                <span className="local-icon-sidebrar">🏠</span> // Icono representativo
-              ) : (
-                'Mi Local'
-              )}
+              <span className="local-icon-sidebrar">🏠</span>
+              {!isCollapsed && 'Mi Local'}
             </li>
             <li onClick={() => navigate('/comidas')}>
-              {isCollapsed ? (
-                <span className="local-icon-sidebrar">🍔</span> // Icono representativo
-              ) : (
-                'Comidas'
-              )}
+            <span className="local-icon-sidebrar">🍔</span>
+              {!isCollapsed && 'Comidas'}
             </li>
           </>
         )}

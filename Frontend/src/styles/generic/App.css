@@ -18,7 +18,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Asegura que ocupe toda la ventana */
-
 }
 
 /* Estructura principal de la aplicación */
@@ -29,11 +28,11 @@ body {
   min-height: 100vh; /* Ocupa toda la altura de la ventana */
 }
 
+
 Footer {
   text-align: center; /* Centra el texto */
-  bottom: 0; /* Ajusta el footer al final de la página */
+  width: 100%; /* Asegura que ocupe todo el ancho */
   color: white; /* Texto blanco para visibilidad */
   padding: 10px 0; /* Espaciado vertical */
   font-size: 14px; /* Tamaño del texto */
-  position: relastive; /* Mantén el footer en el flujo del diseño */
 }

@@ -74,10 +74,24 @@ export const updatePassword = async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;
 
+    // Validación de los datos recibidos
+    if (!id || !password) {
+      return respondError(req, res, 400, "ID y contraseña son obligatorios.");
+    }
+
+    // Llamar al servicio para actualizar la contraseña
     const result = await UserService.updatePassword(id, password);
+
+    // Responder con éxito
     return respondSuccess(req, res, 200, result.message);
   } catch (error) {
-    return respondError(req, res, error.status || 500, error.message || "Error al actualizar la contraseña.");
+    // Devolver error al cliente con información detallada si es posible
+    return respondError(
+      req,
+      res,
+      error.status || 500,
+      error.message || "Error al actualizar la contraseña."
+    );
   }
 };
 

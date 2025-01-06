@@ -107,95 +107,105 @@ class UserService {
     }
   }
 
-  /**
-   * Actualizar un usuario
-   * @param {String} id - ID del usuario
-   * @param {Object} data - Datos a actualizar
-   * @returns {Object} - Usuario actualizado
-   */
-  static async updateUser(id, data) {
-    try {
-        const { username, email, roles, local } = data;
+/**
+ * Actualizar un usuario
+ * @param {String} id - ID del usuario
+ * @param {Object} data - Datos a actualizar
+ * @returns {Object} - Usuario actualizado
+ */
+static async updateUser(id, data) {
+  try {
+      const { username, email, roles, local } = data;
 
-        // Validar si el usuario existe
-        const existingUser = await User.findById(id);
-        if (!existingUser) {
-            throw { status: 404, message: "Usuario no encontrado." };
-        }
+      // Validar si el usuario existe
+      const existingUser = await User.findById(id);
+      if (!existingUser) {
+          throw { status: 404, message: "Usuario no encontrado." };
+      }
 
-        // Validar el rol si se proporciona
-        let validRole = null;
-        if (roles) {
-            validRole = await Role.findOne({ name: roles });
-            if (!validRole) {
-                throw { status: 400, message: "El rol proporcionado no es válido." };
-            }
-        }
+      // Validar el rol si se proporciona
+      let validRole = null;
+      if (roles) {
+          validRole = await Role.findOne({ name: roles });
+          if (!validRole) {
+              throw { status: 400, message: "El rol proporcionado no es válido." };
+          }
+      }
 
-        // Validar el local si se proporciona y el rol es "encargado"
-        let validLocal = null;
-        if (roles === "encargado") {
-            if (!local) {
-                throw { status: 400, message: "Debe proporcionar un local para el rol de encargado." };
-            }
-            validLocal = await Local.findById(local);
-            if (!validLocal) {
-                throw { status: 400, message: "El local proporcionado no es válido." };
-            }
-        }
+      // Validar el local si se proporciona y el rol es "encargado"
+      let validLocal = null;
+      if (roles === "encargado") {
+          if (!local) {
+              throw { status: 400, message: "Debe proporcionar un local para el rol de encargado." };
+          }
+          validLocal = await Local.findById(local);
+          if (!validLocal) {
+              throw { status: 400, message: "El local proporcionado no es válido." };
+          }
+      } else {
+          // Si el rol no es "encargado", eliminar el local asociado
+          data.local = null; // Establecer local a null para eliminarlo
+      }
 
-        // Construir los campos a actualizar
-        const updateData = {
-            ...(username && { username }),
-            ...(email && { email }),
-            ...(validRole && { roles: validRole._id }),
-            ...(validLocal && { local: validLocal._id }),
-        };
+      // Construir los campos a actualizar
+      const updateData = {
+          ...(username && { username }),
+          ...(email && { email }),
+          ...(validRole && { roles: validRole._id }),
+          ...(roles === "encargado" && validLocal && { local: validLocal._id }),
+          ...(roles !== "encargado" && { local: null }), // Eliminar local si el rol cambia
+      };
 
-        // Actualizar el usuario
-        const updatedUser = await User.findByIdAndUpdate(id, updateData, {
-            new: true,
-        })
-            .populate("roles", "name")
-            .populate("local", "name");
+      // Actualizar el usuario
+      const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+          new: true,
+      })
+          .populate("roles", "name")
+          .populate("local", "name");
 
-        if (!updatedUser) {
-            throw { status: 404, message: "Usuario no encontrado." };
-        }
+      if (!updatedUser) {
+          throw { status: 404, message: "Usuario no encontrado." };
+      }
 
-        return {
-            id: updatedUser._id,
-            username: updatedUser.username,
-            email: updatedUser.email,
-            roles: updatedUser.roles.name,
-            local: updatedUser.local ? updatedUser.local.name : null,
-        };
-    } catch (error) {
-        throw { status: error.status || 500, message: error.message || "Error al actualizar el usuario." };
-    }
+      return {
+          id: updatedUser._id,
+          username: updatedUser.username,
+          email: updatedUser.email,
+          roles: updatedUser.roles.name,
+          local: updatedUser.local ? updatedUser.local.name : null,
+      };
+  } catch (error) {
+      throw { status: error.status || 500, message: error.message || "Error al actualizar el usuario." };
+  }
 }
 
-  /**
-   * Actualizar la contraseña de un usuario
-   * @param {String} id - ID del usuario
-   * @param {String} password - Nueva contraseña
-   * @param {String} currentUserId - ID del usuario que solicita el cambio
-   * @returns {Object} - Mensaje de éxito
-   */
-  static async updatePassword(id, password) {
-    if (!id || !password || !currentUserId) {
-      throw { status: 400, message: "Datos inválidos." };
+/**
+ * Actualizar la contraseña de un usuario
+ * @param {String} id - ID del usuario
+ * @param {String} password - Nueva contraseña
+ * @returns {Object} - Mensaje de éxito
+ */
+static async updatePassword(id, password) {
+  try {
+    if (!id || !password) {
+      throw { status: 400, message: "ID y contraseña son obligatorios." };
     }
 
-    if (id !== currentUserId) {
-      throw { status: 403, message: "No tienes permiso para actualizar la contraseña de otro usuario." };
-    }
-
+    // Hashear la contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.findByIdAndUpdate(id, { password: hashedPassword });
+
+    // Actualizar la contraseña en la base de datos
+    const user = await User.findByIdAndUpdate(id, { password: hashedPassword });
+    if (!user) {
+      throw { status: 404, message: "Usuario no encontrado." };
+    }
 
     return { message: "Contraseña actualizada exitosamente." };
+  } catch (error) {
+    console.error("Error en UserService.updatePassword:", error);
+    throw error;
   }
+}
 
 
 

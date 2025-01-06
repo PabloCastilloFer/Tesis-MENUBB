@@ -125,3 +125,48 @@ legend {
 .delete-button:hover {
   background-color: #AE2424; /* Rojo más oscuro PANTONE P 49-8 C */
 }
+
+.loading-container {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  border: 5px solid #CDCDCD;
+  border-top: 5px solid #4CA548;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-message {
+  font-size: 16px;
+  color: #4CA548;
+}
+
+.error-container {
+  background-color: #FFDDDD; /* Rojo muy claro */
+  border-left: 4px solid #D9453C; /* Rojo PANTONE P 48-7 C */
+  padding: 10px;
+  margin: 20px 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+  color: #AE2424; /* Rojo más oscuro PANTONE P 49-8 C */
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}

@@ -111,6 +111,7 @@ export const createUser = async (formData) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
         };
 
@@ -122,7 +123,7 @@ export const createUser = async (formData) => {
     }
 }
 
-export const updatePassword = async (userId, formData) => {
+export const updatePassword = async (userId, data) => {
     try {
         const token = Cookies.get('jwt-auth');
         if (!token) {
@@ -132,10 +133,11 @@ export const updatePassword = async (userId, formData) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
         };
 
-        const response = await axios.put(`/users/${userId}/password`, formData, config);
+        const response = await axios.put(`/users/${userId}/password`, data, config);
         return response.data;
 
     } catch (error) {

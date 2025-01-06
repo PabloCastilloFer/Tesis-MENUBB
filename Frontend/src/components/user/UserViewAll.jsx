@@ -4,30 +4,33 @@ import { getUsers, deleteUser } from '../../services/user.service';
 import '../../styles/user/UserViewAll.css';
 
 const UserViewAll = () => {
-  const [users, setUsers] = useState([]); // Inicializa como array vacío
-  const [filteredUsers, setFilteredUsers] = useState([]); // Inicializa como array vacío
-  const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda
-  const [loading, setLoading] = useState(true); // Estado para mostrar "Cargando"
-  const [error, setError] = useState(null); // Estado para manejar errores
-  const [loggedUserId, setLoggedUserId] = useState(''); // Estado para almacenar el ID del usuario logueado
-  const navigate = useNavigate(); // Hook para navegación
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [loggedUserId, setLoggedUserId] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Obtener datos del usuario logueado desde localStorage
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.id) {
-      setLoggedUserId(user.id); // Guardar la ID del usuario logueado
+      setLoggedUserId(user.id);
     }
 
     const fetchUsers = async () => {
       try {
         const data = await getUsers();
-        setUsers(data);
-        setFilteredUsers(data);
+        setTimeout(() => {
+          setUsers(data);
+          setFilteredUsers(data);
+          setLoading(false);
+        }, 500);
       } catch (err) {
-        setError('Error al cargar los usuarios.');
-      } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setError('Error al cargar los usuarios.');
+          setLoading(false);
+        }, 500);
       }
     };
 
@@ -57,15 +60,31 @@ const UserViewAll = () => {
     }
   };
 
-  if (loading) return <div className="loading">Cargando usuarios...</div>;
-  if (error) return <div className="error">{error}</div>;
+  const closeModal = () => {
+    setError(null); // Cierra el modal al hacer clic en "OK"
+  };
 
-  if (!Array.isArray(filteredUsers)) {
-    return <div className="error">Los datos de usuarios no son válidos.</div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p className="loading-message">Cargando usuarios...</p>
+      </div>
+    );
   }
 
   return (
     <div className="user-table-page">
+      {error && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p className="modal-message">{error}</p>
+            <button className="modal-button" onClick={closeModal}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       <div className="content-wrapper">
         <fieldset>
           <legend>Gestión de Usuarios</legend>

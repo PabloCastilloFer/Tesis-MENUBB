@@ -47,9 +47,15 @@ const UserEdit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        try {
-            await updateUser(id, form); // Llamar al servicio para actualizar el usuario
+        // Crear una copia del formulario y eliminar `local` si no es necesario
+        const updatedForm = { ...form };
+        if (form.roles !== 'encargado') {
+            delete updatedForm.local;
+        }
     
+        try {
+            await updateUser(id, updatedForm); // Enviar formulario actualizado al backend
+        
             alert('Usuario actualizado correctamente.');
             navigate('/users'); // Redirigir a la lista de usuarios
         } catch (err) {
@@ -89,36 +95,46 @@ const UserEdit = () => {
                 <label>
                     Rol:
                     <select
-                    name="roles"
-                    value={form.roles}
-                    onChange={handleChange}
-                    required
-                    >
-                    <option value="" disabled>
-                        Selecciona un rol
-                    </option>
-                    <option value="admin">Admin</option>
-                    <option value="encargado">Encargado</option>
-                    <option value="user">User</option>
-                    </select>
-                </label>
-                <label>
-                    Local:
-                    <select
-                        name="local"
-                        value={form.local}
-                        onChange={handleChange}
+                        name="roles"
+                        value={form.roles}
+                        onChange={(e) => {
+                            const { value } = e.target;
+                            setForm((prev) => ({
+                                ...prev,
+                                roles: value,
+                                local: value !== 'encargado' ? '' : prev.local, // Asigna vacío si no es "encargado"
+                            }));
+                        }}
+                        required
                     >
                         <option value="" disabled>
-                            Selecciona un local
+                            Selecciona un rol
                         </option>
-                        {locals.map((local) => (
-                            <option key={local.id} value={local.id}>
-                                {local.name}
-                            </option>
-                        ))}
+                        <option value="admin">Admin</option>
+                        <option value="encargado">Encargado</option>
+                        <option value="user">User</option>
                     </select>
                 </label>
+
+                {form.roles === 'encargado' && (
+                    <label>
+                        Local:
+                        <select
+                            name="local"
+                            value={form.local}
+                            onChange={handleChange}
+                        >
+                            <option value="" disabled>
+                                Selecciona un local
+                            </option>
+                            {locals.map((local) => (
+                                <option key={local.id} value={local.id}>
+                                    {local.name}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                )}
                 <div className="buttons-container">
                     <button className="save-button" type="submit">
                         Guardar Cambios
