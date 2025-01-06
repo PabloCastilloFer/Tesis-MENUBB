@@ -34,10 +34,10 @@ export default function MisComidas() {
         const isConfirmed = await DeleteQuestion();
         if (isConfirmed) {
             try {
-                const response = await deleteComida(comida._id);
+                const response = await deleteComida(comida.id);
                 if (response.status === 200) {
                     await showDeleteComida();
-                    setComidas((prevComidas) => prevComidas.filter((c) => c._id !== comida._id));
+                    setComidas((prevComidas) => prevComidas.filter((c) => c.id !== comida.id));
                 }
             } catch (error) {
                 console.error('Error al eliminar la comida', error);
