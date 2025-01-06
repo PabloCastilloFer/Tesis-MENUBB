@@ -1,5 +1,5 @@
 import comida from '../Models/comida.model.js';
-import { crearComidaSchema } from '../Validations/comida.validation.js';
+import { crearComidaSchema, updateComidaSchema } from '../Validations/comida.validation.js';
 import { HOST, PORT } from '../Config/configEnv.js';
 import User from '../Models/user.model.js';
 import Local from '../Models/local.model.js'; // Importa el modelo de Local
@@ -133,7 +133,7 @@ export const updateComida = async (req, res) => {
             return res.status(404).json({ message: "Comida no encontrada" });
         }
 
-        const imagen = req.file ? req.file.filename : comidaModificada.imagen.split('/').pop();
+        const imagen = req.file?.filename || comidaModificada.imagen.split('/').pop();
         const URL = `http://${HOST}:${PORT}/api/src/Upload/`;
 
         const updateComida = {
@@ -146,7 +146,7 @@ export const updateComida = async (req, res) => {
             imagen: req.file ? URL + imagen : comidaModificada.imagen,
             estado: req.body.estado !== undefined ? req.body.estado : comidaModificada.estado
         };
-
+        console.log(updateComida);
         const { error } = updateComidaSchema.validate(updateComida);
         if (error) {
             return res.status(400).json({ error: error.message });

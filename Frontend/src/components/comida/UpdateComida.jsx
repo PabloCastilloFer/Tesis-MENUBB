@@ -37,9 +37,9 @@ const EditarComida = ({ initialData }) => {
     formData.append('imagen', archivo);
 
     try {
-      const response = await updateComida(comida._id, formData);
+      const response = await updateComida(comida.id, formData);
       if (response.status === 200) {
-        navigate('/comidas');
+        navigate('/mis-comidas');
       } else {
         alert('Error al actualizar la comida');
       }
