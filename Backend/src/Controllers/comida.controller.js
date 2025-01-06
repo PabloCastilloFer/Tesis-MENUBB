@@ -3,6 +3,9 @@ import { crearComidaSchema } from '../Validations/comida.validation.js';
 import { HOST, PORT } from '../Config/configEnv.js';
 import User from '../Models/user.model.js';
 import Local from '../Models/local.model.js'; // Importa el modelo de Local
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import ComidaService from '../Services/comida.service.js';
 
 export const createComida = async (req, res) => {
     try {
@@ -49,10 +52,14 @@ export const createComida = async (req, res) => {
             }
         });
 
-        // Comprobación de duplicados
-        const comidaExistente = await comida.findOne({ nombreComida });
+        // Comprobación de duplicados considerando nombre y local
+        const comidaExistente = await comida.findOne({ 
+            nombreComida, 
+            local: local._id // Compara el nombre y el local
+        });
+
         if (comidaExistente) {
-            return res.status(400).json({ message: "La comida ya existe." });
+            return res.status(400).json({ message: "La comida ya existe en este local." });
         }
 
         // Validación con Joi
@@ -77,13 +84,29 @@ export const createComida = async (req, res) => {
 
 
 
+
 export const getComidas = async (req, res) => {
     try {
-        const comidas = await comida.find();
+        const comidas = await comida.find().populate('local');
+
         if (comidas.length === 0) {
-            return res.status(200).json({ message: "No hay comidas registradas" });
+            return res.status(200).json({ message: 'No hay comidas registradas.' });
         }
-        res.status(200).json(comidas);
+
+        const comidasConLocal = comidas.map((comida) => ({
+            id: comida._id,
+            nombreComida: comida.nombreComida,
+            precio: comida.precio,
+            calorias: comida.calorias,
+            proteinas: comida.proteinas,
+            lipidos: comida.lipidos,
+            carbohidratos: comida.carbohidratos,
+            imagen: comida.imagen,
+            estado: comida.estado,
+            nombreLocal: comida.local.name,
+        }));
+
+        res.status(200).json(comidasConLocal);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -153,3 +176,54 @@ export const deleteComida = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+/**
+ * Obtener las comidas del local
+ */
+
+export const getComidasLocal = async (req, res) => {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  
+      // Validar que el ID del local sea un ObjectId válido
+      if (!decoded.local || !mongoose.Types.ObjectId.isValid(decoded.local)) {
+        return res.status(400).json({ message: "ID de local no válido." });
+      }
+  
+      // Obtener las comidas del local desde el servicio
+      const comidas = await ComidaService.getComidasByLocal(token);
+  
+      res.status(200).json(comidas);
+    } catch (error) {
+      res.status(error.status || 500).json({ message: error.message });
+    }
+  };
+  
+  export const getComidasLocalUser = async (req, res) => {
+    try {
+        // Obtén el ID del local desde los parámetros de la URL
+        const localId = req.params.localId;
+
+        // Verifica si el ID del local es válido
+        if (!localId) {
+            return res.status(400).json({ message: 'El ID del local es obligatorio' });
+        }
+
+        // Encuentra las comidas asociadas al local
+        const comidas = await comida.find({ local: localId });
+
+        // Si no se encuentran comidas, responde con un mensaje
+        if (comidas.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron comidas para este local' });
+        }
+
+        // Responde con las comidas encontradas
+        res.status(200).json(comidas);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener las comidas del local' });
+    }
+};
+
+  

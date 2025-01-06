@@ -27,7 +27,8 @@ import UpdatePassword from './routes/user/UserEditPasswordRoute.jsx';
 import Comidas from './routes/comida/ViewComidaRoutes.jsx';
 import Comida from './routes/comida/Comida.jsx';
 import UpdateComida from './routes/comida/UpdateComidaRoute.jsx';
-
+import MyComidas from './routes/comida/ViewComidaMyRoutes.jsx';
+import ComidaAdmin from './routes/comida/ViewComidaAdminRoute.jsx';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -55,6 +56,8 @@ function AppContent() {
                 <Route path="/crear-comida" element={<Comida />} />
                 <Route path="/comida/modificar" element={<UpdateComida />} />
                 <Route path="/users/:id/password" element={<UpdatePassword />} />
+                <Route path="/mis-comidas" element={<MyComidas />} /> {/* ENCARGADO */}
+                <Route path="/comida" element={<ComidaAdmin />} /> {/* ADMIN */}
               </Routes>
             </main>
           </>

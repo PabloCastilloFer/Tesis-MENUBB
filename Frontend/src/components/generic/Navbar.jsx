@@ -109,9 +109,9 @@ const NavBar = () => {
                     className={`nested-menu-sidebar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
                   >
                     <li onClick={() => navigate(`/local/${local.id}`)}>Información</li>
-                    <li onClick={() => navigate(`/local/${local.id}/comida`)}> {/*reemplazar por 'menu' específico por local*/ }
-                      Comida
-                    </li>
+                    <li onClick={() => navigate(`/comidas`, { state: { localId: local.id } })}> {/* Enviar el localId como estado */}
+              Comida
+            </li>
                   </ul>
                 </li>
               ))}
