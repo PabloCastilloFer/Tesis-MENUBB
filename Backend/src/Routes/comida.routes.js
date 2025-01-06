@@ -12,7 +12,7 @@ router
     .get('/', authorizeRole(["encargado","user","admin"]), getComidas)
     .get('/:id', authorizeRole(["encargado","admin"]), getComida)
     .post('/', upload.single("imagen"), authorizeRole(["encargado"]), handleFileSizeLimit, createComida)
-    .put('/:id', upload.single("imagen"), authorizeRole(["encargado"]), handleFileSizeLimit,updateComida)
+    .patch('/:id', upload.single("imagen"), authorizeRole(["encargado"]), handleFileSizeLimit,updateComida)
     .delete('/:id', authorizeRole(["encargado","admin"]), deleteComida);
 
 export default router;

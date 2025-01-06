@@ -24,7 +24,7 @@ export const updateComida = async (id, formData) => {
         const config = {
             headers: { 'Content-Type': 'multipart/form-data' },
         };
-        const response = await axios.put(`/comida/${id}`, formData, config);
+        const response = await axios.patch(`/comida/${id}`, formData, config);
         return response;
     } catch (error) {
         return {

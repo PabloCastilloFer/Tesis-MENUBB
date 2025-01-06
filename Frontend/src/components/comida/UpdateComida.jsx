@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { updateComida } from '../../services/comida.service.js';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UpdateQuestion, VolverQuestion } from '../../helpers/swaHelper.js';
 import '../../styles/Local/LocalEdit.css';
 
-const EditarComida = ({ initialData }) => {
+const EditarComida = () => {
   const navigate = useNavigate(); 
   const location = useLocation();
   const { comida } = location.state;
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
-    defaultValues: initialData
-  });
+
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [archivo, setArchivo] = useState(null);
+
+  // Cargar valores iniciales en los campos
+  useEffect(() => {
+    setValue('nombreComida', comida.nombreComida);
+    setValue('precio', comida.precio);
+    setValue('calorias', comida.calorias);
+    setValue('proteinas', comida.proteinas);
+    setValue('lipidos', comida.lipidos);
+    setValue('carbohidratos', comida.carbohidratos);
+  }, [comida, setValue]);
 
   const handleArchivoChange = (e) => {
     setArchivo(e.target.files[0]);
@@ -34,7 +43,9 @@ const EditarComida = ({ initialData }) => {
     formData.append('proteinas', data.proteinas);
     formData.append('lipidos', data.lipidos);
     formData.append('carbohidratos', data.carbohidratos);
-    formData.append('imagen', archivo);
+    if (archivo) {
+      formData.append('imagen', archivo);
+    }
 
     try {
       const response = await updateComida(comida.id, formData);
@@ -57,19 +68,17 @@ const EditarComida = ({ initialData }) => {
     }
   };
 
-
   return (
     <div className="edit-local-container">
       <button className="volver-button" onClick={handleVolver}>
-                <span>← Volver</span>
-            </button>
+        <span>← Volver</span>
+      </button>
       <h1>Formulario de edición de comida</h1>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <label htmlFor="nombreComida">Nombre de la comida:</label>
         <input
           id="nombreComida"
           type="text"
-          placeholder={comida.nombreComida}
           className={`input ${errors.nombreComida ? 'is-danger' : ''}`}
           {...register('nombreComida', { 
             pattern: {
@@ -84,7 +93,6 @@ const EditarComida = ({ initialData }) => {
         <input
           id="precio"
           type="number"
-          placeholder={comida.precio}
           className={`input ${errors.precio ? 'is-danger' : ''}`}
           {...register('precio', { 
             min: { value: 1, message: "El precio mínimo es 1" }
@@ -96,7 +104,6 @@ const EditarComida = ({ initialData }) => {
         <input
           id="calorias"
           type="number"
-          placeholder={comida.calorias}
           className={`input ${errors.calorias ? 'is-danger' : ''}`}
           {...register('calorias', { valueAsNumber: true, min: { value: 0, message: "Las calorías no pueden ser negativas" } })}
         />
@@ -106,7 +113,6 @@ const EditarComida = ({ initialData }) => {
         <input
           id="proteinas"
           type="number"
-          placeholder={comida.proteinas}
           className={`input ${errors.proteinas ? 'is-danger' : ''}`}
           {...register('proteinas', { valueAsNumber: true, min: { value: 0, message: "Las proteínas no pueden ser negativas" } })}
         />
@@ -116,9 +122,8 @@ const EditarComida = ({ initialData }) => {
         <input
           id="lipidos"
           type="number"
-          placeholder={comida.lipidos}
           className={`input ${errors.lipidos ? 'is-danger' : ''}`}
-          {...register('lipidos', { valueAsNumber: true, min: { value: 0, message: "Los lipidos no pueden ser negativos" } })}
+          {...register('lipidos', { valueAsNumber: true, min: { value: 0, message: "Los lípidos no pueden ser negativos" } })}
         />
         {errors.lipidos && <p className="error-message">{errors.lipidos.message}</p>}
 
@@ -126,9 +131,8 @@ const EditarComida = ({ initialData }) => {
         <input
           id="carbohidratos"
           type="number"
-          placeholder={comida.carbohidratos}
           className={`input ${errors.carbohidratos ? 'is-danger' : ''}`}
-          {...register('carbohidratos', { valueAsNumber: true, min: { value: 0, message: "Los carbohidratos no pueden ser negativas" } })}
+          {...register('carbohidratos', { valueAsNumber: true, min: { value: 0, message: "Los carbohidratos no pueden ser negativos" } })}
         />
         {errors.carbohidratos && <p className="error-message">{errors.carbohidratos.message}</p>}
 

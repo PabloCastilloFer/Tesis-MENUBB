@@ -20,7 +20,7 @@ async function setupServer() {
     server.use(cors({
       credentials: true,
       origin: 'http://localhost:5173', // Asegúrate de usar el dominio correcto del frontend
-      methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // Métodos permitidos
       allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
       exposedHeaders: ['Authorization'], // Encabezados expuestos
     }));

@@ -75,7 +75,7 @@ export const crearComidaSchema = Joi.object({
 export const updateComidaSchema = Joi.object({
     nombreComida: Joi.string()
     .label('nombreComida')
-    .required()
+    .optional()
     .regex(/^[A-Za-zÁ-Úá-ú0-9\s]+$/u)
     .messages({
         "string.empty": "El nombre de la comida no puede estar vacío.",
@@ -85,7 +85,7 @@ export const updateComidaSchema = Joi.object({
     }),
 precio: Joi.number()
     .label('precio')
-    .required()
+    .optional()
     .min(1)
     .messages({
         "number.base": "El precio debe ser de tipo numérico.",
