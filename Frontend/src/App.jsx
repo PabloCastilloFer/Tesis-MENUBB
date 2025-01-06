@@ -53,11 +53,11 @@ function AppContent() {
                 <Route path="/users" element={<UserAllView />} />
                 <Route path="/users/:id/edit" element={<UserEdit />} />
                 <Route path="/users/create" element={<UserCreate />} />
-                <Route path="/comidas/:id" element={<Comidas />} />
-                <Route path="/crear-comida" element={<Comida />} />
+                <Route path="/comidas" element={<Comidas />} /> {/* USER */}
+                <Route path="/crear-comida" element={<Comida />} /> {/* ENCARGADO */}
                 <Route path="/comida" element={<ComidaAdmin />} /> {/* ADMIN */}
-                <Route path="/comida/modificar" element={<UpdateComida />} />
-                <Route path="/mis-comidas" element={<MyComidas />} />
+                <Route path="/comida/modificar" element={<UpdateComida />} /> {/* ENCARGADO */}
+                <Route path="/mis-comidas" element={<MyComidas />} /> {/* ENCARGADO */}
                 <Route path="/users/:id/password" element={<UpdatePassword />} />
               </Routes>
             </main>

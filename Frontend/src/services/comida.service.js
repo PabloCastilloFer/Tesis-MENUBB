@@ -35,16 +35,15 @@ export const updateComida = async (id, formData) => {
     }
 }
 
-export const getComida = async (id) => {
+export const getComida = async (localId) => {
     try {
-        const response = await axios.get(`/comida/${id}`);
-        return data = response.data;
-        return [data];
+        const response = await axios.get(`/comida/comidas/${localId}`);
+        return response.data; // Devuelve los datos correctamente
     } catch (error) {
         console.error('Error en la solicitud: ', error);
-        return { status: 500, data: [error], error: error.message };
+        return { status: 500, data: [], error: error.message }; // Devuelve un objeto de error
     }
-}
+};
 
 export const deleteComida = async (id) => {
     try {
@@ -56,7 +55,7 @@ export const deleteComida = async (id) => {
     }
 };
 
-export const obtenerMisComidas = async () => {
+export const obtenerMisComidas = async (localId) => {
     try {
       // Obtener el token desde las cookies
       const token = Cookies.get('jwt-auth');
@@ -71,7 +70,7 @@ export const obtenerMisComidas = async () => {
         },
       };
 
-      const response = await axios.get('/comida/local/comidas', config);
+      const response = await axios.get(`/comida/local/comidas`, config);
   
       return response.data;
     } catch (error) {
@@ -84,3 +83,15 @@ export const obtenerMisComidas = async () => {
       );
     }
   };
+
+//Para el admin
+
+export const obtenerComidas = async () => {
+    try {
+        const response = await axios.get('/comida');
+        return response.data;
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+        return [];
+    }
+};

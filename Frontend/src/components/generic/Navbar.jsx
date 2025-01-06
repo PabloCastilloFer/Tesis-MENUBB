@@ -105,38 +105,35 @@ const NavBar = () => {
 
         {/* Opciones para usuarios 'user' */}
         {userRole === 'user' && (
-          <>
-            {Array.isArray(locales) &&
-              locales.map((local) => (
-                <li key={local.id} className="local-item-sidebrar">
-                  {/* Encabezado del local */}
-                  <div
-                    onClick={() => toggleSubmenu(local.id)}
-                    className={`local-header-sidebrar ${activeSubmenu === local.id ? 'active' : ''}`}
-                  >
-                    {/* Si la barra está colapsada, mostramos solo el ícono */}
-                    <img
-                      src={local.image}
-                      alt={local.name}
-                      className="local-image-sidebrar"
-                    />
-                    {!isCollapsed && <span className="local-name-sidebrar">{local.name}</span>}
-                  </div>
+  <>
+    {Array.isArray(locales) &&
+      locales.map((local) => (
+        <li key={local.id} className="local-item-sidebrar">
+          <div
+            onClick={() => toggleSubmenu(local.id)}
+            className={`local-header-sidebrar ${activeSubmenu === local.id ? 'active' : ''}`}
+          >
+            <img
+              src={local.image}
+              alt={local.name}
+              className="local-image-sidebrar"
+            />
+            {!isCollapsed && <span className="local-name-sidebrar">{local.name}</span>}
+          </div>
 
-                  {/* Submenú anidado */}
-                  <ul
-                    className={`nested-menu-sidebrar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
-                  >
-                    <li onClick={() => navigate(`/local/${local.id}`)}>Información</li>
-                    <li onClick={() => navigate(`/comidas`)}>
-                      Comida
-                    </li>
-                  </ul>
-                  
-                </li>
-              ))}
-          </>
-        )}
+          <ul
+            className={`nested-menu-sidebrar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
+          >
+            <li onClick={() => navigate(`/local/${local.id}`)}>Información</li>
+            <li onClick={() => navigate(`/comidas`, { state: { localId: local.id } })}> {/* Enviar el localId como estado */}
+              Comida
+            </li>
+          </ul>
+          
+        </li>
+      ))}
+  </>
+)}
       </ul>
     </div>
   );
