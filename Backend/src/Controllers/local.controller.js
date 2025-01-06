@@ -67,13 +67,15 @@ const DEFAULT_SCHEDULE = [
 
 export const createLocal = async (req, res) => {
   try {
+    // Verificar que la imagen se haya proporcionado
     if (!req.file) {
       return respondError(req, res, 400, 'La imagen es obligatoria.');
     }
 
+    // Obtener los datos del cuerpo
     let { schedule } = req.body;
 
-    // Función auxiliar para convertir el schedule a un array de objetos
+    // Función auxiliar para convertir el horario a un array de objetos
     const parseSchedule = (scheduleString) => {
       try {
         return JSON.parse(scheduleString);
@@ -82,31 +84,38 @@ export const createLocal = async (req, res) => {
       }
     };
 
-    // Convertir el schedule si existe, de lo contrario asignar un array vacío
+    // Si el horario existe, procesarlo. Si no, asignar un array vacío
     schedule = schedule ? parseSchedule(schedule) : [];
 
-    // Validar que el schedule es un array
+    // Validar que el horario sea un array
     if (!Array.isArray(schedule)) {
       return respondError(req, res, 400, 'El horario debe ser un array de objetos.');
     }
 
-    // Completar los días faltantes en el schedule con isOpen: false
+    // Completar los días faltantes en el horario con isOpen: false
     const completedSchedule = DEFAULT_SCHEDULE.map((defaultDay) => {
       const existingDay = schedule.find((item) => item.day === defaultDay.day);
       return existingDay || defaultDay;
     });
 
-    // Construir el objeto localData
+    // Construir la URL completa de la imagen
+    const imageUrl = `${req.protocol}://${req.get('host')}/api/src/Upload/${req.file.filename}`;
+
+    // Crear el objeto localData
     const localData = {
       ...req.body,
-      image: req.file.path,
+      image: imageUrl, // Usar la URL completa
       schedule: completedSchedule,
     };
 
-    // Crear el nuevo local
+    // Llamar al servicio para crear el local
     const newLocal = await LocalService.createLocal(localData);
+
+    // Enviar respuesta
     return respondSuccess(req, res, 201, 'Local creado exitosamente.', newLocal);
   } catch (error) {
+    console.error("Error en createLocal:", error); // Log detallado
+
     return respondError(req, res, 500, error.message || 'Error al crear el local.');
   }
 };

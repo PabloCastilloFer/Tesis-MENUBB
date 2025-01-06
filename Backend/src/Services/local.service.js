@@ -1,4 +1,5 @@
 import Local from "../Models/local.model.js";
+import { HOST, PORT } from '../Config/configEnv.js';
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
@@ -8,34 +9,37 @@ class LocalService {
    * @param {Object} data - Datos del local
    * @returns {Object} - Local creado
    */
-  static async createLocal({ name, address, accessibility, image, schedule }) {
-    // Verificar si el nombre ya está registrado
-    const existingLocal = await Local.findOne({ name });
-    if (existingLocal) {
-      throw { status: 400, message: "El nombre del local ya está registrado." };
+  static async createLocal(data) {
+    try {
+      // Verificar si el nombre del local ya está registrado
+      const existingLocal = await Local.findOne({ name: data.name });
+      if (existingLocal) {
+        throw { status: 400, message: "El nombre del local ya está registrado." };
+      }
+
+      // Crear y guardar el local
+      const newLocal = new Local(data);
+      const savedLocal = await newLocal.save();
+
+      console.log("Local guardado exitosamente:", savedLocal);
+
+      return {
+        id: savedLocal._id,
+        name: savedLocal.name,
+        address: savedLocal.address,
+        accessibility: savedLocal.accessibility,
+        schedule: savedLocal.schedule,
+        image: savedLocal.image,
+      };
+    } catch (error) {
+      console.error("Error en createLocal del servicio:", error);
+      throw {
+        status: error.status || 500,
+        message: error.message || "Error al guardar el local.",
+      };
     }
-
-    // Crear el nuevo local
-    const newLocal = new Local({
-      name,
-      address,
-      accessibility,
-      image,
-      schedule,
-    });
-
-    // Guardar en la base de datos
-    const savedLocal = await newLocal.save();
-
-    return {
-      id: savedLocal._id,
-      name: savedLocal.name,
-      address: savedLocal.address,
-      accessibility: savedLocal.accessibility,
-      image: savedLocal.image,
-      schedule: savedLocal.schedule,
-    };
   }
+
 
   /**
    * Obtener todos los locales con datos específicos

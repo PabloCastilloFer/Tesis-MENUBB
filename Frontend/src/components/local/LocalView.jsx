@@ -23,6 +23,7 @@ const LocalView = () => {
       setIsLoading(true);
       try {
         const data = await getLocalById(id);
+        console.log("Información del local:", data); // Aquí verificas toda la información
         setTimeout(() => {
           setLocalInfo(data);
           setIsLoading(false);
