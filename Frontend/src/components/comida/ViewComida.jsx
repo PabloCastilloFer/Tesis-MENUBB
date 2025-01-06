@@ -28,7 +28,8 @@ export default function VerComidas() {
     const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
     const filteredComidas = comidas.filter(comida =>
-        comida.nombreComida.toLowerCase().includes(searchQuery.toLowerCase())
+        comida.nombreComida.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        comida.estado === true // Solo mostramos comidas con estado true
     );
 
     return (

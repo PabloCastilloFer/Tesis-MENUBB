@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { obtenerMisComidas } from '../../services/comida.service.js';
+import { obtenerMisComidas, cambiarEstadoComida } from '../../services/comida.service.js';
 import { deleteComida } from '../../services/comida.service.js';
 import { showDeleteComida, DeleteQuestion } from '../../helpers/swaHelper.js';
 import '../../styles/comida/ComidaViewAll.css';
@@ -45,7 +45,20 @@ export default function MisComidas() {
         }
     };
 
-    const filteredComidas = comidas.filter(comida => 
+    const handleEstadoChange = async (comida) => {
+        try {
+            const updatedComida = await cambiarEstadoComida(comida.id);
+            setComidas((prevComidas) =>
+                prevComidas.map((c) =>
+                    c.id === comida.id ? { ...c, estado: updatedComida.estado } : c
+                )
+            );
+        } catch (error) {
+            console.error('Error al cambiar el estado de la comida', error);
+        }
+    };
+
+    const filteredComidas = comidas.filter(comida =>
         comida.nombreComida.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -84,6 +97,12 @@ export default function MisComidas() {
                                 <h2 className="comida-name">{comida.nombreComida}</h2>
                                 <p className="comida-detail"><strong>Precio:</strong> {comida.precio}</p>
                                 <p className="comida-detail"><strong>Calorías:</strong> {comida.calorias || 'N/A'}</p>
+                                
+                                {/* Mostrar el estado de la comida como 'Disponible' o 'Agotado' */}
+                                <p className="comida-state">
+                                    <strong>Estado:</strong> {comida.estado ? 'Disponible' : 'Agotado'}
+                                </p>
+
                                 <div className="comida-actions">
                                     <button
                                         className="comida-edit-button"
@@ -96,6 +115,12 @@ export default function MisComidas() {
                                         onClick={() => handleDeleted(comida)}
                                     >
                                         Eliminar
+                                    </button>
+                                    <button
+                                        className="comida-state-button"
+                                        onClick={() => handleEstadoChange(comida)}
+                                    >
+                                        Cambiar Estado
                                     </button>
                                 </div>
                             </div>

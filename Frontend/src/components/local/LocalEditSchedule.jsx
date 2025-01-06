@@ -39,8 +39,7 @@ const LocalEditSchedule = () => {
   const handleSubmit = async () => {
     try {
       // Mapeo de los datos para incluir el formato adecuado
-      const filteredSchedule = editedSchedule.map(({ day, isOpen, open, close, _id }) => ({
-        _id, // Incluye el _id para identificar cada día en el backend
+      const filteredSchedule = editedSchedule.map(({ day, isOpen, open, close }) => ({
         day,
         isOpen,
         open: isOpen ? open : '', // Si no está abierto, los valores deben ser cadenas vacías

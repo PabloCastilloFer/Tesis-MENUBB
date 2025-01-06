@@ -95,3 +95,13 @@ export const obtenerComidas = async () => {
         return [];
     }
 };
+
+export const cambiarEstadoComida = async (id) => {
+    try {
+        const response = await axios.patch(`/comida/estado/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+        return [];
+    }
+}

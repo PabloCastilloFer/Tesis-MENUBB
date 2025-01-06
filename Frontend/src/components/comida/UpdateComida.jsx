@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { updateComida } from '../../services/comida.service.js';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UpdateQuestion, VolverQuestion } from '../../helpers/swaHelper.js';
-import '../../styles/Local/LocalEdit.css';
+import '../../styles/local/LocalEdit.css';
 
 const EditarComida = () => {
   const navigate = useNavigate(); 
