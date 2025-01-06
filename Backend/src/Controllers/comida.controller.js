@@ -226,4 +226,29 @@ export const getComidasLocal = async (req, res) => {
     }
 };
 
-  
+//Cambiar estado
+
+export const cambiarEstadoComida = async (req, res) => {
+    const { id } = req.params; // ID de la comida desde los parámetros
+    try {
+        // Buscar la comida por ID
+        const comidaEncontrada = await comida.findById(id);
+        if (!comidaEncontrada) {
+            return res.status(404).json({ message: "Comida no encontrada." });
+        }
+
+        // Cambiar el estado actual (true -> false o false -> true)
+        comidaEncontrada.estado = !comidaEncontrada.estado;
+
+        // Guardar el cambio en la base de datos
+        await comidaEncontrada.save();
+
+        // Responder con el nuevo estado
+        res.status(200).json({
+            message: "Estado de la comida actualizado exitosamente.",
+            estado: comidaEncontrada.estado
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error al actualizar el estado de la comida." });
+    }
+};
