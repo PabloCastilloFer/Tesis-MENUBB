@@ -67,6 +67,10 @@ const NavBar = () => {
               <span className="local-icon-sidebar">👤</span> {/* Ícono siempre visible */}
               {!isCollapsed && 'Usuarios'} {/* Texto visible solo cuando está expandido */}
             </li>
+            <li onClick={() => navigate(`/comida`)}>
+            <span className="local-icon-sidebar">🍔</span>
+              {!isCollapsed && 'Comidas'}
+            </li>
           </>
         )}
 
