@@ -56,70 +56,104 @@ return (
           <div>
             <h1 className="title">Formulario para crear comida</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="create-comida-form">
-              <div className="form-group">
-                <label className="label">Nombre de la comida:</label>
-                <input
-                  type="text"
-                  className={`input ${errors.nombreComida ? 'is-danger' : ''}`}
-                  {...register('nombreComida', { required: "Este campo es obligatorio" })}
-                />
-                {errors.nombreComida && <p className="help is-danger">{errors.nombreComida.message}</p>}
-              </div>
-              <div className="form-group">
-                <label className="label">Precio:</label>
-                <input
-                  type="number"
-                  className={`input ${errors.precio ? 'is-danger' : ''}`}
-                  {...register('precio', { required: "Este campo es obligatorio" })}
-                />
-                {errors.precio && <p className="help is-danger">{errors.precio.message}</p>}
-              </div>
-              <div className="form-group">
-                <label className="label">Calorías:</label>
-                <input
-                  type="number"
-                  className={`input ${errors.calorias ? 'is-danger' : ''}`}
-                  {...register('calorias', { required: "Este campo es obligatorio" })}
-                />
-                {errors.calorias && <p className="help is-danger">{errors.calorias.message}</p>}
-              </div>
-              <div className="form-group">
-                <label className="label">Proteínas:</label>
-                <input
-                  type="number"
-                  className={`input ${errors.proteinas ? 'is-danger' : ''}`}
-                  {...register('proteinas', { required: "Este campo es obligatorio" })}
-                />
-                {errors.proteinas && <p className="help is-danger">{errors.proteinas.message}</p>}
-              </div>
-              <div className="form-group">
-                <label className="label">Lípidos:</label>
-                <input
-                  type="number"
-                  className={`input ${errors.lipidos ? 'is-danger' : ''}`}
-                  {...register('lipidos', { required: "Este campo es obligatorio" })}
-                />
-                {errors.lipidos && <p className="help is-danger">{errors.lipidos.message}</p>}
-              </div>
-              <div className="form-group">
-                <label className="label">Carbohidratos:</label>
-                <input
-                  type="number"
-                  className={`input ${errors.carbohidratos ? 'is-danger' : ''}`}
-                  {...register('carbohidratos', { required: "Este campo es obligatorio" })}
-                />
-                {errors.carbohidratos && <p className="help is-danger">{errors.carbohidratos.message}</p>}
-              </div>
-              <div className="form-group">
-                <label className="label">Imagen:</label>
-                <input
-                  type="file"
-                  className={`input ${errors.imagen ? 'is-danger' : ''}`}
-                  onChange={handleArchivoChange}
-                  {...register('imagen', { required: "Este campo es obligatorio" })}
-                />
-                {errors.imagen && <p className="help is-danger">{errors.imagen.message}</p>}
-              </div>
+            <div className="form-group">
+  <label className="label">Nombre de la comida:</label>
+  <input
+    type="text"
+    className={`input ${errors.nombreComida ? 'is-danger' : ''}`}
+    {...register('nombreComida', {
+      required: "El nombre de la comida es obligatorio.",
+      pattern: {
+        value: /^[A-Za-zÁ-Úá-ú0-9\s]+$/u,
+        message: "El nombre solo puede contener letras, números y espacios.",
+      },
+    })}
+  />
+  {errors.nombreComida && <p className="help is-danger">{errors.nombreComida.message}</p>}
+</div>
+<div className="form-group">
+  <label className="label">Precio:</label>
+  <input
+    type="number"
+    className={`input ${errors.precio ? 'is-danger' : ''}`}
+    {...register('precio', {
+      required: "El precio es obligatorio.",
+      min: {
+        value: 1,
+        message: "El precio debe ser mayor a 0.",
+      },
+    })}
+  />
+  {errors.precio && <p className="help is-danger">{errors.precio.message}</p>}
+</div>
+<div className="form-group">
+  <label className="label">Calorías:</label>
+  <input
+    type="number"
+    className={`input ${errors.calorias ? 'is-danger' : ''}`}
+    {...register('calorias', {
+      min: {
+        value: 1,
+        message: "Las calorías deben ser mayor a 0.",
+      },
+    })}
+  />
+  {errors.calorias && <p className="help is-danger">{errors.calorias.message}</p>}
+</div>
+<div className="form-group">
+  <label className="label">Proteínas:</label>
+  <input
+    type="number"
+    className={`input ${errors.proteinas ? 'is-danger' : ''}`}
+    {...register('proteinas', {
+      min: {
+        value: 1,
+        message: "Las proteínas deben ser mayor a 0.",
+      },
+    })}
+  />
+  {errors.proteinas && <p className="help is-danger">{errors.proteinas.message}</p>}
+</div>
+<div className="form-group">
+  <label className="label">Lípidos:</label>
+  <input
+    type="number"
+    className={`input ${errors.lipidos ? 'is-danger' : ''}`}
+    {...register('lipidos', {
+      min: {
+        value: 1,
+        message: "Los lípidos deben ser mayor a 0.",
+      },
+    })}
+  />
+  {errors.lipidos && <p className="help is-danger">{errors.lipidos.message}</p>}
+</div>
+<div className="form-group">
+  <label className="label">Carbohidratos:</label>
+  <input
+    type="number"
+    className={`input ${errors.carbohidratos ? 'is-danger' : ''}`}
+    {...register('carbohidratos', {
+      min: {
+        value: 1,
+        message: "Los carbohidratos deben ser mayor a 0.",
+      },
+    })}
+  />
+  {errors.carbohidratos && <p className="help is-danger">{errors.carbohidratos.message}</p>}
+</div>
+<div className="form-group">
+  <label className="label">Imagen:</label>
+  <input
+    type="file"
+    className={`input ${errors.imagen ? 'is-danger' : ''}`}
+    onChange={handleArchivoChange}
+    {...register('imagen', {
+      required: "Este campo es obligatorio.",
+    })}
+  />
+  {errors.imagen && <p className="help is-danger">{errors.imagen.message}</p>}
+</div>
               <button
                 className={`save-button ${isLoading ? 'is-loading' : ''}`}
                 type="submit"
