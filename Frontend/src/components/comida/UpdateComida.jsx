@@ -53,7 +53,7 @@ const EditarComida = ({ initialData }) => {
   const handleVolver = async () => {
     const isConfirmed = await VolverQuestion();
     if (isConfirmed) {
-      navigate('/comidas');
+      navigate('/mis-comidas');
     }
   };
 

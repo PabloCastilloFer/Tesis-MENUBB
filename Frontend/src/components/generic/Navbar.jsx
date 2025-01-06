@@ -73,6 +73,13 @@ const NavBar = () => {
                 'Usuarios'
               )}
             </li>
+            <li onClick={() => navigate(`/comida`)}> {/*reemplazar por 'menu' específico por local*/ }
+            {isCollapsed ? (
+                <span className="local-icon-sidebrar">🍔</span> // Icono representativo
+              ) : (
+                'Comidas'
+              )}
+                    </li>
           </>
         )}
 
@@ -121,7 +128,7 @@ const NavBar = () => {
                     className={`nested-menu-sidebrar ${activeSubmenu === local.id ? 'visible' : 'hidden'}`}
                   >
                     <li onClick={() => navigate(`/local/${local.id}`)}>Información</li>
-                    <li onClick={() => navigate(`/comidas`)}> {/*reemplazar por 'menu' específico por local*/ }
+                    <li onClick={() => navigate(`/comidas`)}>
                       Comida
                     </li>
                   </ul>

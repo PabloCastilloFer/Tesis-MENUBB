@@ -87,11 +87,26 @@ export const createComida = async (req, res) => {
 
 export const getComidas = async (req, res) => {
     try {
-        const comidas = await comida.find();
+        const comidas = await comida.find().populate('local');
+
         if (comidas.length === 0) {
-            return res.status(200).json({ message: "No hay comidas registradas" });
+            return res.status(200).json({ message: 'No hay comidas registradas.' });
         }
-        res.status(200).json(comidas);
+
+        const comidasConLocal = comidas.map((comida) => ({
+            id: comida._id,
+            nombreComida: comida.nombreComida,
+            precio: comida.precio,
+            calorias: comida.calorias,
+            proteinas: comida.proteinas,
+            lipidos: comida.lipidos,
+            carbohidratos: comida.carbohidratos,
+            imagen: comida.imagen,
+            estado: comida.estado,
+            nombreLocal: comida.local.name,
+        }));
+
+        res.status(200).json(comidasConLocal);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

@@ -8,12 +8,12 @@ const router = Router();
 
 
 router
-    .get('/comidas/:localId', authorizeRole(["user"]), getComidasLocalUser)
-    .get('/local/comidas', authorizeRole(["encargado"]), getComidasLocal)
-    .get('/', authorizeRole(["encargado","user"]), getComidas)
-    .get('/:id', authorizeRole(["encargado"]), getComida)
+    .get('/comidas/:localId', authorizeRole(["user","admin"]), getComidasLocalUser)
+    .get('/local/comidas', authorizeRole(["encargado","admin"]), getComidasLocal)
+    .get('/', authorizeRole(["encargado","user","admin"]), getComidas)
+    .get('/:id', authorizeRole(["encargado","admin"]), getComida)
     .post('/', upload.single("imagen"), authorizeRole(["encargado"]), handleFileSizeLimit, createComida)
     .put('/:id', upload.single("imagen"), authorizeRole(["encargado"]), handleFileSizeLimit,updateComida)
-    .delete('/:id', authorizeRole(["encargado"]), deleteComida);
+    .delete('/:id', authorizeRole(["encargado","admin"]), deleteComida);
 
 export default router;

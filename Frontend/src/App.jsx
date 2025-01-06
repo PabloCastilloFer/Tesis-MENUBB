@@ -28,6 +28,7 @@ import Comidas from './routes/comida/ViewComidaRoutes.jsx';
 import Comida from './routes/comida/Comida.jsx';
 import UpdateComida from './routes/comida/UpdateComidaRoute.jsx';
 import MyComidas from './routes/comida/ViewComidaMyRoutes.jsx';
+import ComidaAdmin from './routes/comida/ViewComidaAdminRoute.jsx';
 
 
 function AppContent() {
@@ -52,8 +53,9 @@ function AppContent() {
                 <Route path="/users" element={<UserAllView />} />
                 <Route path="/users/:id/edit" element={<UserEdit />} />
                 <Route path="/users/create" element={<UserCreate />} />
-                <Route path="/comidas" element={<Comidas />} />
+                <Route path="/comidas/:id" element={<Comidas />} />
                 <Route path="/crear-comida" element={<Comida />} />
+                <Route path="/comida" element={<ComidaAdmin />} /> {/* ADMIN */}
                 <Route path="/comida/modificar" element={<UpdateComida />} />
                 <Route path="/mis-comidas" element={<MyComidas />} />
                 <Route path="/users/:id/password" element={<UpdatePassword />} />
